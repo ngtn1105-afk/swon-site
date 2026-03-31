@@ -940,6 +940,55 @@
     }
     .footer-sns a:hover { color: var(--gold); }
     /* ===== ADMIN PANEL ===== */
+    /* パスワード画面 */
+    .admin-lock {
+      padding: 40px 28px 32px;
+      text-align: center;
+    }
+    .admin-lock-icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .admin-lock-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .admin-pin-input {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,169,110,0.35);
+      color: var(--warm-white);
+      font-size: 1.5rem;
+      letter-spacing: 0.4em;
+      text-align: center;
+      padding: 12px 16px;
+      border-radius: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      outline: none;
+      margin-bottom: 14px;
+    }
+    .admin-pin-input:focus { border-color: var(--gold); }
+    .admin-pin-btn {
+      background: var(--gold);
+      color: #1a1510;
+      border: none;
+      padding: 13px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: 'Josefin Sans', sans-serif;
+      letter-spacing: 0.12em;
+      font-size: 0.85rem;
+      width: 100%;
+      transition: opacity 0.2s;
+      margin-bottom: 10px;
+    }
+    .admin-pin-btn:hover { opacity: 0.85; }
+    .admin-pin-err {
+      color: #c97070;
+      font-size: 0.82rem;
+      min-height: 18px;
+    }
     .admin-toggle {
       position: fixed;
       bottom: 28px;
@@ -1588,6 +1637,20 @@
       <h3>SALON MANAGEMENT</h3>
       <button class="admin-close" onclick="toggleAdmin()">✕</button>
     </div>
+
+    <!-- パスワードロック画面 -->
+    <div id="adminLockScreen" class="admin-lock">
+      <div class="admin-lock-icon">🔒</div>
+      <div class="admin-lock-title">ADMIN LOGIN</div>
+      <input class="admin-pin-input" id="adminPinInput" type="password"
+             placeholder="••••" maxlength="20"
+             onkeydown="if(event.key==='Enter')adminLogin()">
+      <button class="admin-pin-btn" onclick="adminLogin()">ログイン</button>
+      <div class="admin-pin-err" id="adminPinErr"></div>
+    </div>
+
+    <!-- 認証後コンテンツ（デフォルト非表示） -->
+    <div id="adminContent" style="display:none;">
     <!-- TABS -->
     <div class="admin-tabs">
       <button class="admin-tab on" onclick="switchAdminTab('res',this)">予約管理</button>
@@ -1655,6 +1718,7 @@
       <button class="sch-save-btn" onclick="saveSchedule()">保存する</button>
       <div class="sch-save-msg" id="schSaveMsg">✓ 保存しました</div>
     </div>
+    </div><!-- /adminContent -->
   </div>
 
   <script>
@@ -1711,9 +1775,38 @@
       document.getElementById('rTime').value = '';
     }
 
+    // ── パスワード認証 ──
+    const ADMIN_PASS = 'swon1105'; // ← パスワードはここで変更できます
+    let adminUnlocked = false;
+
+    function adminLogin() {
+      const input = document.getElementById('adminPinInput').value;
+      if (input === ADMIN_PASS) {
+        adminUnlocked = true;
+        document.getElementById('adminLockScreen').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        document.getElementById('adminPinInput').value = '';
+        document.getElementById('adminPinErr').textContent = '';
+        renderList();
+      } else {
+        document.getElementById('adminPinErr').textContent = 'パスワードが違います';
+        document.getElementById('adminPinInput').value = '';
+        document.getElementById('adminPinInput').focus();
+      }
+    }
+
     function toggleAdmin() {
-      document.getElementById('adminPanel').classList.toggle('open');
-      renderList();
+      const panel = document.getElementById('adminPanel');
+      const isOpen = panel.classList.toggle('open');
+      if (isOpen) {
+        // パネルを開くたびにロック画面を表示
+        adminUnlocked = false;
+        document.getElementById('adminLockScreen').style.display = 'block';
+        document.getElementById('adminContent').style.display = 'none';
+        document.getElementById('adminPinInput').value = '';
+        document.getElementById('adminPinErr').textContent = '';
+        setTimeout(() => document.getElementById('adminPinInput').focus(), 300);
+      }
     }
 
     // ── Admin タブ切替 ──
