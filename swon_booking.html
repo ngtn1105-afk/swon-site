@@ -1039,25 +1039,48 @@ let MENUS = (() => {
   } catch(e) { return DEFAULT_MENUS; }
 })();
 
-// 営業時間 10:00〜20:00 / 30分刻みスロット生成
-// 施術終了時刻が20:00を超えるスロットは表示しない
-function getTimeSlots(date, durationMin) {
+// スケジュール設定をlocalStorageから読み込む（管理者がswon_salon.htmlで設定）
+function getSchedule() {
+  const def = { startHour: 10, endHour: 20, bufferMin: 60, closedDates: [], closedDays: [] };
+  try { return Object.assign({}, def, JSON.parse(localStorage.getItem('swon_schedule') || '{}')); }
+  catch(e) { return def; }
+}
+
+// 30分刻みスロット生成（予約済みイベント＋バッファーで空き判定）
+function getTimeSlots(date, durationMin, bookedEvents) {
+  const sc = getSchedule();
+  const buf = sc.bufferMin;
   const slots = [];
-  let h = 10, m = 0;
+  let h = sc.startHour, m = 0;
   while (true) {
-    const endMin = h * 60 + m + durationMin;
-    if (endMin > 20 * 60) break;
-    slots.push({ label: `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`, unavailable: false });
+    const slotStartMin = h * 60 + m;
+    const slotEndMin = slotStartMin + durationMin;
+    if (slotEndMin > sc.endHour * 60) break;
+
+    let unavailable = false;
+    if (bookedEvents && bookedEvents.length) {
+      for (const ev of bookedEvents) {
+        // 既存予約の終了時刻＋バッファー と 新規スロット が重なるか判定
+        if (slotStartMin < ev.endMin + buf && slotEndMin > ev.startMin) {
+          unavailable = true;
+          break;
+        }
+      }
+    }
+
+    slots.push({
+      label: `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`,
+      unavailable,
+    });
     m += 30;
     if (m >= 60) { m -= 60; h++; }
-    if (h >= 20) break;
+    if (h >= sc.endHour) break;
   }
   return slots;
 }
 
-function isUnavailable(date, hour) {
-  return false;
-}
+// 選択した日付のbooked eventsをキャッシュ
+let cachedBookedEvents = null;
 
 // ============================================================
 // STATE
@@ -1131,6 +1154,7 @@ function renderCalendar() {
 
   for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
 
+  const sc = getSchedule();
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(y, mo, d);
     const isPast = date < today;
@@ -1139,16 +1163,19 @@ function renderCalendar() {
       selectedDate.getMonth() === mo &&
       selectedDate.getDate() === d;
     const isTod = date.getTime() === today.getTime();
-    const key = `${y}-${mo}-${d}`;
-    const hasSlots = !isPast;
+
+    // 定休日・臨時休業日チェック
+    const dateKey = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isClosed = sc.closedDays.includes(date.getDay()) || sc.closedDates.includes(dateKey);
+    const isBlocked = isPast || isClosed;
 
     let cls = 'cal-day';
-    if (isPast) cls += ' past';
+    if (isBlocked) cls += ' past';
     else if (isSel) cls += ' selected';
     else if (isTod) cls += ' today';
-    if (hasSlots && !isPast) cls += ' has-slots';
+    if (!isBlocked) cls += ' has-slots';
 
-    html += `<div class="${cls}" onclick="${isPast ? '' : `pickDate(${y},${mo},${d})`}">
+    html += `<div class="${cls}" onclick="${isBlocked ? '' : `pickDate(${y},${mo},${d})`}">
       ${d}
       <div class="cal-dot"></div>
     </div>`;
@@ -1166,18 +1193,33 @@ function changeMonth(dir) {
   renderCalendar();
 }
 
-function pickDate(y, mo, d) {
+async function pickDate(y, mo, d) {
   selectedDate = new Date(y, mo, d);
   selectedTime = null;
+  cachedBookedEvents = null;
   renderCalendar();
-  renderTimeSlots();
   document.getElementById('time-picker').style.display = 'block';
   document.getElementById('btn-to-form').style.display = 'none';
   document.getElementById('time-picker').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // ローディング表示
+  document.getElementById('time-grid').innerHTML =
+    '<div style="padding:16px;color:rgba(201,169,110,0.6);font-size:0.9rem;">空き状況を確認中…</div>';
+
+  // GASから予約済みスロットを取得
+  try {
+    const dateStr = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const res = await fetch(`${GAS_URL}?action=slots&date=${dateStr}`);
+    const json = await res.json();
+    cachedBookedEvents = (json.status === 'success') ? json.booked : [];
+  } catch(e) {
+    cachedBookedEvents = [];
+  }
+  renderTimeSlots();
 }
 
 function renderTimeSlots() {
-  const slots = getTimeSlots(selectedDate, selectedMenu?.duration || 60);
+  const slots = getTimeSlots(selectedDate, selectedMenu?.duration || 60, cachedBookedEvents);
   const grid = document.getElementById('time-grid');
   grid.innerHTML = slots.map(s => `
     <div class="time-slot ${s.unavailable ? 'unavailable' : ''} ${selectedTime === s.label && !s.unavailable ? 'selected' : ''}"
@@ -1185,6 +1227,9 @@ function renderTimeSlots() {
       ${s.label}
     </div>
   `).join('');
+  if (!slots.length) {
+    grid.innerHTML = '<div style="padding:16px;color:rgba(201,169,110,0.6);font-size:0.9rem;">この日は予約受付時間外です。別の日をお選びください。</div>';
+  }
 }
 
 function pickTime(label) {
@@ -1275,6 +1320,7 @@ async function submitBooking() {
   const visitVal = document.getElementById('visitType').value;
   const visitLabel = visitVal === 'first' ? '初めてのご来店' : visitVal === 'repeat' ? '2回目以降' : '未選択';
 
+  const sc = getSchedule();
   const payload = {
     bookingNumber: num,
     menu: selectedMenu.name,
@@ -1287,6 +1333,7 @@ async function submitBooking() {
     email: document.getElementById('email').value.trim(),
     visitType: visitLabel,
     notes: document.getElementById('notes').value.trim() || 'なし',
+    bufferMin: sc.bufferMin, // 施術後バッファー時間（GASで重複チェックに使用）
   };
 
   try {

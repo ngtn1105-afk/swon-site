@@ -1094,6 +1094,23 @@
     }
     .admin-tab.on { color: var(--gold); border-bottom-color: var(--gold); }
     .admin-tab:hover:not(.on) { color: rgba(201,169,110,0.7); }
+    /* スケジュール管理 */
+    .sch-section { margin-bottom: 22px; }
+    .sch-label { display: block; color: var(--gold); font-size: 0.78rem; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .sch-select { background: rgba(255,255,255,0.05); border: 1px solid rgba(201,169,110,0.3); color: var(--warm-white); padding: 8px 12px; border-radius: 6px; width: 100%; font-size: 0.9rem; }
+    .sch-days { display: flex; gap: 10px; flex-wrap: wrap; }
+    .sch-days label { color: var(--warm-white); font-size: 0.88rem; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    .sch-days input[type=checkbox] { accent-color: #b89a6a; width: 16px; height: 16px; }
+    .sch-closed-add { display: flex; gap: 8px; margin-bottom: 10px; }
+    .sch-date-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(201,169,110,0.3); color: var(--warm-white); padding: 8px 12px; border-radius: 6px; flex: 1; font-size: 0.9rem; }
+    .sch-add-btn { background: rgba(201,169,110,0.15); border: 1px solid rgba(201,169,110,0.5); color: var(--gold); padding: 8px 16px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+    .sch-add-btn:hover { background: rgba(201,169,110,0.25); }
+    .sch-closed-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.9rem; }
+    .sch-del-btn { background: none; border: none; color: #c97070; cursor: pointer; font-size: 1rem; padding: 0 4px; }
+    .sch-save-btn { background: var(--gold); color: #1a1510; border: none; padding: 13px 0; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.12em; font-size: 0.85rem; width: 100%; margin-top: 8px; transition: opacity 0.2s; }
+    .sch-save-btn:hover { opacity: 0.85; }
+    .sch-save-msg { text-align: center; color: var(--gold); padding: 10px; font-size: 0.88rem; display: none; }
+    .sch-note { font-size: 0.78rem; color: rgba(196,185,171,0.5); margin-top: 6px; }
     .menu-editor-item {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
@@ -1571,6 +1588,11 @@
       <h3>SALON MANAGEMENT</h3>
       <button class="admin-close" onclick="toggleAdmin()">✕</button>
     </div>
+    <!-- TABS -->
+    <div class="admin-tabs">
+      <button class="admin-tab on" onclick="switchAdminTab('res',this)">予約管理</button>
+      <button class="admin-tab" onclick="switchAdminTab('schedule',this)">スケジュール管理</button>
+    </div>
     <!-- 予約管理 -->
     <div class="admin-body" id="adminResBody">
       <div class="filter-row">
@@ -1582,6 +1604,56 @@
       <div class="res-list" id="resList">
         <div class="admin-empty">予約はありません</div>
       </div>
+    </div>
+    <!-- スケジュール管理 -->
+    <div class="admin-body" id="adminScheduleBody" style="display:none;">
+      <div class="sch-section">
+        <label class="sch-label">営業開始時間</label>
+        <select id="schStart" class="sch-select">
+          <option value="7">7:00</option><option value="8">8:00</option><option value="9">9:00</option>
+          <option value="10" selected>10:00</option><option value="11">11:00</option><option value="12">12:00</option>
+        </select>
+      </div>
+      <div class="sch-section">
+        <label class="sch-label">営業終了時間</label>
+        <select id="schEnd" class="sch-select">
+          <option value="17">17:00</option><option value="18">18:00</option><option value="19">19:00</option>
+          <option value="20" selected>20:00</option><option value="21">21:00</option><option value="22">22:00</option>
+        </select>
+      </div>
+      <div class="sch-section">
+        <label class="sch-label">施術後バッファー（準備・休憩時間）</label>
+        <select id="schBuffer" class="sch-select">
+          <option value="0">なし（0分）</option>
+          <option value="30">30分</option>
+          <option value="60" selected>60分（推奨）</option>
+          <option value="90">90分</option>
+          <option value="120">120分</option>
+        </select>
+        <div class="sch-note">例：60分コース＋バッファー60分＝2時間枠でブロック</div>
+      </div>
+      <div class="sch-section">
+        <label class="sch-label">定休日</label>
+        <div class="sch-days">
+          <label><input type="checkbox" class="sch-day-cb" value="0"> 日</label>
+          <label><input type="checkbox" class="sch-day-cb" value="1"> 月</label>
+          <label><input type="checkbox" class="sch-day-cb" value="2"> 火</label>
+          <label><input type="checkbox" class="sch-day-cb" value="3"> 水</label>
+          <label><input type="checkbox" class="sch-day-cb" value="4"> 木</label>
+          <label><input type="checkbox" class="sch-day-cb" value="5"> 金</label>
+          <label><input type="checkbox" class="sch-day-cb" value="6"> 土</label>
+        </div>
+      </div>
+      <div class="sch-section">
+        <label class="sch-label">臨時休業日</label>
+        <div class="sch-closed-add">
+          <input type="date" id="schClosedDate" class="sch-date-input">
+          <button class="sch-add-btn" onclick="addClosedDate()">追加</button>
+        </div>
+        <div id="schClosedList"><div style="opacity:0.45;font-size:0.85rem;">臨時休業日はありません</div></div>
+      </div>
+      <button class="sch-save-btn" onclick="saveSchedule()">保存する</button>
+      <div class="sch-save-msg" id="schSaveMsg">✓ 保存しました</div>
     </div>
   </div>
 
@@ -1642,6 +1714,83 @@
     function toggleAdmin() {
       document.getElementById('adminPanel').classList.toggle('open');
       renderList();
+    }
+
+    // ── Admin タブ切替 ──
+    function switchAdminTab(tab, btn) {
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('on'));
+      btn.classList.add('on');
+      document.getElementById('adminResBody').style.display      = tab === 'res'      ? 'block' : 'none';
+      document.getElementById('adminScheduleBody').style.display = tab === 'schedule' ? 'block' : 'none';
+      if (tab === 'res') renderList();
+      if (tab === 'schedule') loadScheduleUI();
+    }
+
+    // ── スケジュール設定 ──
+    function getSchedule() {
+      const def = { startHour: 10, endHour: 20, bufferMin: 60, closedDates: [], closedDays: [] };
+      try { return Object.assign({}, def, JSON.parse(localStorage.getItem('swon_schedule') || '{}')); }
+      catch(e) { return def; }
+    }
+
+    function loadScheduleUI() {
+      const sc = getSchedule();
+      document.getElementById('schStart').value  = sc.startHour;
+      document.getElementById('schEnd').value    = sc.endHour;
+      document.getElementById('schBuffer').value = sc.bufferMin;
+      document.querySelectorAll('.sch-day-cb').forEach(cb => {
+        cb.checked = sc.closedDays.includes(parseInt(cb.value));
+      });
+      renderClosedDates(sc.closedDates);
+    }
+
+    function renderClosedDates(dates) {
+      const list = document.getElementById('schClosedList');
+      if (!dates || !dates.length) {
+        list.innerHTML = '<div style="opacity:0.45;font-size:0.85rem;">臨時休業日はありません</div>';
+        return;
+      }
+      list.innerHTML = dates.map(d => `
+        <div class="sch-closed-item">
+          <span>${d.replace(/-/g,'/')}</span>
+          <button class="sch-del-btn" onclick="removeClosedDate('${d}')">✕</button>
+        </div>`).join('');
+    }
+
+    function addClosedDate() {
+      const input = document.getElementById('schClosedDate');
+      const d = input.value;
+      if (!d) return;
+      const sc = getSchedule();
+      if (!sc.closedDates.includes(d)) {
+        sc.closedDates.push(d);
+        sc.closedDates.sort();
+        localStorage.setItem('swon_schedule', JSON.stringify(sc));
+      }
+      input.value = '';
+      renderClosedDates(sc.closedDates);
+    }
+
+    function removeClosedDate(d) {
+      const sc = getSchedule();
+      sc.closedDates = sc.closedDates.filter(x => x !== d);
+      localStorage.setItem('swon_schedule', JSON.stringify(sc));
+      renderClosedDates(sc.closedDates);
+    }
+
+    function saveSchedule() {
+      const sc = getSchedule();
+      sc.startHour = parseInt(document.getElementById('schStart').value);
+      sc.endHour   = parseInt(document.getElementById('schEnd').value);
+      sc.bufferMin = parseInt(document.getElementById('schBuffer').value);
+      sc.closedDays = [];
+      document.querySelectorAll('.sch-day-cb:checked').forEach(cb => {
+        sc.closedDays.push(parseInt(cb.value));
+      });
+      localStorage.setItem('swon_schedule', JSON.stringify(sc));
+      const msg = document.getElementById('schSaveMsg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 2500);
     }
 
     function filterRes(s, btn) {
