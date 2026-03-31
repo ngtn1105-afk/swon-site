@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SWON | Health & Beauty Salon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&family=Josefin+Sans:wght@100;200;300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ivory: #F7F3EE;
+      --warm-white: #FAF8F5;
+      --blush: #E8C9B8;
+      --rose: #C4876A;
+      --deep-rose: #9B5F44;
+      --charcoal: #2D2926;
+      --taupe: #8C7B6E;
+      --gold: #C9A96E;
+      --light-taupe: #E4DDD6;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--warm-white);
+      color: var(--charcoal);
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(250, 248, 245, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--light-taupe);
+    }
+    .nav-logo {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 1.6rem;
+      letter-spacing: 0.4em;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 200;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--taupe);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover {
+      color: var(--rose);
+    }
+    .nav-cta {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--warm-white);
+      background: var(--deep-rose);
+      padding: 10px 24px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .nav-cta:hover {
+      background: var(--rose);
+    }
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left {
+      background: var(--ivory);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 80px 80px 80px;
+      position: relative;
+    }
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--blush), transparent);
+    }
+    .hero-badge {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--rose);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      line-height: 1.1;
+      color: var(--charcoal);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose);
+    }
+    .hero-subtitle {
+      font-size: 0.85rem;
+      line-height: 2.2;
+      color: var(--taupe);
+      max-width: 380px;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 1s 0.7s forwards;
+      letter-spacing: 0.05em;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s forwards;
+    }
+    .btn-primary {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--warm-white);
+      background: var(--deep-rose);
+      padding: 16px 40px;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: var(--rose);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--taupe);
+      border: 1px solid var(--light-taupe);
+      padding: 16px 40px;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    .btn-secondary:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+    .hero-right {
+      background: linear-gradient(135deg, #E8D5C8 0%, #D4B5A0 40%, #C4987A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 40px;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .hero-visual {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-visual-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 5rem;
+      color: rgba(255,255,255,0.25);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .hero-visual-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    .hero-visual-inner {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 1.4rem;
+      letter-spacing: 0.5em;
+      color: white;
+    }
+    .hero-tag {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 200;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.1em;
+      margin-top: 12px;
+    }
+    /* ===== CONCERN SECTION ===== */
+    .concern {
+      padding: 120px 80px;
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+    .concern::before {
+      content: 'BEAUTY';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.03);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      color: var(--warm-white);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--blush);
+    }
+    .concern-intro {
+      font-size: 0.85rem;
+      line-height: 2.4;
+      color: rgba(255,255,255,0.55);
+      max-width: 600px;
+      margin-bottom: 72px;
+      letter-spacing: 0.05em;
+    }
+    .concern-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .concern-card {
+      background: rgba(255,255,255,0.04);
+      padding: 48px 36px;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+    .concern-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--rose), var(--gold));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .concern-card:hover {
+      background: rgba(255,255,255,0.07);
+    }
+    .concern-card:hover::before {
+      transform: scaleX(1);
+    }
+    .concern-icon {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .concern-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.4rem;
+      color: var(--warm-white);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+    .concern-desc {
+      font-size: 0.78rem;
+      line-height: 2.2;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
+    /* ===== MESSAGE SECTION ===== */
+    .message {
+      padding: 140px 80px;
+      background: var(--ivory);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .message-visual {
+      position: relative;
+    }
+    .message-box {
+      background: linear-gradient(135deg, var(--blush), var(--rose));
+      aspect-ratio: 3/4;
+      max-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .message-box::after {
+      content: '';
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .message-box-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 3.5rem;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .message-float {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: var(--charcoal);
+      padding: 24px 28px;
+      width: 200px;
+    }
+    .message-float-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2.8rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .message-float-label {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 200;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.1em;
+      margin-top: 6px;
+    }
+    .message-content .section-label {
+      color: var(--rose);
+    }
+    .message-content .section-title {
+      color: var(--charcoal);
+    }
+    .message-content .section-title em {
+      color: var(--rose);
+    }
+    .message-body {
+      font-size: 0.88rem;
+      line-height: 2.6;
+      color: var(--taupe);
+      margin-bottom: 32px;
+      letter-spacing: 0.06em;
+    }
+    .message-highlight {
+      background: var(--warm-white);
+      border-left: 3px solid var(--rose);
+      padding: 20px 24px;
+      margin: 28px 0;
+      font-size: 0.85rem;
+      line-height: 2.2;
+      color: var(--charcoal);
+      letter-spacing: 0.05em;
+      font-style: italic;
+    }
+    /* ===== SERVICES ===== */
+    .services {
+      padding: 120px 80px;
+      background: var(--warm-white);
+    }
+    .services-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    .services-header .section-label {
+      color: var(--rose);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--ivory);
+      padding: 52px 44px;
+      position: relative;
+      transition: transform 0.3s;
+      border: 1px solid transparent;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--blush);
+    }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 4rem;
+      color: var(--light-taupe);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.6rem;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+    }
+    .service-name-jp {
+      font-size: 0.78rem;
+      color: var(--rose);
+      letter-spacing: 0.15em;
+      margin-bottom: 20px;
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 200;
+    }
+    .service-desc {
+      font-size: 0.8rem;
+      line-height: 2.3;
+      color: var(--taupe);
+      letter-spacing: 0.04em;
+    }
+    .service-price {
+      margin-top: 28px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.2rem;
+      color: var(--rose);
+    }
+    .service-card.featured {
+      background: var(--charcoal);
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .service-card.featured .service-num,
+    .service-card.featured .service-name {
+      color: var(--warm-white);
+    }
+    .service-card.featured .service-name-jp {
+      color: var(--gold);
+    }
+    .service-card.featured .service-desc {
+      color: rgba(255,255,255,0.55);
+    }
+    .service-card.featured .service-price {
+      color: var(--gold);
+    }
+    .featured-badge {
+      display: inline-block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 4px 12px;
+      margin-bottom: 12px;
+    }
+    /* ===== FLOW ===== */
+    .flow {
+      padding: 120px 80px;
+      background: var(--ivory);
+    }
+    .flow-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    .flow-header .section-label {
+      color: var(--rose);
+    }
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .flow-steps::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 1px;
+      background: linear-gradient(to right, var(--blush), var(--rose), var(--blush));
+    }
+    .flow-step {
+      text-align: center;
+      padding: 0 20px;
+    }
+    .flow-num-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--warm-white);
+      border: 2px solid var(--blush);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+    .flow-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.6rem;
+      color: var(--rose);
+    }
+    .flow-title {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+    }
+    .flow-desc {
+      font-size: 0.74rem;
+      line-height: 2.1;
+      color: var(--taupe);
+      letter-spacing: 0.04em;
+    }
+    /* ===== SHOULDER SECTION ===== */
+    .shoulder {
+      padding: 120px 80px;
+      background: linear-gradient(135deg, #2D2926 60%, #4A3728 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .shoulder::before {
+      content: 'RELAX';
+      position: absolute;
+      bottom: -60px;
+      left: -20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.03);
+      pointer-events: none;
+    }
+    .shoulder-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .shoulder-content .section-title em {
+      color: var(--gold);
+    }
+    .shoulder-body {
+      font-size: 0.85rem;
+      line-height: 2.6;
+      color: rgba(255,255,255,0.6);
+      margin: 28px 0;
+      letter-spacing: 0.06em;
+    }
+    .shoulder-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .shoulder-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+      letter-spacing: 0.05em;
+    }
+    .shoulder-points li::before {
+      content: '—';
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .shoulder-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .shoulder-box {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 32px 24px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+    .shoulder-box:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .shoulder-box:first-child {
+      grid-column: span 2;
+    }
+    .shoulder-box-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+    .shoulder-box-title {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 10px;
+    }
+    .shoulder-box-text {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 2;
+      letter-spacing: 0.04em;
+    }
+    /* ===== BOOKING ===== */
+    .booking {
+      padding: 120px 80px;
+      background: var(--warm-white);
+      text-align: center;
+    }
+    .booking .section-label {
+      color: var(--rose);
+    }
+    .booking .section-title {
+      color: var(--charcoal);
+    }
+    .booking .section-title em {
+      color: var(--rose);
+    }
+    .booking-sub {
+      font-size: 0.82rem;
+      color: var(--taupe);
+      line-height: 2.4;
+      max-width: 480px;
+      margin: 0 auto 48px;
+      letter-spacing: 0.06em;
+    }
+    .booking-options {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+    .booking-card {
+      background: var(--ivory);
+      border: 1px solid var(--light-taupe);
+      padding: 40px 48px;
+      text-align: center;
+      min-width: 200px;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: block;
+    }
+    .booking-card:hover {
+      border-color: var(--rose);
+      transform: translateY(-4px);
+    }
+    .booking-card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+    .booking-card-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: var(--taupe);
+      margin-bottom: 6px;
+    }
+    .booking-card-text {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      letter-spacing: 0.1em;
+    }
+    /* ===== INLINE RESERVATION FORM ===== */
+    .reserve-form-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .reserve-form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.6rem;
+      color: var(--charcoal);
+      text-align: center;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .reserve-form-sub {
+      font-size: 0.75rem;
+      color: var(--taupe);
+      text-align: center;
+      letter-spacing: 0.15em;
+      margin-bottom: 40px;
+    }
+    .form-group {
+      margin-bottom: 28px;
+    }
+    .form-label {
+      display: block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+    .form-label .req {
+      color: var(--rose);
+      margin-left: 8px;
+      font-size: 0.6rem;
+    }
+    .form-control {
+      width: 100%;
+      padding: 13px 0;
+      border: none;
+      border-bottom: 1px solid var(--light-taupe);
+      background: transparent;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      transition: border-color 0.3s;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    .form-control:focus {
+      outline: none;
+      border-bottom-color: var(--rose);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .time-btn {
+      padding: 10px 4px;
+      text-align: center;
+      border: 1px solid var(--light-taupe);
+      background: transparent;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.78rem;
+      color: var(--taupe);
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.04em;
+    }
+    .time-btn:hover { border-color: var(--rose); color: var(--rose); }
+    .time-btn.selected { background: var(--deep-rose); color: var(--warm-white); border-color: var(--deep-rose); }
+    .time-btn.off { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+    .form-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--deep-rose);
+      color: var(--warm-white);
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 12px;
+    }
+    .form-submit:hover { background: var(--rose); }
+    .form-note {
+      font-size: 0.7rem;
+      color: var(--taupe);
+      text-align: center;
+      margin-top: 16px;
+      line-height: 2;
+      letter-spacing: 0.05em;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+      background: var(--charcoal);
+    }
+    .form-success.show { display: block; }
+    .success-symbol {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .success-ttl {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.6rem;
+      color: var(--warm-white);
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+    .success-body {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 2.2;
+      margin-bottom: 28px;
+    }
+    .success-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--charcoal);
+      padding: 60px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .footer-logo {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 1.8rem;
+      letter-spacing: 0.5em;
+      color: var(--warm-white);
+      margin-bottom: 16px;
+    }
+    .footer-tagline {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 2;
+      letter-spacing: 0.1em;
+    }
+    .footer-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .footer-info {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 2.4;
+      letter-spacing: 0.08em;
+    }
+    .footer-bottom {
+      background: rgba(0,0,0,0.3);
+      padding: 20px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.3);
+    }
+    .footer-sns {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-sns a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-sns a:hover { color: var(--gold); }
+    /* ===== ADMIN PANEL ===== */
+    .admin-toggle {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--charcoal);
+      color: var(--warm-white);
+      border: 1px solid rgba(201,169,110,0.4);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      z-index: 2000;
+      transition: all 0.3s;
+    }
+    .admin-toggle:hover { border-color: var(--gold); }
+    .admin-panel {
+      display: none;
+      position: fixed;
+      top: 0; right: 0;
+      width: 420px;
+      height: 100vh;
+      background: var(--charcoal);
+      box-shadow: -6px 0 32px rgba(0,0,0,0.4);
+      z-index: 1500;
+      overflow-y: auto;
+    }
+    .admin-panel.open { display: block; }
+    .admin-hd {
+      background: rgba(0,0,0,0.3);
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      border-bottom: 1px solid rgba(201,169,110,0.2);
+    }
+    .admin-hd h3 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--warm-white);
+    }
+    .admin-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .admin-close:hover { color: var(--warm-white); }
+    .admin-body { padding: 24px; }
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .f-btn {
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: transparent;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: rgba(196,185,171,0.6);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .f-btn.on { background: var(--gold); color: var(--charcoal); border-color: var(--gold); }
+    .f-btn:hover:not(.on) { border-color: rgba(201,169,110,0.4); color: var(--gold); }
+    .res-list { display: flex; flex-direction: column; gap: 12px; }
+    .res-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 18px 20px;
+      position: relative;
+    }
+    .rc-date {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 7px;
+    }
+    .rc-name {
+      font-size: 0.9rem;
+      color: var(--warm-white);
+      font-weight: 400;
+      margin-bottom: 5px;
+    }
+    .rc-info {
+      font-size: 0.72rem;
+      color: rgba(196,185,171,0.5);
+      line-height: 1.9;
+    }
+    .rc-status {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-size: 0.58rem;
+      padding: 3px 10px;
+      letter-spacing: 0.1em;
+      font-family: 'Josefin Sans', sans-serif;
+    }
+    .rc-status.confirmed { background: rgba(143,170,139,0.2); color: #8faa8b; }
+    .rc-status.pending   { background: rgba(201,169,110,0.15); color: var(--gold); }
+    .rc-status.cancelled { background: rgba(180,60,60,0.15); color: #c97070; }
+    .rc-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .rc-btn {
+      padding: 4px 12px;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Josefin Sans', sans-serif;
+      color: rgba(196,185,171,0.6);
+      transition: all 0.2s;
+    }
+    .rc-btn:hover { border-color: var(--warm-white); color: var(--warm-white); }
+    .rc-btn.d:hover { border-color: #c97070; color: #c97070; }
+    .admin-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(196,185,171,0.3);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+    }
+    /* ===== ADMIN TABS & MENU EDITOR ===== */
+    .admin-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(201,169,110,0.2);
+    }
+    .admin-tab {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: rgba(196,185,171,0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: -1px;
+    }
+    .admin-tab.on { color: var(--gold); border-bottom-color: var(--gold); }
+    .admin-tab:hover:not(.on) { color: rgba(201,169,110,0.7); }
+    .menu-editor-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 18px;
+      margin-bottom: 10px;
+    }
+    .me-cat-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: rgba(201,169,110,0.6);
+      margin-bottom: 6px;
+    }
+    .me-name-display {
+      font-size: 0.8rem;
+      color: var(--warm-white);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .me-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .me-field-group { display: flex; flex-direction: column; gap: 4px; }
+    .me-field-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+      color: rgba(196,185,171,0.45);
+    }
+    .me-input {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 6px 10px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.78rem;
+      color: var(--warm-white);
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    .me-input:focus { outline: none; border-color: var(--gold); }
+    .me-name-input {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 7px 10px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.78rem;
+      color: var(--warm-white);
+      width: 100%;
+      margin-bottom: 8px;
+      transition: border-color 0.2s;
+    }
+    .me-name-input:focus { outline: none; border-color: var(--gold); }
+    .me-actions { display: flex; gap: 8px; }
+    .me-save-btn {
+      padding: 5px 14px;
+      background: rgba(201,169,110,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      font-family: 'Josefin Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .me-save-btn:hover { background: var(--gold); color: var(--charcoal); }
+    .admin-reset-btn {
+      padding: 5px 14px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(196,185,171,0.4);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      font-family: 'Josefin Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .admin-reset-btn:hover { border-color: #c97070; color: #c97070; }
+    .me-note {
+      font-size: 0.65rem;
+      color: rgba(196,185,171,0.35);
+      text-align: center;
+      padding: 20px 0 8px;
+      line-height: 1.8;
+      letter-spacing: 0.05em;
+    }
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.04); opacity: 0.85; }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 120px 32px 60px; }
+      .hero-right { height: 300px; }
+      .concern { padding: 80px 32px; }
+      .concern-grid { grid-template-columns: 1fr; }
+      .message { grid-template-columns: 1fr; padding: 80px 32px; }
+      .message-visual { display: none; }
+      .services { padding: 80px 32px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card.featured { grid-column: auto; grid-template-columns: 1fr; gap: 20px; }
+      .flow { padding: 80px 32px; }
+      .flow-steps { grid-template-columns: 1fr 1fr; }
+      .flow-steps::before { display: none; }
+      .shoulder { padding: 80px 32px; }
+      .shoulder-inner { grid-template-columns: 1fr; }
+      .booking { padding: 80px 32px; }
+      footer { grid-template-columns: 1fr; padding: 60px 32px 40px; }
+      .footer-bottom { padding: 16px 32px; flex-direction: column; gap: 12px; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .time-grid { grid-template-columns: repeat(3, 1fr); }
+      .admin-panel { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">SWON</a>
+    <ul class="nav-links">
+      <li><a href="#concern">お悩みについて</a></li>
+      <li><a href="#services">メニュー</a></li>
+      <li><a href="#flow">ご予約の流れ</a></li>
+      <li><a href="#access">アクセス</a></li>
+      <li><a href="swon_reviews.html">口コミ</a></li>
+    </ul>
+    <a href="swon_reservation.html" class="nav-cta">BOOK NOW</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-badge">HEALTH & BEAUTY SALON — SWON</p>
+      <h1 class="hero-title">
+        骨格から、<br>
+        <em>美しさを</em><br>
+        整える。
+      </h1>
+      <p class="hero-subtitle">
+        エラ張り、顔の左右差、たるみ、肩こり。<br>
+        その悩みは、骨格のゆがみから<br>
+        生まれているかもしれません。<br>
+        SWONは、あなたの根本から変わる美しさを<br>
+        丁寧にサポートします。
+      </p>
+      <div class="hero-buttons">
+        <a href="swon_reservation.html" class="btn-primary">ご予約はこちら</a>
+        <a href="#services" class="btn-secondary">メニューを見る</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="hero-visual-circle">
+          <span class="hero-visual-inner">SWON</span>
+        </div>
+        <div class="hero-visual-text">Beauty<br>Bones</div>
+        <p class="hero-tag">骨格美容 × ボディケア</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCERN -->
+  <section class="concern" id="concern">
+    <div class="reveal">
+      <p class="section-label">YOUR CONCERNS</p>
+      <h2 class="section-title">こんなお悩み、<br><em>ありませんか？</em></h2>
+      <p class="concern-intro">
+        「鏡を見るたびに気になる顔のゆがみ。」「写真に写るたびに感じる左右差。」
+        それは、骨格や筋肉のバランスが崩れているサインかもしれません。
+        SWONでは、あなたの骨格を丁寧に分析し、本質的なアプローチでケアします。
+      </p>
+    </div>
+    <div class="concern-grid">
+      <div class="concern-card reveal reveal-delay-1">
+        <div class="concern-icon">◇</div>
+        <h3 class="concern-name">エラ張り</h3>
+        <p class="concern-desc">咬筋の過緊張や骨格のバランスにより、エラが張って見えることがあります。アプローチによって、フェイスラインをすっきりと整えます。</p>
+      </div>
+      <div class="concern-card reveal reveal-delay-2">
+        <div class="concern-icon">◇</div>
+        <h3 class="concern-name">顔の左右差</h3>
+        <p class="concern-desc">無意識の習慣や姿勢により、顔が左右非対称に。骨格・筋肉両方へのアプローチで、自然なバランスへと整えていきます。</p>
+      </div>
+      <div class="concern-card reveal reveal-delay-3">
+        <div class="concern-icon">◇</div>
+        <h3 class="concern-name">たるみ・むくみ</h3>
+        <p class="concern-desc">年齢とともに気になるフェイスラインのたるみ。リンパや筋膜へのアプローチで、引き上がった印象のお顔へ導きます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MESSAGE -->
+  <section class="message" id="message">
+    <div class="message-visual reveal">
+      <div class="message-box">
+        <div class="message-box-text">Inner<br>Beauty</div>
+      </div>
+      <div class="message-float">
+        <div class="message-float-num">∞</div>
+        <div class="message-float-label">根本からのケア</div>
+      </div>
+    </div>
+    <div class="message-content reveal reveal-delay-1">
+      <p class="section-label">OUR MESSAGE</p>
+      <h2 class="section-title">
+        肩こりと顔の悩み、<br>
+        <em>実はつながっています。</em>
+      </h2>
+      <div class="message-highlight">
+        「肩が重くて、なんとなく顔もすっきりしない。」<br>
+        そう感じたことはありませんか？
+      </div>
+      <p class="message-body">
+        首や肩の緊張は、顔の筋肉や骨格にも影響を与えます。
+        肩こりによって血流やリンパの流れが滞ると、顔のくすみやむくみ、
+        たるみの原因に。また、姿勢のゆがみが顔の左右差を
+        生み出すこともあります。<br><br>
+        SWONでは、顔だけ・体だけという分断したケアではなく、
+        頭から肩・首まわりを一体として捉えたトータルアプローチで、
+        あなたの美しさを内側から引き出します。
+      </p>
+      <a href="#services" class="btn-primary">施術メニューを見る</a>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="services-header reveal">
+      <p class="section-label">TREATMENT MENU</p>
+      <h2 class="section-title" style="color:var(--charcoal);">施術<em style="color:var(--rose);font-style:italic;">メニュー</em></h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card featured reveal">
+        <div>
+          <div class="featured-badge">RECOMMENDED</div>
+          <div class="service-num">01</div>
+          <h3 class="service-name">顔骨格トータルケア</h3>
+          <p class="service-name-jp">フェイシャル × ヘッド × 肩（小顔集中ケア含む）</p>
+          <p class="service-desc">
+            SWONが最も大切にする施術。顔の骨格分析から始まり、
+            筋膜・骨格・リンパへ総合的にアプローチ。
+            エラ張り・左右差・たるみへの集中フェイシャルケアを含む、
+            頭部・首・肩まわりのトータルケアで、
+            体の連動から顔の美しさを整えます。
+          </p>
+          <div class="service-price">¥10,000〜 / 90分</div>
+        </div>
+        <div>
+          <ul class="shoulder-points" style="margin-top:0;">
+            <li>顔の骨格・筋肉分析</li>
+            <li>咬筋・側頭筋リリース（エラ張り）</li>
+            <li>フェイスラインリフトアップ</li>
+            <li>左右差・たるみへの集中アプローチ</li>
+            <li>ヘッドスパ（頭蓋骨アプローチ）</li>
+            <li>首・肩の筋膜リリース</li>
+          </ul>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-1" style="grid-column:span 2;">
+        <div class="service-num">02</div>
+        <h3 class="service-name">肩こり集中ケア</h3>
+        <p class="service-name-jp">ボディ × リラクゼーション</p>
+        <p class="service-desc">
+          首・肩・背中の深部まで届くアプローチで、
+          慢性的な肩こりの根本にアプローチ。
+          施術後の軽さと、体全体のすっきり感を実感してください。
+        </p>
+        <div class="service-price">¥7,800〜 / 60分</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOULDER -->
+  <section class="shoulder">
+    <div class="shoulder-inner">
+      <div class="shoulder-content reveal">
+        <p class="section-label" style="color:var(--gold);">FOR SHOULDER PAIN</p>
+        <h2 class="section-title">
+          肩こりに悩む女性へ、<br>
+          <em>SWONからのメッセージ。</em>
+        </h2>
+        <p class="shoulder-body">
+          デスクワーク、スマートフォン、育児——。
+          現代の女性は、肩や首に大きな負担を抱えています。
+          その慢性的なこりは、血行不良・自律神経の乱れ・
+          顔のくすみやむくみとも深く関係しています。<br><br>
+          「マッサージに行っても、またすぐ戻ってしまう」
+          そのお気持ちはよくわかります。
+          SWONでは、筋肉表面だけでなく筋膜・骨格レベルから
+          アプローチすることで、より持続的な変化を目指します。
+        </p>
+        <ul class="shoulder-points">
+          <li>首・肩の深部筋膜へのアプローチで根本ケア</li>
+          <li>骨格のゆがみを整え、姿勢改善にも</li>
+          <li>施術と並行したセルフケアアドバイスも提供</li>
+          <li>顔のむくみ・たるみとの連動ケアも可能</li>
+        </ul>
+      </div>
+      <div class="shoulder-visual reveal reveal-delay-1">
+        <div class="shoulder-box">
+          <div class="shoulder-box-icon">✦</div>
+          <div class="shoulder-box-title">肩こりと顔の関係</div>
+          <div class="shoulder-box-text">首・肩の緊張が血流を滞らせ、顔のくすみ・むくみ・たるみの原因に。SWONでは一体として捉えてケアします。</div>
+        </div>
+        <div class="shoulder-box">
+          <div class="shoulder-box-icon">◈</div>
+          <div class="shoulder-box-title">筋膜リリース</div>
+          <div class="shoulder-box-text">深部の筋膜にアプローチし、表面だけでなく根本からのこりを解消します。</div>
+        </div>
+        <div class="shoulder-box">
+          <div class="shoulder-box-icon">◉</div>
+          <div class="shoulder-box-title">骨格アプローチ</div>
+          <div class="shoulder-box-text">姿勢のゆがみを整えることで、肩こりの再発予防にも貢献します。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW -->
+  <section class="flow" id="flow">
+    <div class="flow-header reveal">
+      <p class="section-label" style="color:var(--rose);">HOW IT WORKS</p>
+      <h2 class="section-title" style="color:var(--charcoal);">ご予約から施術までの<em style="color:var(--rose);font-style:italic;">流れ</em></h2>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step reveal reveal-delay-1">
+        <div class="flow-num-wrap"><span class="flow-num">01</span></div>
+        <div class="flow-title">ご予約</div>
+        <div class="flow-desc">InstagramのDM、またはこちらのフォームよりご予約ください。お悩みもお気軽にお聞かせください。</div>
+      </div>
+      <div class="flow-step reveal reveal-delay-2">
+        <div class="flow-num-wrap"><span class="flow-num">02</span></div>
+        <div class="flow-title">カウンセリング</div>
+        <div class="flow-desc">お悩みや生活習慣をヒアリング。骨格チェックを行い、最適な施術プランをご提案します。</div>
+      </div>
+      <div class="flow-step reveal reveal-delay-3">
+        <div class="flow-num-wrap"><span class="flow-num">03</span></div>
+        <div class="flow-title">施術</div>
+        <div class="flow-desc">丁寧な手技で、お顔・頭部・肩まわりをトータルにケア。リラックスしてお受けください。</div>
+      </div>
+      <div class="flow-step reveal reveal-delay-4">
+        <div class="flow-num-wrap"><span class="flow-num">04</span></div>
+        <div class="flow-title">アフターケア</div>
+        <div class="flow-desc">施術後はホームケアのアドバイスも。効果を長く持続させるためのセルフケアをお伝えします。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS TEASER -->
+  <section style="background:var(--cream);padding:100px 24px;text-align:center;">
+    <div class="reveal">
+      <p class="section-label">CUSTOMER REVIEWS</p>
+      <h2 class="section-title" style="color:var(--charcoal);">お客様の<em style="color:var(--gold);font-style:italic;">声</em></h2>
+      <p style="color:var(--warm-gray);font-size:0.95rem;margin-bottom:48px;line-height:1.8;">ホットペッパービューティーに寄せられた、49件のリアルな口コミをご覧いただけます。</p>
+      <div style="display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-bottom:48px;">
+        <div style="text-align:center;">
+          <div style="font-size:3rem;font-weight:300;color:var(--charcoal);font-family:'Josefin Sans',sans-serif;">49</div>
+          <div style="font-size:0.8rem;letter-spacing:0.15em;color:var(--warm-gray);">口コミ件数</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:3rem;font-weight:300;color:var(--gold);font-family:'Josefin Sans',sans-serif;">★ 4.8</div>
+          <div style="font-size:0.8rem;letter-spacing:0.15em;color:var(--warm-gray);">平均評価</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:3rem;font-weight:300;color:var(--charcoal);font-family:'Josefin Sans',sans-serif;">100%</div>
+          <div style="font-size:0.8rem;letter-spacing:0.15em;color:var(--warm-gray);">また行きたい</div>
+        </div>
+      </div>
+      <a href="swon_reviews.html" style="display:inline-block;padding:16px 48px;border:1px solid var(--charcoal);color:var(--charcoal);text-decoration:none;font-family:'Josefin Sans',sans-serif;font-size:0.85rem;letter-spacing:0.2em;transition:all 0.3s ease;" onmouseover="this.style.background='var(--charcoal)';this.style.color='white';" onmouseout="this.style.background='transparent';this.style.color='var(--charcoal)';">口コミをすべて見る →</a>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section class="booking" id="booking">
+    <div class="reveal">
+      <p class="section-label">RESERVATION</p>
+      <h2 class="section-title">
+        あなたの骨格から、<br>
+        <em>変わっていく。</em>
+      </h2>
+      <p class="booking-sub">
+        ご予約はInstagramのDM・お電話、または下記フォームからお気軽にどうぞ。
+        初めての方も安心してご来店ください。
+      </p>
+    </div>
+    <div class="booking-options">
+      <a href="https://www.instagram.com/healthandbeautysalon.swon" target="_blank" class="booking-card reveal reveal-delay-1">
+        <div class="booking-card-icon">📷</div>
+        <div class="booking-card-label">INSTAGRAM</div>
+        <div class="booking-card-text">@healthandbeautysalon.swon</div>
+      </a>
+      <a href="tel:00-0000-0000" class="booking-card reveal reveal-delay-2">
+        <div class="booking-card-icon">📞</div>
+        <div class="booking-card-label">TEL</div>
+        <div class="booking-card-text">お電話でのご予約</div>
+      </a>
+      <a href="https://maps.google.com/maps?q=青森県八戸市諏訪1丁目13-7" target="_blank" class="booking-card reveal reveal-delay-3">
+        <div class="booking-card-icon">📍</div>
+        <div class="booking-card-label">ACCESS</div>
+        <div class="booking-card-text">サロンへのアクセス</div>
+      </a>
+    </div>
+
+    <!-- RESERVATION LINK -->
+    <div class="reserve-form-wrap reveal" style="text-align:center;">
+      <h3 class="reserve-form-title">Online Reservation</h3>
+      <p class="reserve-form-sub" style="margin-bottom:36px;">— メニュー選択から日時・お客様情報まで、かんたん4ステップ —</p>
+      <a href="swon_reservation.html" class="form-submit" style="display:inline-block;text-decoration:none;padding:20px 60px;font-size:0.82rem;letter-spacing:0.3em;">
+        オンライン予約フォームへ進む →
+      </a>
+      <p class="form-note" style="margin-top:20px;">
+        ※完全予約制・女性専用・完全個室
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="access">
+    <div>
+      <div class="footer-logo">SWON</div>
+      <div class="footer-tagline">
+        骨格から美しさを整える<br>
+        Health & Beauty Salon
+      </div>
+    </div>
+    <div>
+      <div class="footer-title">SALON INFO</div>
+      <div class="footer-info">
+        営業時間｜10:00〜20:00<br>
+        定休日｜不定休<br>
+        住所｜<a href="https://maps.google.com/maps?q=青森県八戸市諏訪1丁目13-7" target="_blank" style="color:rgba(255,255,255,0.5);text-decoration:underline;">青森県八戸市諏訪1丁目13−7</a><br><br>
+        ご予約はフォーム・Instagram DM・<br>
+        お電話にて承ります
+      </div>
+    </div>
+    <div>
+      <div class="footer-title">FOLLOW US</div>
+      <div class="footer-info">
+        最新情報・ビフォーアフターは<br>
+        Instagramで発信中。<br><br>
+        @healthandbeautysalon.swon
+      </div>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 SWON Health & Beauty Salon. All rights reserved.</span>
+    <div class="footer-sns">
+      <a href="https://www.instagram.com/healthandbeautysalon.swon" target="_blank">INSTAGRAM</a>
+    </div>
+  </div>
+
+  <!-- ADMIN TOGGLE -->
+  <button class="admin-toggle" onclick="toggleAdmin()" title="予約管理">📋</button>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-hd">
+      <h3>SALON MANAGEMENT</h3>
+      <button class="admin-close" onclick="toggleAdmin()">✕</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab on" onclick="switchAdminTab('res',this)">予約管理</button>
+      <button class="admin-tab" onclick="switchAdminTab('menu',this)">メニュー管理</button>
+    </div>
+    <!-- 予約管理 -->
+    <div class="admin-body" id="adminResBody">
+      <div class="filter-row">
+        <button class="f-btn on" onclick="filterRes('all',this)">ALL</button>
+        <button class="f-btn" onclick="filterRes('confirmed',this)">確認済み</button>
+        <button class="f-btn" onclick="filterRes('pending',this)">未確認</button>
+        <button class="f-btn" onclick="filterRes('cancelled',this)">キャンセル</button>
+      </div>
+      <div class="res-list" id="resList">
+        <div class="admin-empty">予約はありません</div>
+      </div>
+    </div>
+    <!-- メニュー管理 -->
+    <div class="admin-body" id="adminMenuBody" style="display:none;">
+      <div class="me-note">メニュー名・料金・施術時間を編集して保存してください。<br>変更は予約フォームに即時反映されます。</div>
+      <div id="menuEditorList"></div>
+      <div style="display:flex;gap:8px;margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+        <button class="me-save-btn" style="flex:1;" onclick="saveAllMenus()">すべて保存</button>
+        <button class="admin-reset-btn" onclick="resetAllMenus()">リセット</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Scroll reveal ──
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // ── Min date ──
+    const di = document.getElementById('rDate');
+    if (di) { const tm = new Date(); tm.setDate(tm.getDate() + 1); di.min = tm.toISOString().split('T')[0]; }
+
+    // ── Reservation data ──
+    let rsvs = JSON.parse(localStorage.getItem('swon_res') || '[]');
+    let selTime = '', curFilter = 'all';
+
+    function pickTime(el) {
+      if (el.classList.contains('off')) return;
+      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      selTime = el.textContent;
+      document.getElementById('rTime').value = selTime;
+    }
+
+    function submitRes(e) {
+      e.preventDefault();
+      if (!selTime) { alert('時間帯を選択してください'); return; }
+      const r = {
+        id: Date.now(),
+        name: document.getElementById('rName').value,
+        phone: document.getElementById('rPhone').value,
+        email: document.getElementById('rEmail').value,
+        menu: document.getElementById('rMenu').value,
+        date: document.getElementById('rDate').value,
+        time: selTime,
+        note: document.getElementById('rNote').value,
+        status: 'pending',
+        at: new Date().toISOString()
+      };
+      rsvs.push(r);
+      localStorage.setItem('swon_res', JSON.stringify(rsvs));
+      document.getElementById('resForm').style.display = 'none';
+      document.getElementById('resSuccess').classList.add('show');
+      renderList();
+    }
+
+    function resetRes() {
+      document.getElementById('resForm').reset();
+      document.getElementById('resForm').style.display = 'block';
+      document.getElementById('resSuccess').classList.remove('show');
+      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+      selTime = '';
+      document.getElementById('rTime').value = '';
+    }
+
+    function toggleAdmin() {
+      document.getElementById('adminPanel').classList.toggle('open');
+      renderList();
+    }
+
+    function filterRes(s, btn) {
+      curFilter = s;
+      document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      renderList();
+    }
+
+    function renderList() {
+      const list = document.getElementById('resList');
+      const data = curFilter === 'all' ? rsvs : rsvs.filter(r => r.status === curFilter);
+      if (!data.length) { list.innerHTML = '<div class="admin-empty">予約はありません</div>'; return; }
+      list.innerHTML = data.slice().reverse().map(r => {
+        const d = r.date ? new Date(r.date + 'T00:00:00').toLocaleDateString('ja-JP', { year:'numeric', month:'long', day:'numeric', weekday:'short' }) : '';
+        const sl = { confirmed:'確認済み', pending:'未確認', cancelled:'キャンセル' }[r.status];
+        return `<div class="res-card">
+          <div class="rc-date">${d}　${r.time}</div>
+          <div class="rc-name">${r.name}</div>
+          <div class="rc-info">${r.menu}<br>${r.phone}${r.email ? ' / ' + r.email : ''}${r.note ? '<br>' + r.note : ''}</div>
+          <span class="rc-status ${r.status}">${sl}</span>
+          <div class="rc-actions">
+            ${r.status !== 'confirmed' ? `<button class="rc-btn" onclick="chgStatus(${r.id},'confirmed')">確認済みに</button>` : ''}
+            ${r.status !== 'cancelled' ? `<button class="rc-btn d" onclick="chgStatus(${r.id},'cancelled')">キャンセル</button>` : ''}
+            <button class="rc-btn d" onclick="delRes(${r.id})">削除</button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function chgStatus(id, s) {
+      const r = rsvs.find(r => r.id === id);
+      if (r) { r.status = s; localStorage.setItem('swon_res', JSON.stringify(rsvs)); renderList(); }
+    }
+
+    function delRes(id) {
+      if (!confirm('この予約を削除しますか？')) return;
+      rsvs = rsvs.filter(r => r.id !== id);
+      localStorage.setItem('swon_res', JSON.stringify(rsvs));
+      renderList();
+    }
+
+    // ── Admin tab switching ──
+    function switchAdminTab(tab, btn) {
+      document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      if (tab === 'res') {
+        document.getElementById('adminResBody').style.display = 'block';
+        document.getElementById('adminMenuBody').style.display = 'none';
+        renderList();
+      } else {
+        document.getElementById('adminResBody').style.display = 'none';
+        document.getElementById('adminMenuBody').style.display = 'block';
+        renderMenuEditor();
+      }
+    }
+
+    // ── Default menu data (mirrors swon_booking.html) ──
+    const DEFAULT_MENUS = [
+      { id:1,  cat:'body', catLabel:'ボディトリートメント', name:'オイルリンパマッサージ 60分', shortName:'オイルリンパ60分', desc:'足後面＆背中など部分的なボディケア。脚のむくみ・背中の疲労に。', price:6800, duration:60 },
+      { id:2,  cat:'body', catLabel:'ボディトリートメント', name:'オイルリンパマッサージ 90分', shortName:'オイルリンパ90分', desc:'全身のボディコース。疲労回復に最適な全身リラクゼーション。', price:9800, duration:90 },
+      { id:3,  cat:'body', catLabel:'ボディトリートメント', name:'オイルリンパマッサージ 120分', shortName:'オイルリンパ120分', desc:'デトックス全身ロングコース。ヘッドからつま先までたっぷりリラックス。', price:12500, duration:120 },
+      { id:4,  cat:'body', catLabel:'ボディトリートメント', name:'オイルリンパ 150分（ヘッドマッサージ15分含む）', shortName:'オイルリンパ150分', desc:'辛い肩コリ、首、肩甲骨はがしで疲労をリセット。ホットアイマスク付。', price:15500, duration:150 },
+      { id:5,  cat:'body', catLabel:'ボディトリートメント', name:'美顔コルギ＆オイルリンパ 60分', shortName:'美顔コルギ＆オイルリンパ60分', desc:'美小顔矯正と気になるボディ部分ケアコース。炭酸パックオプションあり。', price:14000, duration:60 },
+      { id:6,  cat:'body', catLabel:'ボディトリートメント', name:'【リピート率No.1】美顔コルギ＆オイルリンパ 90分', shortName:'美顔コルギ＆オイルリンパ90分', desc:'美小顔矯正と全身ボディの欲張りコース。炭酸パックオプション+500円。', price:16500, duration:90 },
+      { id:7,  cat:'body', catLabel:'ボディトリートメント', name:'美顔コルギ＆オイルリンパ 120分', shortName:'美顔コルギ＆オイルリンパ120分', desc:'美小顔矯正と全身ボディロングコースの贅沢リラクゼーション。', price:18500, duration:120 },
+      { id:8,  cat:'body', catLabel:'ボディトリートメント', name:'ボディ90分＋アイマスクヘッド25分＋炭酸美肌コルギ100分', shortName:'ボディ90分＋コルギ100分', desc:'末端の冷え、コリ改善、ヘッドマッサージ含む艶肌小顔コース。ホットアイマスク付。', price:19800, duration:215 },
+      { id:9,  cat:'face', catLabel:'小顔矯正', name:'【新規】美顔コルギ 80分 ¥7500→¥5800', shortName:'美顔コルギ80分（新規）', desc:'お顔の歪みを整えながらリフトアップ。肩甲骨周り、肩、首ヘッドまで丁寧に流します。', price:5800, duration:80 },
+      { id:10, cat:'face', catLabel:'小顔矯正', name:'【再来】美顔コルギ 80分', shortName:'美顔コルギ80分（再来）', desc:'お顔の歪みを整えながらリフトアップ。肩甲骨周り、肩、首ヘッドまで。', price:7500, duration:80 },
+      { id:11, cat:'face', catLabel:'小顔矯正', name:'【再来】炭酸美肌コルギ 100分', shortName:'炭酸美肌コルギ100分', desc:'美顔コルギ＋炭酸パック＋リフトアップ美容液で美しい小顔艶肌へ。腕マッサージ・ヘッド・足ツボ付。', price:8500, duration:100 },
+      { id:12, cat:'face', catLabel:'フェイシャル', name:'炭酸SAIBOWフェイシャル', shortName:'炭酸SAIBOWフェイシャル', desc:'ディープクレンジング＋リフトアップマッサージ＆デコルテマッサージ＋プラセンタ炭酸パック。', price:7500, duration:60 },
+      { id:13, cat:'face', catLabel:'フェイシャル', name:'【ニキビ予防・肌鎮静】アクネケアフェイシャル 60分', shortName:'アクネケアフェイシャル60分', desc:'肌洗浄＋ディープクレンジング＋保湿の肌鎮静パック。', price:5800, duration:60 },
+      { id:14, cat:'slim', catLabel:'痩身', name:'【はみ肉ケア】痩身ボディ 100分', shortName:'痩身ボディ100分', desc:'後面、横向き、前面のデトックス痩身マッサージ。', price:11500, duration:100 },
+      { id:15, cat:'slim', catLabel:'痩身', name:'【見た目−3キロ☆】痩身ボディ100分＋小顔コルギ80分', shortName:'痩身＋コルギセット', desc:'筋膜リリースとデトックスボディマッサージ＋小顔コルギ。欲張りコース。', price:17500, duration:180 },
+      { id:16, cat:'head', catLabel:'ヘッド', name:'【最強リフトアップ】ヘッドスパ25分＋背中30分＋幹細胞炭酸美肌コルギ', shortName:'ヘッドスパ＋コルギセット', desc:'オーガニックスカルプローションでリフレッシュ＆リフトアップ。上半身をくまなくデトックス。', price:14500, duration:120 },
+      { id:17, cat:'other', catLabel:'バストケア', name:'バストケア 40分', shortName:'バストケア40分', desc:'背中や二の腕に流れている脂肪をバストへ移動し、ふっくらバストへ。', price:4500, duration:40 },
+      { id:18, cat:'other', catLabel:'バストケア', name:'【背中&小顔デコルテケア】バストケア40分＋小顔コルギ80分', shortName:'バスト＋コルギセット', desc:'バストケアと小顔コルギのセットコース。ブライダルの方にもオススメ。', price:12000, duration:120 },
+      { id:19, cat:'other', catLabel:'その他', name:'【高保湿&コリ改善】幹細胞炭酸コルギ＋背中マッサージ30分', shortName:'幹細胞コルギ＋背中', desc:'幹細胞スキンケアでしっとり艶肌小顔へ。腕マッサージ、ヘッド、足ツボ付。', price:12000, duration:100 },
+    ];
+
+    function getAdminMenus() {
+      try {
+        const stored = localStorage.getItem('swon_menus');
+        return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_MENUS));
+      } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_MENUS)); }
+    }
+
+    function renderMenuEditor() {
+      const menus = getAdminMenus();
+      const list = document.getElementById('menuEditorList');
+      list.innerHTML = menus.map(m => `
+        <div class="menu-editor-item">
+          <div class="me-cat-label">${m.catLabel}</div>
+          <div class="me-field-group" style="margin-bottom:8px;">
+            <div class="me-field-label">メニュー名</div>
+            <input class="me-name-input" id="me-name-${m.id}" value="${m.name.replace(/"/g,'&quot;')}">
+          </div>
+          <div class="me-fields">
+            <div class="me-field-group">
+              <div class="me-field-label">料金（円）</div>
+              <input class="me-input" id="me-price-${m.id}" type="number" value="${m.price}">
+            </div>
+            <div class="me-field-group">
+              <div class="me-field-label">施術時間（分）</div>
+              <input class="me-input" id="me-dur-${m.id}" type="number" value="${m.duration}">
+            </div>
+          </div>
+          <div class="me-actions">
+            <button class="me-save-btn" onclick="saveOneMenu(${m.id})">保存</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function saveOneMenu(id) {
+      const menus = getAdminMenus();
+      const m = menus.find(x => x.id === id);
+      if (!m) return;
+      const nameEl = document.getElementById(`me-name-${id}`);
+      const priceEl = document.getElementById(`me-price-${id}`);
+      const durEl = document.getElementById(`me-dur-${id}`);
+      if (nameEl) m.name = nameEl.value;
+      if (priceEl) m.price = parseInt(priceEl.value) || m.price;
+      if (durEl) m.duration = parseInt(durEl.value) || m.duration;
+      localStorage.setItem('swon_menus', JSON.stringify(menus));
+      const btn = document.querySelector(`#menuEditorList .menu-editor-item:nth-child(${menus.findIndex(x=>x.id===id)+1}) .me-save-btn`);
+      if (btn) { const o = btn.textContent; btn.textContent = '✓保存済み'; setTimeout(()=>btn.textContent=o, 1500); }
+    }
+
+    function saveAllMenus() {
+      const menus = getAdminMenus();
+      menus.forEach(m => {
+        const nameEl = document.getElementById(`me-name-${m.id}`);
+        const priceEl = document.getElementById(`me-price-${m.id}`);
+        const durEl = document.getElementById(`me-dur-${m.id}`);
+        if (nameEl) m.name = nameEl.value;
+        if (priceEl) m.price = parseInt(priceEl.value) || m.price;
+        if (durEl) m.duration = parseInt(durEl.value) || m.duration;
+      });
+      localStorage.setItem('swon_menus', JSON.stringify(menus));
+      alert('すべてのメニューを保存しました。予約フォームに反映されます。');
+    }
+
+    function resetAllMenus() {
+      if (!confirm('メニューをデフォルト設定にリセットしますか？')) return;
+      localStorage.removeItem('swon_menus');
+      renderMenuEditor();
+      alert('リセットしました。');
+    }
+  </script>
+</body>
+</html>

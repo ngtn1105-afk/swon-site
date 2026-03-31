@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ご予約 | health&beauty salon Swon</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --warm-white: #f5f0e8;
+    --gold: #b89a6a;
+    --gold-light: #d4b896;
+    --dark: #1a1610;
+    --charcoal: #2c2820;
+    --mid: #6b6055;
+    --border: #e0d5c5;
+    --accent: #8b6d4e;
+    --success: #5a7a6a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--charcoal);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo-area h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.7rem;
+    color: var(--gold-light);
+    letter-spacing: 0.15em;
+  }
+
+  .logo-area p {
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-info {
+    text-align: right;
+    color: #9e9080;
+    font-size: 0.72rem;
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #2c2820 0%, #1a1610 60%, #2a2218 100%);
+    padding: 70px 40px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(184,154,106,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .hero h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2.8rem;
+    color: var(--cream);
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+  }
+
+  .hero-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 24px auto;
+    opacity: 0.6;
+  }
+
+  .hero p {
+    font-size: 0.82rem;
+    color: #9e9080;
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  /* ── STEPS ── */
+  .steps-bar {
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: #b0a090;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .step.active { color: var(--accent); }
+  .step.done { color: var(--gold); }
+
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .step.active .step-num {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .step.done .step-num {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+  }
+
+  .step-arrow {
+    color: var(--border);
+    font-size: 0.7rem;
+    padding: 0 4px;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 50px 24px 80px;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    color: var(--charcoal);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .section-title span {
+    font-size: 0.72rem;
+    font-family: 'Noto Serif JP', serif;
+    color: var(--mid);
+    letter-spacing: 0.2em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 12px 0 28px;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; animation: fadeIn 0.4s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MENU CATEGORY ── */
+  .category-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .cat-tab {
+    padding: 7px 18px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--mid);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .cat-tab:hover { border-color: var(--gold); color: var(--accent); }
+  .cat-tab.active { background: var(--charcoal); color: var(--gold-light); border-color: var(--charcoal); }
+
+  /* ── MENU CARDS ── */
+  .menu-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .menu-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .menu-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 20px rgba(184,154,106,0.12);
+  }
+
+  .menu-card.selected {
+    border-color: var(--accent);
+    background: #fdf9f5;
+    box-shadow: 0 4px 20px rgba(139,109,78,0.15);
+  }
+
+  .menu-card-body { flex: 1; }
+
+  .menu-cat-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    border: 1px solid var(--gold-light);
+    padding: 2px 8px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .menu-name {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+
+  .menu-desc {
+    font-size: 0.72rem;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  .menu-card-right {
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .menu-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .menu-price small {
+    font-size: 0.65rem;
+    color: var(--mid);
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .menu-duration {
+    font-size: 0.68rem;
+    color: #a0907e;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .menu-check {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 4px;
+    margin-left: auto;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+  }
+
+  .menu-card.selected .menu-check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ── CALENDAR ── */
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .cal-month {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    color: var(--charcoal);
+  }
+
+  .cal-btn {
+    background: none;
+    border: 1px solid var(--border);
+    width: 32px; height: 32px;
+    cursor: pointer;
+    color: var(--mid);
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .cal-btn:hover { border-color: var(--gold); color: var(--accent); }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 32px;
+  }
+
+  .cal-header {
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--mid);
+    letter-spacing: 0.15em;
+    padding: 6px 0;
+  }
+
+  .cal-day {
+    text-align: center;
+    padding: 10px 4px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    color: var(--charcoal);
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .cal-day:hover:not(.disabled):not(.past) {
+    border-color: var(--gold);
+    background: #fdf8f2;
+  }
+
+  .cal-day.selected {
+    background: var(--charcoal);
+    color: var(--gold-light);
+    border-color: var(--charcoal);
+  }
+
+  .cal-day.today { color: var(--accent); font-weight: 700; }
+  .cal-day.past { color: #ccc; cursor: default; }
+  .cal-day.disabled { color: #ddd; cursor: default; background: #f8f8f8; }
+  .cal-day.empty { cursor: default; }
+
+  .cal-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: none;
+  }
+
+  .cal-day.has-slots .cal-dot { display: block; }
+
+  /* ── TIME SLOTS ── */
+  .time-section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--mid);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .time-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .time-slot {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+    background: white;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .time-slot:hover:not(.unavailable) {
+    border-color: var(--gold);
+    background: #fdf8f2;
+  }
+
+  .time-slot.selected {
+    background: var(--charcoal);
+    color: var(--gold-light);
+    border-color: var(--charcoal);
+  }
+
+  .time-slot.unavailable {
+    color: #ccc;
+    background: #f8f8f8;
+    cursor: default;
+    text-decoration: line-through;
+  }
+
+  /* ── FORM ── */
+  .form-grid {
+    display: grid;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: grid;
+    gap: 6px;
+  }
+
+  .form-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--mid);
+    text-transform: uppercase;
+  }
+
+  .form-label span { color: var(--accent); margin-left: 2px; }
+
+  .form-input {
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    background: white;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.88rem;
+    color: var(--charcoal);
+    transition: border-color 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  .form-input:focus { border-color: var(--gold); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  textarea.form-input { resize: vertical; min-height: 80px; }
+
+  /* ── CONFIRM CARD ── */
+  .confirm-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+
+  .confirm-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--charcoal);
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .confirm-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0ebe3;
+    font-size: 0.82rem;
+    gap: 16px;
+  }
+
+  .confirm-row:last-child { border-bottom: none; }
+  .confirm-key { color: var(--mid); letter-spacing: 0.05em; flex-shrink: 0; }
+  .confirm-val { color: var(--charcoal); text-align: right; line-height: 1.6; }
+
+  .confirm-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--accent);
+  }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    background: var(--charcoal);
+    color: var(--gold-light);
+    border: none;
+    padding: 16px 40px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    transition: all 0.25s;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: none;
+    color: var(--mid);
+    border: 1px solid var(--border);
+    padding: 14px 32px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--gold); color: var(--accent); }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  /* ── SUMMARY BAR ── */
+  .summary-bar {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .summary-item {
+    font-size: 0.72rem;
+    color: var(--mid);
+    letter-spacing: 0.05em;
+  }
+
+  .summary-item strong {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--charcoal);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  /* ── NOTICE ── */
+  .notice {
+    background: #fdf9f3;
+    border-left: 3px solid var(--gold);
+    padding: 14px 18px;
+    font-size: 0.75rem;
+    color: var(--mid);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    text-align: center;
+    padding: 60px 24px;
+  }
+
+  .success-icon {
+    width: 70px; height: 70px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 1.5rem;
+  }
+
+  .success-screen h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    color: var(--charcoal);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .success-screen p {
+    font-size: 0.82rem;
+    color: var(--mid);
+    line-height: 2;
+    letter-spacing: 0.05em;
+  }
+
+  .booking-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    border: 1px solid var(--gold-light);
+    display: inline-block;
+    padding: 8px 28px;
+    margin: 24px 0;
+    letter-spacing: 0.2em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--charcoal);
+    padding: 40px;
+    text-align: center;
+    color: #6b6055;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    line-height: 2.2;
+  }
+
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header { padding: 18px 20px; }
+    .hero { padding: 50px 20px 40px; }
+    .hero h2 { font-size: 2rem; }
+    .main { padding: 30px 16px 60px; }
+    .time-grid { grid-template-columns: repeat(3, 1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    .steps-bar { padding: 14px 16px; gap: 0; }
+    .step { padding: 0 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-area">
+    <h1>Swon</h1>
+    <p>health &amp; beauty salon</p>
+  </div>
+  <div class="header-info">
+    <div>青森県八戸市諏訪1丁目13-7</div>
+    <div>📞 080-9397-9918</div>
+    <div>営業時間 10:00〜20:00</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-subtitle">Online Reservation</div>
+  <h2>ご予約受付</h2>
+  <div class="hero-line"></div>
+  <p>完全予約制・女性専用・完全個室<br>お肌・お身体のお悩みをオールハンドで丁寧にケア</p>
+</div>
+
+<!-- STEPS BAR -->
+<div class="steps-bar">
+  <div class="step active" id="step1">
+    <div class="step-num">1</div>
+    <div>メニュー選択</div>
+  </div>
+  <div class="step-arrow">›</div>
+  <div class="step" id="step2">
+    <div class="step-num">2</div>
+    <div>日時選択</div>
+  </div>
+  <div class="step-arrow">›</div>
+  <div class="step" id="step3">
+    <div class="step-num">3</div>
+    <div>お客様情報</div>
+  </div>
+  <div class="step-arrow">›</div>
+  <div class="step" id="step4">
+    <div class="step-num">4</div>
+    <div>確認・送信</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ====== SCREEN 1: MENU ====== -->
+  <div class="screen active" id="screen-menu">
+    <div class="section-title">
+      <span>Step 01</span>
+      メニュー選択
+    </div>
+    <div class="divider"></div>
+
+    <div class="category-tabs">
+      <button class="cat-tab active" onclick="filterCategory('all')">すべて</button>
+      <button class="cat-tab" onclick="filterCategory('body')">ボディトリートメント</button>
+      <button class="cat-tab" onclick="filterCategory('face')">小顔矯正・フェイシャル</button>
+      <button class="cat-tab" onclick="filterCategory('slim')">痩身</button>
+      <button class="cat-tab" onclick="filterCategory('head')">ヘッド</button>
+      <button class="cat-tab" onclick="filterCategory('other')">その他</button>
+    </div>
+
+    <div class="menu-grid" id="menu-grid"></div>
+
+    <div style="margin-top:28px;">
+      <button class="btn-primary" onclick="goToDate()" id="btn-to-date" style="display:none;">
+        日時を選択する →
+      </button>
+    </div>
+  </div>
+
+  <!-- ====== SCREEN 2: DATE/TIME ====== -->
+  <div class="screen" id="screen-date">
+    <div class="summary-bar">
+      <div class="summary-item">選択中のメニュー<strong id="summary-menu-name">-</strong></div>
+      <div class="summary-item">料金<strong id="summary-menu-price">-</strong></div>
+      <div class="summary-item">施術時間<strong id="summary-menu-dur">-</strong></div>
+    </div>
+
+    <div class="section-title">
+      <span>Step 02</span>
+      ご希望の日時
+    </div>
+    <div class="divider"></div>
+
+    <div class="calendar-nav">
+      <button class="cal-btn" onclick="changeMonth(-1)">‹</button>
+      <div class="cal-month" id="cal-month-label">2026年 3月</div>
+      <button class="cal-btn" onclick="changeMonth(1)">›</button>
+    </div>
+
+    <div class="calendar-grid" id="calendar-grid"></div>
+
+    <div id="time-picker" style="display:none;">
+      <div class="section-title" style="margin-top:0; font-size:1rem;">
+        <span>Time</span>
+        ご希望のお時間
+      </div>
+      <div class="divider" style="margin-bottom:16px;"></div>
+      <div class="time-grid" id="time-grid"></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn-primary" onclick="goToForm()" id="btn-to-form" style="display:none;">
+        お客様情報を入力する →
+      </button>
+      <button class="btn-secondary" onclick="goBack(1)">← メニューを変更する</button>
+    </div>
+  </div>
+
+  <!-- ====== SCREEN 3: FORM ====== -->
+  <div class="screen" id="screen-form">
+    <div class="summary-bar">
+      <div class="summary-item">メニュー<strong id="summary2-menu">-</strong></div>
+      <div class="summary-item">日時<strong id="summary2-datetime">-</strong></div>
+    </div>
+
+    <div class="section-title">
+      <span>Step 03</span>
+      お客様情報
+    </div>
+    <div class="divider"></div>
+
+    <div class="notice">
+      ※完全予約制のため、お日にちの調整をお願いする場合がございます。<br>
+      ※施術中はお電話に出られない場合があります。
+    </div>
+
+    <div class="form-grid">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">お名前（姓）<span>*</span></label>
+          <input class="form-input" type="text" id="lastName" placeholder="山田">
+        </div>
+        <div class="form-group">
+          <label class="form-label">お名前（名）<span>*</span></label>
+          <input class="form-input" type="text" id="firstName" placeholder="花子">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">電話番号<span>*</span></label>
+        <input class="form-input" type="tel" id="phone" placeholder="080-0000-0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">メールアドレス</label>
+        <input class="form-input" type="email" id="email" placeholder="example@mail.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">初回 / リピート</label>
+        <select class="form-input" id="visitType">
+          <option value="">選択してください</option>
+          <option value="first">初めてのご来店</option>
+          <option value="repeat">2回目以降のご来店</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ご要望・気になる部位など</label>
+        <textarea class="form-input" id="notes" placeholder="例：肩こりがひどい、小顔効果を期待しています..."></textarea>
+      </div>
+    </div>
+
+    <div class="btn-group" style="margin-top:28px;">
+      <button class="btn-primary" onclick="goToConfirm()">
+        予約内容を確認する →
+      </button>
+      <button class="btn-secondary" onclick="goBack(2)">← 日時を変更する</button>
+    </div>
+  </div>
+
+  <!-- ====== SCREEN 4: CONFIRM ====== -->
+  <div class="screen" id="screen-confirm">
+    <div class="section-title">
+      <span>Step 04</span>
+      予約内容のご確認
+    </div>
+    <div class="divider"></div>
+
+    <div class="confirm-card">
+      <div class="confirm-title">ご予約内容</div>
+      <div class="confirm-row">
+        <span class="confirm-key">メニュー</span>
+        <span class="confirm-val" id="conf-menu">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">料金</span>
+        <span class="confirm-val confirm-price" id="conf-price">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">施術時間</span>
+        <span class="confirm-val" id="conf-dur">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">ご希望日時</span>
+        <span class="confirm-val" id="conf-datetime">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">お名前</span>
+        <span class="confirm-val" id="conf-name">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">電話番号</span>
+        <span class="confirm-val" id="conf-phone">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">メールアドレス</span>
+        <span class="confirm-val" id="conf-email">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">ご来店回数</span>
+        <span class="confirm-val" id="conf-visit">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">ご要望</span>
+        <span class="confirm-val" id="conf-notes">-</span>
+      </div>
+    </div>
+
+    <div class="notice">
+      ご予約リクエストの送信をもって受付完了となります。<br>
+      ご不明な点は <strong>080-9397-9918</strong> までお気軽にどうぞ。
+    </div>
+
+    <div class="btn-group">
+      <button class="btn-primary" onclick="submitBooking()">
+        予約リクエストを送信する
+      </button>
+      <button class="btn-secondary" onclick="goBack(3)">← お客様情報を修正する</button>
+    </div>
+  </div>
+
+  <!-- ====== SUCCESS ====== -->
+  <div class="screen" id="screen-success">
+    <div class="success-screen">
+      <div class="success-icon">✦</div>
+      <h2>ご予約リクエストを<br>お受けしました</h2>
+      <div class="booking-number" id="booking-number">-</div>
+      <p>
+        ご予約が完了しました。<br>
+        ご来店を心よりお待ちしております。<br><br>
+        ご不明な点がございましたら<br>
+        <strong>080-9397-9918</strong> までお気軽にお問い合わせください。
+      </p>
+      <div style="margin-top:36px;">
+        <button class="btn-secondary" onclick="resetAll()">トップに戻る</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:#9e9080; margin-bottom:10px; letter-spacing:0.2em;">Swon</div>
+  health &amp; beauty salon<br>
+  青森県八戸市諏訪1丁目13-7　📞 <a href="tel:08093979918">080-9397-9918</a><br>
+  営業時間 10:00〜20:00（平日・土日祝）　定休日：不定休<br>
+  <div style="margin-top:12px; color:#4a4035; font-size:0.65rem;">© health&amp;beauty salon Swon</div>
+</footer>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const DEFAULT_MENUS = [
+  // Body Treatment
+  { id: 1, cat: 'body', catLabel: 'ボディトリートメント',
+    name: 'オイルリンパマッサージ 60分', shortName: 'オイルリンパ60分',
+    desc: '足後面＆背中など部分的なボディケア。脚のむくみ・背中の疲労に。',
+    price: 6800, duration: 60 },
+  { id: 2, cat: 'body', catLabel: 'ボディトリートメント',
+    name: 'オイルリンパマッサージ 90分', shortName: 'オイルリンパ90分',
+    desc: '全身のボディコース。疲労回復に最適な全身リラクゼーション。',
+    price: 9800, duration: 90 },
+  { id: 3, cat: 'body', catLabel: 'ボディトリートメント',
+    name: 'オイルリンパマッサージ 120分', shortName: 'オイルリンパ120分',
+    desc: 'デトックス全身ロングコース。ヘッドからつま先までたっぷりリラックス。',
+    price: 12500, duration: 120 },
+  { id: 4, cat: 'body', catLabel: 'ボディトリートメント',
+    name: 'オイルリンパ 150分（ヘッドマッサージ15分含む）', shortName: 'オイルリンパ150分',
+    desc: '辛い肩コリ、首、肩甲骨はがしで疲労をリセット。ホットアイマスク付。',
+    price: 15500, duration: 150 },
+  { id: 5, cat: 'body', catLabel: 'ボディトリートメント',
+    name: '美顔コルギ＆オイルリンパ 60分', shortName: '美顔コルギ＆オイルリンパ60分',
+    desc: '美小顔矯正と気になるボディ部分ケアコース。炭酸パックオプションあり。',
+    price: 14000, duration: 60 },
+  { id: 6, cat: 'body', catLabel: 'ボディトリートメント',
+    name: '【リピート率No.1】美顔コルギ＆オイルリンパ 90分', shortName: '美顔コルギ＆オイルリンパ90分',
+    desc: '美小顔矯正と全身ボディの欲張りコース。炭酸パックオプション+500円。',
+    price: 16500, duration: 90 },
+  { id: 7, cat: 'body', catLabel: 'ボディトリートメント',
+    name: '美顔コルギ＆オイルリンパ 120分', shortName: '美顔コルギ＆オイルリンパ120分',
+    desc: '美小顔矯正と全身ボディロングコースの贅沢リラクゼーション。',
+    price: 18500, duration: 120 },
+  { id: 8, cat: 'body', catLabel: 'ボディトリートメント',
+    name: 'ボディ90分＋アイマスクヘッド25分＋炭酸美肌コルギ100分', shortName: 'ボディ90分＋コルギ100分',
+    desc: '末端の冷え、コリ改善、ヘッドマッサージ含む艶肌小顔コース。ホットアイマスク付。',
+    price: 19800, duration: 215 },
+  // Face / Slim / Head
+  { id: 9, cat: 'face', catLabel: '小顔矯正',
+    name: '【新規】美顔コルギ 80分 ¥7500→¥5800', shortName: '美顔コルギ80分（新規）',
+    desc: 'お顔の歪みを整えながらリフトアップ。肩甲骨周り、肩、首ヘッドまで丁寧に流します。',
+    price: 5800, duration: 80 },
+  { id: 10, cat: 'face', catLabel: '小顔矯正',
+    name: '【再来】美顔コルギ 80分', shortName: '美顔コルギ80分（再来）',
+    desc: 'お顔の歪みを整えながらリフトアップ。肩甲骨周り、肩、首ヘッドまで。',
+    price: 7500, duration: 80 },
+  { id: 11, cat: 'face', catLabel: '小顔矯正',
+    name: '【再来】炭酸美肌コルギ 100分', shortName: '炭酸美肌コルギ100分',
+    desc: '美顔コルギ＋炭酸パック＋リフトアップ美容液で美しい小顔艶肌へ。腕マッサージ・ヘッド・足ツボ付。',
+    price: 8500, duration: 100 },
+  { id: 12, cat: 'face', catLabel: 'フェイシャル',
+    name: '炭酸SAIBOWフェイシャル', shortName: '炭酸SAIBOWフェイシャル',
+    desc: 'ディープクレンジング＋リフトアップマッサージ＆デコルテマッサージ＋プラセンタ炭酸パック。',
+    price: 7500, duration: 60 },
+  { id: 13, cat: 'face', catLabel: 'フェイシャル',
+    name: '【ニキビ予防・肌鎮静】アクネケアフェイシャル 60分', shortName: 'アクネケアフェイシャル60分',
+    desc: '肌洗浄＋ディープクレンジング＋保湿の肌鎮静パック。',
+    price: 5800, duration: 60 },
+  { id: 14, cat: 'slim', catLabel: '痩身',
+    name: '【はみ肉ケア】痩身ボディ 100分', shortName: '痩身ボディ100分',
+    desc: '後面、横向き、前面のデトックス痩身マッサージ。',
+    price: 11500, duration: 100 },
+  { id: 15, cat: 'slim', catLabel: '痩身',
+    name: '【見た目−3キロ☆】痩身ボディ100分＋小顔コルギ80分', shortName: '痩身＋コルギセット',
+    desc: '筋膜リリースとデトックスボディマッサージ＋小顔コルギ。欲張りコース。',
+    price: 17500, duration: 180 },
+  { id: 16, cat: 'head', catLabel: 'ヘッド',
+    name: '【最強リフトアップ】ヘッドスパ25分＋背中30分＋幹細胞炭酸美肌コルギ', shortName: 'ヘッドスパ＋コルギセット',
+    desc: 'オーガニックスカルプローションでリフレッシュ＆リフトアップ。上半身をくまなくデトックス。',
+    price: 14500, duration: 120 },
+  { id: 17, cat: 'other', catLabel: 'バストケア',
+    name: 'バストケア 40分', shortName: 'バストケア40分',
+    desc: '背中や二の腕に流れている脂肪をバストへ移動し、ふっくらバストへ。',
+    price: 4500, duration: 40 },
+  { id: 18, cat: 'other', catLabel: 'バストケア',
+    name: '【背中&小顔デコルテケア】バストケア40分＋小顔コルギ80分', shortName: 'バスト＋コルギセット',
+    desc: 'バストケアと小顔コルギのセットコース。ブライダルの方にもオススメ。',
+    price: 12000, duration: 120 },
+  { id: 19, cat: 'other', catLabel: 'その他',
+    name: '【高保湿&コリ改善】幹細胞炭酸コルギ＋背中マッサージ30分', shortName: '幹細胞コルギ＋背中',
+    desc: '幹細胞スキンケアでしっとり艶肌小顔へ。腕マッサージ、ヘッド、足ツボ付。',
+    price: 12000, duration: 100 },
+];
+
+// ← メニューはサロン管理画面で変更可能。変更はlocalStorageに保存され自動反映されます。
+let MENUS = (() => {
+  try {
+    const stored = localStorage.getItem('swon_menus');
+    return stored ? JSON.parse(stored) : DEFAULT_MENUS;
+  } catch(e) { return DEFAULT_MENUS; }
+})();
+
+// Time slots based on duration
+function getTimeSlots(date, durationMin) {
+  const slots = [];
+  // Business hours 10:00-20:00
+  // Generate slots every 30 min, ensure end <= 20:00
+  let h = 10, m = 0;
+  while (true) {
+    const endMin = h * 60 + m + durationMin;
+    if (endMin > 20 * 60) break;
+    const label = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    // Simulate some unavailable slots
+    const unavail = isUnavailable(date, h, m);
+    slots.push({ label, unavailable: unavail });
+    m += 30;
+    if (m >= 60) { m -= 60; h++; }
+    if (h >= 20) break;
+  }
+  return slots;
+}
+
+// Simulate unavailable slots (for demo)
+const unavailableMap = {};
+function seedUnavailable() {
+  const today = new Date();
+  for (let d = 0; d < 60; d++) {
+    const dd = new Date(today);
+    dd.setDate(today.getDate() + d);
+    const key = `${dd.getFullYear()}-${dd.getMonth()}-${dd.getDate()}`;
+    const hours = [];
+    const numBlock = Math.floor(Math.random() * 3);
+    for (let i = 0; i < numBlock; i++) {
+      hours.push(10 + Math.floor(Math.random() * 10));
+    }
+    unavailableMap[key] = hours;
+  }
+}
+seedUnavailable();
+
+function isUnavailable(date, hour) {
+  if (!date) return false;
+  const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+  return (unavailableMap[key] || []).includes(hour);
+}
+
+// ============================================================
+// STATE
+// ============================================================
+let selectedMenu = null;
+let selectedDate = null;
+let selectedTime = null;
+let currentMonth = new Date();
+currentMonth.setDate(1);
+
+// ============================================================
+// MENU RENDERING
+// ============================================================
+let currentCat = 'all';
+
+function filterCategory(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach((el, i) => {
+    el.classList.toggle('active', ['all','body','face','slim','head','other'][i] === cat);
+  });
+  renderMenus();
+}
+
+function renderMenus() {
+  const grid = document.getElementById('menu-grid');
+  const filtered = currentCat === 'all' ? MENUS : MENUS.filter(m => m.cat === currentCat);
+  grid.innerHTML = filtered.map(m => `
+    <div class="menu-card ${selectedMenu?.id === m.id ? 'selected' : ''}"
+         onclick="selectMenu(${m.id})">
+      <div class="menu-card-body">
+        <div class="menu-cat-badge">${m.catLabel}</div>
+        <div class="menu-name">${m.name}</div>
+        <div class="menu-desc">${m.desc}</div>
+      </div>
+      <div class="menu-card-right">
+        <div class="menu-price">¥${m.price.toLocaleString()}<small></small></div>
+        <div class="menu-duration">${m.duration}分</div>
+        <div class="menu-check">${selectedMenu?.id === m.id ? '✓' : ''}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectMenu(id) {
+  selectedMenu = MENUS.find(m => m.id === id);
+  renderMenus();
+  const btn = document.getElementById('btn-to-date');
+  btn.style.display = selectedMenu ? 'block' : 'none';
+  btn.textContent = selectedMenu
+    ? `「${selectedMenu.shortName}」で日時を選択する →`
+    : '日時を選択する →';
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+const WEEKDAYS = ['日','月','火','水','木','金','土'];
+const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+
+function renderCalendar() {
+  const y = currentMonth.getFullYear();
+  const mo = currentMonth.getMonth();
+  document.getElementById('cal-month-label').textContent = `${y}年 ${MONTHS[mo]}`;
+
+  const firstDay = new Date(y, mo, 1).getDay();
+  const daysInMonth = new Date(y, mo + 1, 0).getDate();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  let html = WEEKDAYS.map(d => `<div class="cal-header">${d}</div>`).join('');
+
+  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(y, mo, d);
+    const isPast = date < today;
+    const isSel = selectedDate &&
+      selectedDate.getFullYear() === y &&
+      selectedDate.getMonth() === mo &&
+      selectedDate.getDate() === d;
+    const isTod = date.getTime() === today.getTime();
+    const key = `${y}-${mo}-${d}`;
+    const hasSlots = !isPast;
+
+    let cls = 'cal-day';
+    if (isPast) cls += ' past';
+    else if (isSel) cls += ' selected';
+    else if (isTod) cls += ' today';
+    if (hasSlots && !isPast) cls += ' has-slots';
+
+    html += `<div class="${cls}" onclick="${isPast ? '' : `pickDate(${y},${mo},${d})`}">
+      ${d}
+      <div class="cal-dot"></div>
+    </div>`;
+  }
+
+  document.getElementById('calendar-grid').innerHTML = html;
+}
+
+function changeMonth(dir) {
+  currentMonth.setMonth(currentMonth.getMonth() + dir);
+  selectedDate = null;
+  selectedTime = null;
+  document.getElementById('time-picker').style.display = 'none';
+  document.getElementById('btn-to-form').style.display = 'none';
+  renderCalendar();
+}
+
+function pickDate(y, mo, d) {
+  selectedDate = new Date(y, mo, d);
+  selectedTime = null;
+  renderCalendar();
+  renderTimeSlots();
+  document.getElementById('time-picker').style.display = 'block';
+  document.getElementById('btn-to-form').style.display = 'none';
+  document.getElementById('time-picker').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function renderTimeSlots() {
+  const slots = getTimeSlots(selectedDate, selectedMenu?.duration || 60);
+  const grid = document.getElementById('time-grid');
+  grid.innerHTML = slots.map(s => `
+    <div class="time-slot ${s.unavailable ? 'unavailable' : ''} ${selectedTime === s.label && !s.unavailable ? 'selected' : ''}"
+         onclick="${s.unavailable ? '' : `pickTime('${s.label}')`}">
+      ${s.label}
+    </div>
+  `).join('');
+}
+
+function pickTime(label) {
+  selectedTime = label;
+  renderTimeSlots();
+  document.getElementById('btn-to-form').style.display = 'block';
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  // update steps
+  const stepMap = {'screen-menu':1,'screen-date':2,'screen-form':3,'screen-confirm':4,'screen-success':4};
+  const cur = stepMap[id] || 1;
+  [1,2,3,4].forEach(n => {
+    const el = document.getElementById(`step${n}`);
+    el.classList.remove('active','done');
+    if (n === cur) el.classList.add('active');
+    else if (n < cur) el.classList.add('done');
+  });
+}
+
+function goToDate() {
+  if (!selectedMenu) return;
+  // populate summary
+  document.getElementById('summary-menu-name').textContent = selectedMenu.shortName;
+  document.getElementById('summary-menu-price').textContent = `¥${selectedMenu.price.toLocaleString()}`;
+  document.getElementById('summary-menu-dur').textContent = `${selectedMenu.duration}分`;
+  // reset date/time
+  selectedDate = null; selectedTime = null;
+  renderCalendar();
+  document.getElementById('time-picker').style.display = 'none';
+  document.getElementById('btn-to-form').style.display = 'none';
+  switchScreen('screen-menu', 'screen-date', 2);
+}
+
+function goToForm() {
+  if (!selectedDate || !selectedTime) return;
+  const d = selectedDate;
+  const dateStr = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${WEEKDAYS[d.getDay()]}）${selectedTime}〜`;
+  document.getElementById('summary2-menu').textContent = selectedMenu.shortName;
+  document.getElementById('summary2-datetime').textContent = dateStr;
+  switchScreen('screen-date', 'screen-form', 3);
+}
+
+function goToConfirm() {
+  const last = document.getElementById('lastName').value.trim();
+  const first = document.getElementById('firstName').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  if (!last || !first || !phone) {
+    alert('お名前・電話番号は必須項目です。');
+    return;
+  }
+
+  const d = selectedDate;
+  const dateStr = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${WEEKDAYS[d.getDay()]}）${selectedTime}`;
+  const visitVal = document.getElementById('visitType').value;
+  const visitLabel = visitVal === 'first' ? '初めてのご来店' : visitVal === 'repeat' ? '2回目以降' : '未選択';
+
+  document.getElementById('conf-menu').textContent = selectedMenu.name;
+  document.getElementById('conf-price').textContent = `¥${selectedMenu.price.toLocaleString()}`;
+  document.getElementById('conf-dur').textContent = `${selectedMenu.duration}分`;
+  document.getElementById('conf-datetime').textContent = dateStr;
+  document.getElementById('conf-name').textContent = `${last} ${first}`;
+  document.getElementById('conf-phone').textContent = phone;
+  document.getElementById('conf-email').textContent = document.getElementById('email').value || '未入力';
+  document.getElementById('conf-visit').textContent = visitLabel;
+  document.getElementById('conf-notes').textContent = document.getElementById('notes').value || 'なし';
+
+  switchScreen('screen-form', 'screen-confirm', 4);
+}
+
+// ★ Google Apps Script のデプロイURLをここに貼り付けてください
+const GAS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+
+async function submitBooking() {
+  const btn = document.querySelector('#screen-confirm .btn-primary');
+  btn.textContent = '送信中...';
+  btn.disabled = true;
+
+  const d = selectedDate;
+  const dateStr = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${WEEKDAYS[d.getDay()]}）${selectedTime}`;
+  const num = 'SWN-' + Date.now().toString().slice(-6);
+  const visitVal = document.getElementById('visitType').value;
+  const visitLabel = visitVal === 'first' ? '初めてのご来店' : visitVal === 'repeat' ? '2回目以降' : '未選択';
+
+  const payload = {
+    bookingNumber: num,
+    menu: selectedMenu.name,
+    price: `¥${selectedMenu.price.toLocaleString()}`,
+    duration: `${selectedMenu.duration}分`,
+    datetime: dateStr,
+    lastName: document.getElementById('lastName').value.trim(),
+    firstName: document.getElementById('firstName').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    visitType: visitLabel,
+    notes: document.getElementById('notes').value.trim() || 'なし',
+  };
+
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) {
+    console.warn('送信エラー（no-corsのため正常の場合あり）', e);
+  }
+
+  document.getElementById('booking-number').textContent = `予約番号：${num}`;
+  switchScreen('screen-confirm', 'screen-success', 4);
+  document.getElementById('step4').classList.remove('active');
+  document.getElementById('step4').classList.add('done');
+}
+
+function goBack(fromStep) {
+  const map = {1:'screen-menu',2:'screen-date',3:'screen-form',4:'screen-confirm'};
+  const screens = ['screen-menu','screen-date','screen-form','screen-confirm'];
+  switchScreen(screens[fromStep], screens[fromStep-1], fromStep);
+}
+
+function switchScreen(from, to, stepNum) {
+  document.getElementById(from).classList.remove('active');
+  document.getElementById(to).classList.add('active');
+  [1,2,3,4].forEach(n => {
+    const el = document.getElementById(`step${n}`);
+    el.classList.remove('active','done');
+    if (n === stepNum) el.classList.add('active');
+    else if (n < stepNum) el.classList.add('done');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetAll() {
+  selectedMenu = null; selectedDate = null; selectedTime = null;
+  document.getElementById('lastName').value = '';
+  document.getElementById('firstName').value = '';
+  document.getElementById('phone').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('visitType').value = '';
+  document.getElementById('notes').value = '';
+  document.getElementById('btn-to-date').style.display = 'none';
+  renderMenus();
+  switchScreen('screen-success', 'screen-menu', 1);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderMenus();
+renderCalendar();
+</script>
+</body>
+</html>

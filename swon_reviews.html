@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スワン(Swon) お客様の声 | お悩み別口コミ</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #fdf8f5; color: #333; }
+  header { background: linear-gradient(135deg, #c8a97e, #e8cfa8); padding: 40px 20px; text-align: center; }
+  header h1 { font-size: 2rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.2); letter-spacing: 0.05em; }
+  header p { color: #fff; margin-top: 8px; font-size: 0.95rem; opacity: 0.9; }
+  .rating-summary { background: #fff; max-width: 400px; margin: 20px auto 0; border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .rating-score { font-size: 2.2rem; font-weight: bold; color: #c8a97e; }
+  .stars { color: #f5a623; font-size: 1.2rem; }
+  .rating-sub { font-size: 0.8rem; color: #888; }
+
+  .tabs-container { max-width: 1100px; margin: 32px auto 0; padding: 0 16px; }
+  .tabs-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .tabs-scroll::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    white-space: nowrap; padding: 10px 18px; border: 2px solid #ddd;
+    border-radius: 30px; background: #fff; cursor: pointer; font-size: 0.88rem;
+    color: #666; transition: all 0.2s; flex-shrink: 0;
+  }
+  .tab-btn:hover { border-color: #c8a97e; color: #c8a97e; }
+  .tab-btn.active { background: #c8a97e; border-color: #c8a97e; color: #fff; font-weight: bold; }
+  .tab-btn .count { background: rgba(255,255,255,0.3); border-radius: 10px; padding: 1px 7px; font-size: 0.78rem; margin-left: 4px; }
+  .tab-btn:not(.active) .count { background: #f0ebe5; color: #999; }
+
+  .reviews-grid { max-width: 1100px; margin: 24px auto 60px; padding: 0 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .review-card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); border-left: 4px solid #c8a97e; transition: transform 0.2s, box-shadow 0.2s; }
+  .review-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+  .review-card.hidden { display: none; }
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .card-profile { font-size: 0.88rem; color: #888; }
+  .card-name { font-size: 1rem; font-weight: bold; color: #555; }
+  .card-date { font-size: 0.78rem; color: #bbb; }
+  .card-stars { color: #f5a623; font-size: 0.95rem; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tag { font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; font-weight: bold; }
+  .card-comment { font-size: 0.88rem; line-height: 1.75; color: #444; }
+
+  /* Category colors */
+  .tag-face     { background: #fde8f0; color: #d0547a; }
+  .tag-shoulder { background: #e8eeff; color: #4a6fd0; }
+  .tag-swelling { background: #e8f5ff; color: #3a9ecc; }
+  .tag-diet     { background: #e8fff0; color: #2d9a5e; }
+  .tag-relax    { background: #fdf5e0; color: #c07a2a; }
+  .tag-skin     { background: #f5e8ff; color: #8a4abe; }
+  .tag-jaw      { background: #fff0e8; color: #c06030; }
+  .tag-head     { background: #e8fff8; color: #2a8a7a; }
+
+  .card-face     { border-left-color: #d0547a; }
+  .card-shoulder { border-left-color: #4a6fd0; }
+  .card-swelling { border-left-color: #3a9ecc; }
+  .card-diet     { border-left-color: #2d9a5e; }
+  .card-relax    { border-left-color: #c07a2a; }
+  .card-skin     { border-left-color: #8a4abe; }
+  .card-jaw      { border-left-color: #c06030; }
+  .card-head     { border-left-color: #2a8a7a; }
+
+  .section-title { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+  .section-title h2 { font-size: 1.1rem; color: #888; margin-top: 20px; }
+  #no-results { display: none; text-align: center; padding: 60px; color: #aaa; font-size: 1rem; }
+</style>
+</head>
+<body>
+
+<div style="background:#2c2820;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;">
+  <a href="swon_salon.html" style="color:#b89a6a;text-decoration:none;font-size:0.78rem;letter-spacing:0.2em;">← SWON TOP</a>
+  <a href="swon_booking.html" style="background:#b89a6a;color:#fff;text-decoration:none;font-size:0.72rem;letter-spacing:0.2em;padding:8px 20px;">ご予約はこちら</a>
+</div>
+<header>
+  <h1>health&amp;beauty salon Swon</h1>
+  <p>お客様の声 — お悩み別に全49件をご紹介</p>
+  <div class="rating-summary">
+    <div>
+      <div class="rating-score">5.00</div>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div>
+      <div style="font-weight:bold; font-size:0.95rem; color:#555;">総合評価</div>
+      <div class="rating-sub">雰囲気 5.0 ／ 接客 5.0 ／ 技術 5.0 ／ 料金 5.0</div>
+      <div class="rating-sub" style="margin-top:4px;">49件の口コミ（ホットペッパービューティーより）</div>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-container">
+  <div class="tabs-scroll">
+    <button class="tab-btn active" onclick="filterReviews('all')">すべて <span class="count">49</span></button>
+    <button class="tab-btn" onclick="filterReviews('face')">💆 小顔・フェイシャル <span class="count">16</span></button>
+    <button class="tab-btn" onclick="filterReviews('shoulder')">💪 肩こり・首こり <span class="count">14</span></button>
+    <button class="tab-btn" onclick="filterReviews('relax')">😌 疲労・リラックス <span class="count">13</span></button>
+    <button class="tab-btn" onclick="filterReviews('diet')">✨ ダイエット・痩身 <span class="count">8</span></button>
+    <button class="tab-btn" onclick="filterReviews('swelling')">💧 むくみ・浮腫み <span class="count">7</span></button>
+    <button class="tab-btn" onclick="filterReviews('head')">🪴 ヘッドスパ・頭皮 <span class="count">5</span></button>
+    <button class="tab-btn" onclick="filterReviews('skin')">🌸 美肌・スキンケア <span class="count">4</span></button>
+    <button class="tab-btn" onclick="filterReviews('jaw')">🦷 食いしばり・眼精疲労 <span class="count">3</span></button>
+  </div>
+</div>
+
+<div class="reviews-grid" id="grid">
+
+  <!-- ===== REVIEW CARDS ===== -->
+
+  <div class="review-card card-face" data-cats="face swelling">
+    <div class="card-header">
+      <div><div class="card-name">リィママさん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2026/3/25</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-swelling">💧 むくみ・浮腫み</span><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">初めて施術を受けさせていただきました。サロンの雰囲気もとても良くスタッフさんも話やすくよかったです。浮腫と疲労が溜まっていたせいか痛みもありましたが終わったあとは身体がスッキリしました。また次の予約もよろしくお願いします。</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face">
+    <div class="card-header">
+      <div><div class="card-name">かほんぬさん</div><div class="card-profile">女性／30代前半／自営業</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2026/3/22</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔・フェイシャル</span></div>
+    <div class="card-comment">カウンセリング時にぼんやりとした要望となってしまいましたが、丁寧に汲み取っていただきありがとうございました。終わってから鏡を見てスッキリしていて驚き、その後も目が開きやすくなっていたり顔が動かしやすくなっていたり、効果が感じられて嬉しかったです！教えていただいたストレッチも実践しながら体を労ろうと思いました！またよろしくお願いいたします！</div>
+  </div>
+
+  <div class="review-card card-diet" data-cats="diet relax">
+    <div class="card-header">
+      <div><div class="card-name">ミクさん</div><div class="card-profile">女性／20代後半／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2026/2/22</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-diet">✨ ダイエット・痩身</span><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">親族の結婚式に参加の為、久しぶりにお願いしました！式当日、会う人に「あれ、痩せた？」って何回も言われ嬉しくなりました！担当スタッフさんのゴッドハンドのおかげで日々の疲れが癒やされました（泣）本当久しぶりでとても楽しかったです！また機会があればよろしくお願いします！</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face head">
+    <div class="card-header">
+      <div><div class="card-name">のんさん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2026/1/31</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔・フェイシャル</span><span class="tag tag-head">🪴 ヘッドスパ</span></div>
+    <div class="card-comment">今回も心地よく過ごさせていただきました。ヘッドマッサージは、ちょうどいい力加減で気持ちよくて寝てしまいます。ヘッドとコルギで気になっていた目の下のたるみが目立たなくなっていて感動しました。ほんとに施術が上手で気持ちよく過ごせるのでまたリラックスしに行きます。</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder diet">
+    <div class="card-header">
+      <div><div class="card-name">いちさん</div><div class="card-profile">女性／30代後半／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2026/1/10</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 肩こり・コリほぐし</span><span class="tag tag-diet">✨ ダイエット・痩身</span></div>
+    <div class="card-comment">痩身ボディとヘッドマッサージをお願いしました。ガチガチすぎてまるで鉄板のようなバケモノ（肩と背中）を人間に戻していただきありがとうございます。施術後は肩が軽くなり姿勢も改善されました。また伺います！</div>
+  </div>
+
+  <div class="review-card card-jaw" data-cats="jaw face">
+    <div class="card-header">
+      <div><div class="card-name">とっちゃんままさん</div><div class="card-profile">女性／50代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/12/27</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-jaw">🦷 食いしばり・眼精疲労</span><span class="tag tag-skin">🌸 美肌</span></div>
+    <div class="card-comment">可愛いスタッフさんに丁寧に施術してもらいました。控えめにいって最高でした。事前に身体の悩みを伝えておいたことで親身になっていただき、食いしばり、眼精疲労は特にびっくりするほどすっきり。肌ももちもち。明日の朝がどうなってるのか楽しみです。ぐったりしていましたが気持ちが上がりました。またよろしくお願いします。</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder face">
+    <div class="card-header">
+      <div><div class="card-name">あさみさん</div><div class="card-profile">女性／40代／パート</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/11/29</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 肩こり・首こり</span><span class="tag tag-face">💆 小顔・フェイシャル</span></div>
+    <div class="card-comment">今回もリンパマッサージと美顔コルギをしていただきましたが、ガチガチに凝り固まっていた肩こり、首こり、肩甲骨周りがほぐれ、だいぶ身体が軽くなりました。美顔コルギでフェイスラインが少し引き締まりお肌もモチモチになりました。お店の雰囲気やアロマオイルの匂いなど全てにおいて心地よい空間です。定期的に通いたいサロンです^^</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder relax">
+    <div class="card-header">
+      <div><div class="card-name">のんさん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/10/20</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 コリほぐし</span><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">いつもゴリゴリとほぐしていただき施術後はスッキリします。リラックスできるので今回もまたぐっすり眠ってしまいました。またほぐしてもらいに行こうと思います。</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax face">
+    <div class="card-header">
+      <div><div class="card-name">はるさん</div><div class="card-profile">女性／30代後半／主婦</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/9/15</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 疲労回復</span><span class="tag tag-face">💆 小顔・フェイシャル</span></div>
+    <div class="card-comment">出産を経て2年ぶりにようやく来れました。ボロボロの身体ですが、お姉さんのゴッドハンドで身も心も癒されました。家事に育児に仕事…なんとか頑張れそうです！お腹をマッサージしてもらったから？呼吸が楽になりました。また次回よろしくお願いします、ありがとうございました。</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">saramamaさん</div><div class="card-profile">女性／30代後半</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/9/8</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">3回目です！とっても雰囲気もよく、いつも寝落ちしちゃいます。自分のご褒美にとても、リラックスできます！</div>
+  </div>
+
+  <div class="review-card card-jaw" data-cats="jaw">
+    <div class="card-header">
+      <div><div class="card-name">ぴよさん</div><div class="card-profile">女性／50代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/8/24</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-jaw">🦷 食いしばり</span></div>
+    <div class="card-comment">かなり久しぶりに来店しました。施術中はあまりの気持ち良さで、このままずっとお願いしたい。って思ってしまう程です。食いしばりを和らげられる案を提示してくれてとても嬉しかったです。ありがとうございました。</div>
+  </div>
+
+  <div class="review-card card-swelling" data-cats="swelling face relax">
+    <div class="card-header">
+      <div><div class="card-name">はなさん</div><div class="card-profile">女性／20代後半／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/8/21</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-swelling">💧 むくみ</span><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">全身ほぐれてめちゃくちゃ軽くなったし顔のむくみもすっかり取れて笑いやすくなりました！感動！！途中寝ちゃうのもったいないくらい、とっても気持ち良かったです！至福の時間でした～大満足です～</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">あやさん</div><div class="card-profile">女性／20代後半</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/8/17</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">いつもありがとうございます！今回もすごく気持ちよかったです！</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">sakuraさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/8/8</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">とても気持ち良かったです。雰囲気も落ち着いていて、リラックス出来ました！ありがとうございます。</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder skin relax">
+    <div class="card-header">
+      <div><div class="card-name">あさみさん</div><div class="card-profile">女性／40代／パート</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/8/6</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 肩こり</span><span class="tag tag-skin">🌸 美肌コルギ</span></div>
+    <div class="card-comment">今回は全身リラクゼーションマッサージと美肌コルギをしていただきました。アロマオイルの香りも心地よく癒されます。終わった後は肩や足がとても軽くなりました。美肌コルギも丁寧でお肌がワントーン明るくなった気がしたのと顔や首周りの老廃物が流れてスッキリしました。またご利用させていただきたいと思います。</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">ほやぼうやさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/7/19</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">久々に伺いました。もう今の身体の状態にどの部位もベストな施術をして頂き最高でした。私の身体の状態を理解してくれているかのようでした。一年ぶりくらいだったのに、以前お話した内容を覚えてくれていて素晴らしいなと嬉しく思いました。いつもありがとうございます。またよろしくお願いします！</div>
+  </div>
+
+  <div class="review-card card-swelling" data-cats="swelling face">
+    <div class="card-header">
+      <div><div class="card-name">ちーさん</div><div class="card-profile">女性／20代後半／主婦</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/5/5</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-swelling">💧 むくみ</span><span class="tag tag-face">💆 小顔・フェイシャル</span></div>
+    <div class="card-comment">結婚式前にこちらのお店を選ばさせていただき美顔コルギの施術をしていただきました。術後夜にはすっかりむくみが抜け、旦那さんにも顔のラインがスッキリしたねと言われ大満足です！施術もスムーズで店内も綺麗でとても良かったです。また利用させていただきます。</div>
+  </div>
+
+  <div class="review-card card-diet" data-cats="diet relax">
+    <div class="card-header">
+      <div><div class="card-name">shigeさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/2/21</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-diet">✨ ダイエット・痩身</span><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">疲れもとりたい…痩せたいの願いをアドバイスしていただきありがとうございます。施術後にストレッチの方法を教えてくれたり、ダイエットの食事の見直しなど、私に無理のない範囲内を考慮してくれてるところがまた素晴らしいです！力強いマッサージで大満足です。また、よろしくお願いします！</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">yu.koさん</div><div class="card-profile">女性／30代後半</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/2/16</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">施術内容に満足したのはもちろんですが、担当スタッフさんがとてもチャーミングな方で、そのお人柄に癒されました。定期的に心も身体も癒されに行きたいと思います^^</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax shoulder">
+    <div class="card-header">
+      <div><div class="card-name">はくさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2025/1/30</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">いつもありがとう。急な予約変更もありがとう！寒波で縮こまって辛かったから急な予約変更でスペシャルコース最高でしたー♪仰向けになってから…記憶無し！色々なリラクゼーションに行っているけど…爆睡初体験（笑）私のイチオシの背中の至福の記憶が無いのが悲しい…次は、寝ないでリベンジするね！</div>
+  </div>
+
+  <div class="review-card card-diet" data-cats="diet swelling">
+    <div class="card-header">
+      <div><div class="card-name">さささん</div><div class="card-profile">女性／30代前半／自営業</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/12/26</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-diet">✨ ダイエット・痩身</span><span class="tag tag-swelling">💧 むくみ</span></div>
+    <div class="card-comment">いつもは小顔矯正をお願いしていましたが、太り過ぎてどうにも出来ないセルライトまみれの身体を年明け前にどうにかしたくて痩身エステをしていただきました！あの細い身体のどこからそんな力が！！っと思うほどしっかりとマッサージしていただけて終わった後は久々に太ももの隙間ができていて感動です！！全身の浮腫もどっかへ消えて母からも一回り小さくなったと言われました♪大変お世話になりました！</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face relax">
+    <div class="card-header">
+      <div><div class="card-name">リリーさん</div><div class="card-profile">女性／30代前半／パート</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/12/10</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔コルギ</span></div>
+    <div class="card-comment">２回目の小顔コルギでした！前回同様、とても癒されました。そんなに凝っていないと思っていたら、ゴリゴリだったようで…ほぐしていただき、心地良くて眠ってしまいました。今度は全身メニューもお願いしたいです。ありがとうございました！</div>
+  </div>
+
+  <div class="review-card card-diet" data-cats="diet face">
+    <div class="card-header">
+      <div><div class="card-name">ゆきちゃんさん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/12/10</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-diet">✨ ダイエット・痩身</span><span class="tag tag-face">💆 小顔コルギ</span></div>
+    <div class="card-comment">1度目は小顔コルギ、2度目は痩身ボディ100分＋小顔コルギ80分で伺わせていただきました。素敵なスタッフさんで、施術もすごくよかったです！多少の痛みもあり笑、でも終わった後はほんとスッキリして気持ちよかったです。家族に「足細くなってない！？」って言われました^_^ 大満足です！！！</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder">
+    <div class="card-header">
+      <div><div class="card-name">まよっちさん</div><div class="card-profile">女性／50代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/11/29</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 肩・首こり</span></div>
+    <div class="card-comment">今回も、たっぷりほぐしていただきました。固かった首回りも、触った感じ柔らかくなり、自分でほぐすのが楽になりました。また次回楽しみです。</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face skin shoulder">
+    <div class="card-header">
+      <div><div class="card-name">あっきーさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/11/27</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 フェイシャル</span><span class="tag tag-skin">🌸 美肌・クマ改善</span><span class="tag tag-shoulder">💪 コリほぐし</span></div>
+    <div class="card-comment">前回始めてで、やっとやっと二回目来れました！めちゃくちゃゴリゴリほぐしてもらいました。やっぱり固いそうです笑。フェイシャルもとっても良きです！終わったあとの顔のトーンがすごく上がってて、気にしているクマも気持ち目立たなくなったような？やっぱり血流良くなったからでしょうか？また近いうちに癒されに行きたいです！</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face shoulder">
+    <div class="card-header">
+      <div><div class="card-name">あささん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/11/23</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 美顔コルギ</span><span class="tag tag-shoulder">💪 肩甲骨ほぐし</span></div>
+    <div class="card-comment">美顔コルギ80分のコースでしたが、肩、首周り、肩甲骨、背中付近もしっかりほぐしていただきました。終わった後は頭や顔周りの血流も良くなり、顔がスッキリしました。指圧も強めで施術してくださり、とても気持ち良かったです。お店の雰囲気やスタッフさんの雰囲気にもとても癒されました。また利用させていただきたいです。</div>
+  </div>
+
+  <div class="review-card card-head" data-cats="head relax">
+    <div class="card-header">
+      <div><div class="card-name">まりなさんさん</div><div class="card-profile">女性／20代後半／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/11/9</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-head">🪴 ヘッドスパ</span><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">最高！！！ヘッドスパは満足度が高く、あっという間の時間です。力加減が最高です。どの施術をお願いしても全部丁寧にしっかりほぐしてくださり、いつも大満足で帰っています。スタッフの方がすごく綺麗で優しくて、肌悩み改善にオススメの栄養素等も教えてくださり、感動しました。いつもありがとうございます。</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder head relax">
+    <div class="card-header">
+      <div><div class="card-name">はくさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/11/3</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 肩甲骨ほぐし</span><span class="tag tag-head">🪴 ヘッドスパ</span></div>
+    <div class="card-comment">毎回素敵な可愛らしい人柄にとーっても癒されます。オールハンドの指が心配になるくらい力強くて。毎回丁寧な施術とアロマの香り。美味しいお茶で私を癒してくれてありがとう！痛みに耐える時もあるけれど気持ちいいが勝つ！肩甲骨とヘッドが最高に気持ちいいです。いびきかいてごめんね笑</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder">
+    <div class="card-header">
+      <div><div class="card-name">まよっちさん</div><div class="card-profile">女性／50代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/11/2</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 肩・首・背中のコリ</span></div>
+    <div class="card-comment">首　肩　背中が凝り固まってましたが、しっかりほぐしていただきスッキリしました。夜もぐっすり眠れた気がします。</div>
+  </div>
+
+  <div class="review-card card-swelling" data-cats="swelling relax">
+    <div class="card-header">
+      <div><div class="card-name">ぴよさん</div><div class="card-profile">女性／50代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/10/27</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-swelling">💧 むくみ・浮腫み</span><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">娘にお勧めされ初めて来店しました。雰囲気は落ち着いていてとてもリラックスできました。施術も気持ち良すぎて、今まで色んな所へ行きましたが、ウトウトと寝てしまったのは初めてで、目覚めた時は体も頭もスッキリしてました。視界が明るくなったので、頭の中のモヤモヤしたのも、リフレッシュ出来たんだと思いました。本当に感謝です。顔の浮腫もスッキリ。この状態をキープしていきたいですね。</div>
+  </div>
+
+  <!-- PAGE 2 REVIEWS -->
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">ナツさん</div><div class="card-profile">女性／30代前半／主婦</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/10/14</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">お店の雰囲気もよくて、店員さんも話しやすくて、実際の施術もとても気持ちよかったです。またお願いしたいです。</div>
+  </div>
+
+  <div class="review-card card-diet" data-cats="diet shoulder">
+    <div class="card-header">
+      <div><div class="card-name">みんくさん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/9/14</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-diet">✨ ダイエット・痩身</span></div>
+    <div class="card-comment">丁寧にほぐして頂き、ありがとうございました。痛みは覚悟してましたが、甘かったです笑。でも体が薄くなって、二の腕も細くなっていたので頑張れます！教えて頂いた、マッサージとスクワットもやってみますね。まだまだダイエット長期戦でいきたいと思いますので、また伺います！</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder relax">
+    <div class="card-header">
+      <div><div class="card-name">のんさん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/9/8</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 首・肩こり</span></div>
+    <div class="card-comment">今日も凝り固まった首、肩を中心に全身をしっかりほぐしていただきました。上を向くと首から肩にかけて痛みがあったのに、施術後は痛くなく上を向くことができて感動です。そして、いつも通り気持ちよさに寝落ちしました。次は、フェイシャルもお願いしようと思っています。</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face">
+    <div class="card-header">
+      <div><div class="card-name">NAMICHANNELさん</div><div class="card-profile">女性／30代前半／自営業</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/8/17</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 美顔コルギ</span></div>
+    <div class="card-comment">美顔コルギとアクネパックの施術をやりました！力加減は、少し強めにお願いしました。最初は痛いなと思いながらも、後半気持ちいいのなんの！いや、最初から痛気持ちいい！お勧めですね！間違いないです！顔シュッとなります！！！！悪天候の中でしたが、ありがとうございました。</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face relax">
+    <div class="card-header">
+      <div><div class="card-name">まよっちさん</div><div class="card-profile">女性／50代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/8/16</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔・炭酸パック</span><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">小顔プラス炭酸パック、腕のマッサージの施術でお願いしました。前回同様　けっこう圧の入ったマッサージにもかかわらず、寝落ちしそうになるって…スゴいなぁ。施術後は顔もカラダもスッキリして帰れました。</div>
+  </div>
+
+  <div class="review-card card-head" data-cats="head shoulder relax">
+    <div class="card-header">
+      <div><div class="card-name">まりなさんさん</div><div class="card-profile">女性／20代後半</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/8/13</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-head">🪴 ヘッドスパ</span><span class="tag tag-shoulder">💪 肩こり</span></div>
+    <div class="card-comment">期間限定のヘッドスパはぐぐーっとほどよい圧が頭にかかり気持ちよかったです！頭皮が張っていて、なかなか指が入りづらい私の頭ですが、受けたあとは頭と肩がすっきりしました。おすすめです！いつも安心感のある雰囲気と施術でとても気持ちよく帰れます。</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face relax">
+    <div class="card-header">
+      <div><div class="card-name">コロロさん</div><div class="card-profile">女性／40代</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/8/12</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔・輪郭改善</span><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">全身すみずみまで丁寧にマッサージしていただきました。見た目で一番変化を感じたのは輪郭でした。途中眠りに落ちてしまうほどリラックスして、安心感がすごくありました。本当にありがとうございました。</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face shoulder skin">
+    <div class="card-header">
+      <div><div class="card-name">リリーさん</div><div class="card-profile">女性／30代前半／パート</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/8/10</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔</span><span class="tag tag-shoulder">💪 肩・首こり</span><span class="tag tag-skin">🌸 美肌</span></div>
+    <div class="card-comment">昨日仕事で疲れ果ててしまって、当日予約で初めて伺いました。皆さんの口コミ通り、スタッフさんも施術もお店の雰囲気も、とっても素敵でした！！小顔になりたい＆首肩こりが酷かったのですが、しっかりほぐしていただきました。すごく気持ちよくて、癒やされました。スタッフの方がすごく綺麗で優しくて、肌悩み改善にオススメの栄養素等も教えてくださり、感動しました。またぜひお邪魔したいです！</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">kkriさん</div><div class="card-profile">女性／20代後半／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/7/22</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 疲労回復</span></div>
+    <div class="card-comment">全身の疲れを癒してもらいたく予約しました。お出迎えの笑顔から癒されてもらいました♪オイルも3種類から好きな香りを選べて、終始ゆったりできました！またよろしくお願いします！</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face shoulder">
+    <div class="card-header">
+      <div><div class="card-name">まよっちさん</div><div class="card-profile">女性／50代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/7/19</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 美顔コルギ</span><span class="tag tag-shoulder">💪 肩甲骨</span></div>
+    <div class="card-comment">初めての、美顔コルギ80分。顔のコリがすごくてビックリでした。力加減が最高に良かったです。とくに肩甲骨のマッサージが最高でした。また近いうちにお願いしたいです。</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">shigeさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/7/19</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">いつもありがとうございます。他に行ったところはセールスや口コミ投稿今すぐしてってところが続いて、こちらは初めて行った時もそれはなくて居心地よく毎回行っています。またよろしくお願いします。</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face relax">
+    <div class="card-header">
+      <div><div class="card-name">さささん</div><div class="card-profile">女性／30代前半／自営業</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/7/1</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔矯正</span></div>
+    <div class="card-comment">初めての来店で初めての小顔矯正でした。顔だけやるのかと思っていたら頭から肩甲骨までマッサージしていただけるし、クレンジングやらパックやらフェイシャルもしっかりやっていただけで感動でしたっ。マッサージも力強くて最高に気持ちよかったです♪整体やらマッサージやら色々通っていますがお世辞抜きで1番気持ち良かったです！家に帰ってから母になんか顔小さくなった？何やってきたの？と聞かれました笑　自分でもかなりスッキリした実感もあり、すぐに次の予約いれてしまいましたっ^_^</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax">
+    <div class="card-header">
+      <div><div class="card-name">トミィさん</div><div class="card-profile">女性／20代後半／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/6/19</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 リラクゼーション</span></div>
+    <div class="card-comment">親切丁寧な接客とたしかな技術で大満足でした。スッキリしました、またお願いしたいです♪</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face shoulder skin">
+    <div class="card-header">
+      <div><div class="card-name">あーちゃんさん</div><div class="card-profile">女性／30代後半</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/6/8</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔・顔の歪み</span><span class="tag tag-shoulder">💪 肩甲骨</span><span class="tag tag-skin">🌸 美肌</span></div>
+    <div class="card-comment">前回美顔コルギをお願いした際は顔の歪みや埋もれていた胸鎖乳突筋を出してくれましたし、今回は肩と背中を重点的にお願いしましたら、しっかりほぐれて肩甲骨が真ん中に寄るようになりました。またパックもすごく気持ちが良く、終わったあとは顔がツヤッツヤになるのですごくテンションが上がります！施術の効果にお人柄、全てパーフェクトです。悩んでいる方には心の底からおススメします。</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder">
+    <div class="card-header">
+      <div><div class="card-name">まりなさんさん</div><div class="card-profile">女性／20代後半</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/6/4</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 コリほぐし</span></div>
+    <div class="card-comment">今回はマッサージをしていただきました。常にコリがすごいのですが、今回もぐっとほぐしてもらいました。お姉さんのどこにそんな力が！といつも思っています。痛くないか確認してくれるので安心して施術が受けられています。暖かくなってくると予約が埋まりやすいそうなので、行ける時はどんどん行きたいなーと思っています。</div>
+  </div>
+
+  <div class="review-card card-shoulder" data-cats="shoulder face jaw">
+    <div class="card-header">
+      <div><div class="card-name">あっきーさん</div><div class="card-profile">女性／40代／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/5/29</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-shoulder">💪 ストレートネック・肩こり</span><span class="tag tag-face">💆 フェイシャル</span></div>
+    <div class="card-comment">ストレートネックからくる首と肩の凝りを良くしたくて、初めてお邪魔しました。自分がやってほしいと思ってたこと、全部やってくれました！頭皮マッサージも、フェイシャルも、骨格矯正も。オイルの香りも選べました。炭酸パックもとても良かったです！ゴリゴリしていましたが、終始気持ちよかったです。旦那が、肩の高さが揃ってる！と驚いてました。絶対また行きたいです！</div>
+  </div>
+
+  <div class="review-card card-face" data-cats="face swelling">
+    <div class="card-header">
+      <div><div class="card-name">jasmineさん</div><div class="card-profile">女性／30代前半／会社員</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/5/23</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-face">💆 小顔・フェイシャル</span><span class="tag tag-swelling">💧 むくみ</span></div>
+    <div class="card-comment">とっても心地よくスッキリしました！！腕までマッサージしてもらい本当に顔もすっきりしました！</div>
+  </div>
+
+  <div class="review-card card-swelling" data-cats="swelling shoulder">
+    <div class="card-header">
+      <div><div class="card-name">さきさん</div><div class="card-profile">女性／40代／パート</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/5/11</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-swelling">💧 むくみ</span><span class="tag tag-shoulder">💪 肩・首こり</span></div>
+    <div class="card-comment">最近ずっと整体に行っておらず、むくみや首肩背中の凝りがマックスになったところで、こちらを訪問しました。とても気さくで綺麗なスタッフさんが出迎えてくれ、第一印象からとても感じの良い方だなと思いました。技術も素晴らしく、的確にもみほぐされ、かなり浮腫や首肩が改善されました。結果が確実に出るサロンだと思います。また伺います^^</div>
+  </div>
+
+  <div class="review-card card-relax" data-cats="relax shoulder">
+    <div class="card-header">
+      <div><div class="card-name">あやさん</div><div class="card-profile">女性／20代後半／パート</div></div>
+      <div style="text-align:right"><div class="card-stars">★★★★★</div><div class="card-date">2024/4/23</div></div>
+    </div>
+    <div class="card-tags"><span class="tag tag-relax">😌 疲労回復</span><span class="tag tag-shoulder">💪 コリほぐし</span></div>
+    <div class="card-comment">久しぶりにゴリッゴリにマッサージしていただきました！終わった直後からカラダがスッキリして時間が経った今でも軽いです^ ^ またよろしくお願いします♪</div>
+  </div>
+
+</div>
+
+<div id="no-results">該当する口コミがありません</div>
+
+<div style="background:#2c2820;padding:40px 24px;text-align:center;margin-top:20px;">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#d4b896;letter-spacing:0.1em;margin-bottom:8px;">ご予約・お問い合わせ</div>
+  <p style="color:#9e9080;font-size:0.82rem;margin-bottom:24px;line-height:2;">青森県八戸市諏訪1丁目13−7　📞 080-9397-9918<br>営業時間 10:00〜20:00 ／ 定休日：不定休</p>
+  <a href="swon_booking.html" style="display:inline-block;background:#b89a6a;color:#fff;text-decoration:none;font-size:0.8rem;letter-spacing:0.25em;padding:14px 40px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">ご予約はこちら</a>
+  <div style="margin-top:16px;"><a href="swon_salon.html" style="color:#6b6055;font-size:0.72rem;letter-spacing:0.15em;text-decoration:none;">← サロントップへ戻る</a></div>
+</div>
+
+<script>
+function filterReviews(cat) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const cards = document.querySelectorAll('.review-card');
+  let visible = 0;
+  cards.forEach(card => {
+    if (cat === 'all' || card.dataset.cats.split(' ').includes(cat)) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>
