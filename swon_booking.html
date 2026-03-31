@@ -1039,19 +1039,15 @@ let MENUS = (() => {
   } catch(e) { return DEFAULT_MENUS; }
 })();
 
-// Time slots based on duration
+// 営業時間 10:00〜20:00 / 30分刻みスロット生成
+// 施術終了時刻が20:00を超えるスロットは表示しない
 function getTimeSlots(date, durationMin) {
   const slots = [];
-  // Business hours 10:00-20:00
-  // Generate slots every 30 min, ensure end <= 20:00
   let h = 10, m = 0;
   while (true) {
     const endMin = h * 60 + m + durationMin;
     if (endMin > 20 * 60) break;
-    const label = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-    // Simulate some unavailable slots
-    const unavail = isUnavailable(date, h, m);
-    slots.push({ label, unavailable: unavail });
+    slots.push({ label: `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`, unavailable: false });
     m += 30;
     if (m >= 60) { m -= 60; h++; }
     if (h >= 20) break;
@@ -1059,28 +1055,8 @@ function getTimeSlots(date, durationMin) {
   return slots;
 }
 
-// Simulate unavailable slots (for demo)
-const unavailableMap = {};
-function seedUnavailable() {
-  const today = new Date();
-  for (let d = 0; d < 60; d++) {
-    const dd = new Date(today);
-    dd.setDate(today.getDate() + d);
-    const key = `${dd.getFullYear()}-${dd.getMonth()}-${dd.getDate()}`;
-    const hours = [];
-    const numBlock = Math.floor(Math.random() * 3);
-    for (let i = 0; i < numBlock; i++) {
-      hours.push(10 + Math.floor(Math.random() * 10));
-    }
-    unavailableMap[key] = hours;
-  }
-}
-seedUnavailable();
-
 function isUnavailable(date, hour) {
-  if (!date) return false;
-  const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-  return (unavailableMap[key] || []).includes(hour);
+  return false;
 }
 
 // ============================================================
