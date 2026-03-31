@@ -1234,6 +1234,7 @@
       <li><a href="#services">メニュー</a></li>
       <li><a href="#flow">ご予約の流れ</a></li>
       <li><a href="#access">アクセス</a></li>
+      <li><a href="swon_reviews.html">口コミ</a></li>
     </ul>
     <a href="swon_booking.html" class="nav-cta">BOOK NOW</a>
   </nav>
@@ -1458,6 +1459,30 @@
   </section>
 
 
+  <!-- REVIEWS TEASER -->
+  <section style="background:var(--cream);padding:100px 24px;text-align:center;">
+    <div class="reveal">
+      <p class="section-label">CUSTOMER REVIEWS</p>
+      <h2 class="section-title" style="color:var(--charcoal);">お客様の<em style="color:var(--gold);font-style:italic;">声</em></h2>
+      <p style="color:var(--warm-gray);font-size:0.95rem;margin-bottom:48px;line-height:1.8;">ホットペッパービューティーに寄せられた、49件のリアルな口コミをご覧いただけます。</p>
+      <div style="display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-bottom:48px;">
+        <div style="text-align:center;">
+          <div style="font-size:3rem;font-weight:300;color:var(--charcoal);font-family:'Josefin Sans',sans-serif;">49</div>
+          <div style="font-size:0.8rem;letter-spacing:0.15em;color:var(--warm-gray);">口コミ件数</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:3rem;font-weight:300;color:var(--gold);font-family:'Josefin Sans',sans-serif;">★ 4.8</div>
+          <div style="font-size:0.8rem;letter-spacing:0.15em;color:var(--warm-gray);">平均評価</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:3rem;font-weight:300;color:var(--charcoal);font-family:'Josefin Sans',sans-serif;">100%</div>
+          <div style="font-size:0.8rem;letter-spacing:0.15em;color:var(--warm-gray);">また行きたい</div>
+        </div>
+      </div>
+      <a href="swon_reviews.html" style="display:inline-block;padding:16px 48px;border:1px solid var(--charcoal);color:var(--charcoal);text-decoration:none;font-family:'Josefin Sans',sans-serif;font-size:0.85rem;letter-spacing:0.2em;transition:all 0.3s ease;" onmouseover="this.style.background='var(--charcoal)';this.style.color='white';" onmouseout="this.style.background='transparent';this.style.color='var(--charcoal)';">口コミをすべて見る →</a>
+    </div>
+  </section>
+
   <!-- BOOKING -->
   <section class="booking" id="booking">
     <div class="reveal">
@@ -1546,10 +1571,6 @@
       <h3>SALON MANAGEMENT</h3>
       <button class="admin-close" onclick="toggleAdmin()">✕</button>
     </div>
-    <div class="admin-tabs">
-      <button class="admin-tab on" onclick="switchAdminTab('res',this)">予約管理</button>
-      <button class="admin-tab" onclick="switchAdminTab('menu',this)">メニュー管理</button>
-    </div>
     <!-- 予約管理 -->
     <div class="admin-body" id="adminResBody">
       <div class="filter-row">
@@ -1560,15 +1581,6 @@
       </div>
       <div class="res-list" id="resList">
         <div class="admin-empty">予約はありません</div>
-      </div>
-    </div>
-    <!-- メニュー管理 -->
-    <div class="admin-body" id="adminMenuBody" style="display:none;">
-      <div class="me-note">メニュー名・料金・施術時間を編集して保存してください。<br>変更は予約フォームに即時反映されます。</div>
-      <div id="menuEditorList"></div>
-      <div style="display:flex;gap:8px;margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
-        <button class="me-save-btn" style="flex:1;" onclick="saveAllMenus()">すべて保存</button>
-        <button class="admin-reset-btn" onclick="resetAllMenus()">リセット</button>
       </div>
     </div>
   </div>
@@ -1672,21 +1684,6 @@
       renderList();
     }
 
-    // ── Admin tab switching ──
-    function switchAdminTab(tab, btn) {
-      document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      if (tab === 'res') {
-        document.getElementById('adminResBody').style.display = 'block';
-        document.getElementById('adminMenuBody').style.display = 'none';
-        renderList();
-      } else {
-        document.getElementById('adminResBody').style.display = 'none';
-        document.getElementById('adminMenuBody').style.display = 'block';
-        renderMenuEditor();
-      }
-    }
-
     // ── Default menu data (mirrors swon_booking.html) ──
     const DEFAULT_MENUS = [
       { id:1,  cat:'body', catLabel:'ボディトリートメント', name:'オイルリンパマッサージ 60分', shortName:'オイルリンパ60分', desc:'足後面＆背中など部分的なボディケア。脚のむくみ・背中の疲労に。', price:6800, duration:60 },
@@ -1710,75 +1707,6 @@
       { id:19, cat:'other', catLabel:'その他', name:'【高保湿&コリ改善】幹細胞炭酸コルギ＋背中マッサージ30分', shortName:'幹細胞コルギ＋背中', desc:'幹細胞スキンケアでしっとり艶肌小顔へ。腕マッサージ、ヘッド、足ツボ付。', price:12000, duration:100 },
     ];
 
-    function getAdminMenus() {
-      try {
-        const stored = localStorage.getItem('swon_menus');
-        return stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_MENUS));
-      } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_MENUS)); }
-    }
-
-    function renderMenuEditor() {
-      const menus = getAdminMenus();
-      const list = document.getElementById('menuEditorList');
-      list.innerHTML = menus.map(m => `
-        <div class="menu-editor-item">
-          <div class="me-cat-label">${m.catLabel}</div>
-          <div class="me-field-group" style="margin-bottom:8px;">
-            <div class="me-field-label">メニュー名</div>
-            <input class="me-name-input" id="me-name-${m.id}" value="${m.name.replace(/"/g,'&quot;')}">
-          </div>
-          <div class="me-fields">
-            <div class="me-field-group">
-              <div class="me-field-label">料金（円）</div>
-              <input class="me-input" id="me-price-${m.id}" type="number" value="${m.price}">
-            </div>
-            <div class="me-field-group">
-              <div class="me-field-label">施術時間（分）</div>
-              <input class="me-input" id="me-dur-${m.id}" type="number" value="${m.duration}">
-            </div>
-          </div>
-          <div class="me-actions">
-            <button class="me-save-btn" onclick="saveOneMenu(${m.id})">保存</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function saveOneMenu(id) {
-      const menus = getAdminMenus();
-      const m = menus.find(x => x.id === id);
-      if (!m) return;
-      const nameEl = document.getElementById(`me-name-${id}`);
-      const priceEl = document.getElementById(`me-price-${id}`);
-      const durEl = document.getElementById(`me-dur-${id}`);
-      if (nameEl) m.name = nameEl.value;
-      if (priceEl) m.price = parseInt(priceEl.value) || m.price;
-      if (durEl) m.duration = parseInt(durEl.value) || m.duration;
-      localStorage.setItem('swon_menus', JSON.stringify(menus));
-      const btn = document.querySelector(`#menuEditorList .menu-editor-item:nth-child(${menus.findIndex(x=>x.id===id)+1}) .me-save-btn`);
-      if (btn) { const o = btn.textContent; btn.textContent = '✓保存済み'; setTimeout(()=>btn.textContent=o, 1500); }
-    }
-
-    function saveAllMenus() {
-      const menus = getAdminMenus();
-      menus.forEach(m => {
-        const nameEl = document.getElementById(`me-name-${m.id}`);
-        const priceEl = document.getElementById(`me-price-${m.id}`);
-        const durEl = document.getElementById(`me-dur-${m.id}`);
-        if (nameEl) m.name = nameEl.value;
-        if (priceEl) m.price = parseInt(priceEl.value) || m.price;
-        if (durEl) m.duration = parseInt(durEl.value) || m.duration;
-      });
-      localStorage.setItem('swon_menus', JSON.stringify(menus));
-      alert('すべてのメニューを保存しました。予約フォームに反映されます。');
-    }
-
-    function resetAllMenus() {
-      if (!confirm('メニューをデフォルト設定にリセットしますか？')) return;
-      localStorage.removeItem('swon_menus');
-      renderMenuEditor();
-      alert('リセットしました。');
-    }
   </script>
 </body>
 </html>
