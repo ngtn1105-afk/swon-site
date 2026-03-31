@@ -1660,9 +1660,9 @@
     <div class="admin-body" id="adminResBody">
       <div class="filter-row">
         <button class="f-btn on" onclick="filterRes('all',this)">ALL</button>
-        <button class="f-btn" onclick="filterRes('confirmed',this)">確認済み</button>
-        <button class="f-btn" onclick="filterRes('pending',this)">未確認</button>
-        <button class="f-btn" onclick="filterRes('cancelled',this)">キャンセル</button>
+        <button class="f-btn" onclick="filterRes('確認済み',this)">確認済み</button>
+        <button class="f-btn" onclick="filterRes('未確認',this)">未確認</button>
+        <button class="f-btn" onclick="filterRes('キャンセル',this)">キャンセル</button>
       </div>
       <div class="res-list" id="resList">
         <div class="admin-empty">予約はありません</div>
@@ -1732,48 +1732,11 @@
     const di = document.getElementById('rDate');
     if (di) { const tm = new Date(); tm.setDate(tm.getDate() + 1); di.min = tm.toISOString().split('T')[0]; }
 
-    // ── Reservation data ──
-    let rsvs = JSON.parse(localStorage.getItem('swon_res') || '[]');
-    let selTime = '', curFilter = 'all';
+    // ── GAS URL（予約データの取得・更新） ──
+    const ADMIN_GAS_URL = 'https://script.google.com/macros/s/AKfycbwrrC3rQuWknVmJ5Cam93CWPTOb7KzDOFF5TdC0xhNaqb-rzW6vMAV__GcjCXzp0xr3/exec';
 
-    function pickTime(el) {
-      if (el.classList.contains('off')) return;
-      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-      el.classList.add('selected');
-      selTime = el.textContent;
-      document.getElementById('rTime').value = selTime;
-    }
-
-    function submitRes(e) {
-      e.preventDefault();
-      if (!selTime) { alert('時間帯を選択してください'); return; }
-      const r = {
-        id: Date.now(),
-        name: document.getElementById('rName').value,
-        phone: document.getElementById('rPhone').value,
-        email: document.getElementById('rEmail').value,
-        menu: document.getElementById('rMenu').value,
-        date: document.getElementById('rDate').value,
-        time: selTime,
-        note: document.getElementById('rNote').value,
-        status: 'pending',
-        at: new Date().toISOString()
-      };
-      rsvs.push(r);
-      localStorage.setItem('swon_res', JSON.stringify(rsvs));
-      document.getElementById('resForm').style.display = 'none';
-      document.getElementById('resSuccess').classList.add('show');
-      renderList();
-    }
-
-    function resetRes() {
-      document.getElementById('resForm').reset();
-      document.getElementById('resForm').style.display = 'block';
-      document.getElementById('resSuccess').classList.remove('show');
-      document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-      selTime = '';
-      document.getElementById('rTime').value = '';
-    }
+    let rsvs = [];
+    let curFilter = 'all';
 
     // ── パスワード認証 ──
     const ADMIN_PASS = 'swon1105'; // ← パスワードはここで変更できます
@@ -1890,40 +1853,71 @@
       curFilter = s;
       document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
-      renderList();
+      renderResList();
     }
 
-    function renderList() {
+    // スプレッドシートから予約一覧を取得して表示
+    async function renderList() {
       const list = document.getElementById('resList');
-      const data = curFilter === 'all' ? rsvs : rsvs.filter(r => r.status === curFilter);
-      if (!data.length) { list.innerHTML = '<div class="admin-empty">予約はありません</div>'; return; }
+      list.innerHTML = '<div class="admin-empty" style="opacity:0.5;">読み込み中…</div>';
+      try {
+        const res = await fetch(`${ADMIN_GAS_URL}?action=reservations`);
+        const json = await res.json();
+        rsvs = (json.status === 'success') ? json.reservations : [];
+      } catch(e) {
+        rsvs = [];
+      }
+      renderResList();
+    }
+
+    function renderResList() {
+      const list = document.getElementById('resList');
+      const data = curFilter === 'all'
+        ? rsvs
+        : rsvs.filter(r => r.status === curFilter);
+
+      if (!data.length) {
+        list.innerHTML = '<div class="admin-empty">予約はありません</div>';
+        return;
+      }
+
+      // 新しい順に表示
       list.innerHTML = data.slice().reverse().map(r => {
-        const d = r.date ? new Date(r.date + 'T00:00:00').toLocaleDateString('ja-JP', { year:'numeric', month:'long', day:'numeric', weekday:'short' }) : '';
-        const sl = { confirmed:'確認済み', pending:'未確認', cancelled:'キャンセル' }[r.status];
+        const statusClass = { '確認済み':'confirmed', '未確認':'pending', 'キャンセル':'cancelled' }[r.status] || 'pending';
         return `<div class="res-card">
-          <div class="rc-date">${d}　${r.time}</div>
+          <div class="rc-date">${r.datetime}</div>
           <div class="rc-name">${r.name}</div>
-          <div class="rc-info">${r.menu}<br>${r.phone}${r.email ? ' / ' + r.email : ''}${r.note ? '<br>' + r.note : ''}</div>
-          <span class="rc-status ${r.status}">${sl}</span>
+          <div class="rc-info">${r.menu} / ${r.duration}<br>${r.phone}${r.email ? ' / ' + r.email : ''}${r.notes && r.notes !== 'なし' ? '<br>' + r.notes : ''}</div>
+          <span class="rc-status ${statusClass}">${r.status}</span>
           <div class="rc-actions">
-            ${r.status !== 'confirmed' ? `<button class="rc-btn" onclick="chgStatus(${r.id},'confirmed')">確認済みに</button>` : ''}
-            ${r.status !== 'cancelled' ? `<button class="rc-btn d" onclick="chgStatus(${r.id},'cancelled')">キャンセル</button>` : ''}
-            <button class="rc-btn d" onclick="delRes(${r.id})">削除</button>
+            ${r.status !== '確認済み' ? `<button class="rc-btn" onclick="chgStatus('${r.bookingNumber}','確認済み')">確認済みに</button>` : ''}
+            ${r.status !== 'キャンセル' ? `<button class="rc-btn d" onclick="chgStatus('${r.bookingNumber}','キャンセル')">キャンセル</button>` : ''}
+            <button class="rc-btn d" onclick="delRes('${r.bookingNumber}')">削除</button>
           </div>
         </div>`;
       }).join('');
     }
 
-    function chgStatus(id, s) {
-      const r = rsvs.find(r => r.id === id);
-      if (r) { r.status = s; localStorage.setItem('swon_res', JSON.stringify(rsvs)); renderList(); }
+    async function chgStatus(bookingNumber, newStatus) {
+      // UIを即座に更新
+      const r = rsvs.find(r => r.bookingNumber === bookingNumber);
+      if (r) r.status = newStatus;
+      renderResList();
+      // GASのスプレッドシートも更新
+      try {
+        await fetch(`${ADMIN_GAS_URL}?action=updateStatus&bookingNumber=${encodeURIComponent(bookingNumber)}&status=${encodeURIComponent(newStatus)}`);
+      } catch(e) { console.warn('ステータス更新失敗', e); }
     }
 
-    function delRes(id) {
+    async function delRes(bookingNumber) {
       if (!confirm('この予約を削除しますか？')) return;
-      rsvs = rsvs.filter(r => r.id !== id);
-      localStorage.setItem('swon_res', JSON.stringify(rsvs));
-      renderList();
+      // UIから即座に除去
+      rsvs = rsvs.filter(r => r.bookingNumber !== bookingNumber);
+      renderResList();
+      // GASのスプレッドシートにも「削除済み」として記録
+      try {
+        await fetch(`${ADMIN_GAS_URL}?action=updateStatus&bookingNumber=${encodeURIComponent(bookingNumber)}&status=${encodeURIComponent('削除済み')}`);
+      } catch(e) { console.warn('削除失敗', e); }
     }
 
     // ── Default menu data (mirrors swon_booking.html) ──
