@@ -925,11 +925,25 @@
       <div class="booking-number" id="booking-number">-</div>
       <p>
         ご予約が完了しました。<br>
-        ご来店を心よりお待ちしております。<br><br>
-        ご不明な点がございましたら<br>
-        <strong>080-9397-9918</strong> までお気軽にお問い合わせください。
+        ご来店を心よりお待ちしております。
       </p>
-      <div style="margin-top:36px;">
+      <p id="success-email-note" style="font-size:0.85rem;color:rgba(201,169,110,0.7);margin-top:8px;display:none;">
+        ご入力のメールアドレスに確認メールをお送りしました。
+      </p>
+      <!-- キャンセル・変更 -->
+      <div style="margin-top:28px;padding:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);border-radius:8px;text-align:left;">
+        <div style="font-family:'Josefin Sans',sans-serif;font-size:0.72rem;letter-spacing:0.18em;color:var(--gold);margin-bottom:10px;">CANCEL / CHANGE</div>
+        <p style="font-size:0.85rem;line-height:1.8;margin:0 0 12px;">
+          キャンセル・日程変更は<br>お早めにお電話でご連絡ください。
+        </p>
+        <a href="tel:080-9397-9918" style="display:inline-block;border:1px solid rgba(201,169,110,0.5);color:var(--gold);padding:10px 20px;border-radius:6px;font-size:0.9rem;text-decoration:none;">
+          📞 080-9397-9918
+        </a>
+        <p id="cancel-link-wrap" style="font-size:0.8rem;color:rgba(196,185,171,0.5);margin:12px 0 0;display:none;">
+          またはメール内のキャンセルリンクからもお手続きいただけます。
+        </p>
+      </div>
+      <div style="margin-top:24px;">
         <button class="btn-secondary" onclick="resetAll()">トップに戻る</button>
       </div>
     </div>
@@ -1348,6 +1362,12 @@ async function submitBooking() {
   }
 
   document.getElementById('booking-number').textContent = `予約番号：${num}`;
+  // メールアドレスを入力していた場合は確認メールの案内を表示
+  const emailVal = document.getElementById('email').value.trim();
+  if (emailVal) {
+    document.getElementById('success-email-note').style.display = 'block';
+    document.getElementById('cancel-link-wrap').style.display = 'block';
+  }
   switchScreen('screen-confirm', 'screen-success', 4);
   document.getElementById('step4').classList.remove('active');
   document.getElementById('step4').classList.add('done');
