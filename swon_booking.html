@@ -1043,6 +1043,14 @@ const DEFAULT_MENUS = [
     name: '【高保湿&コリ改善】幹細胞炭酸コルギ＋背中マッサージ30分', shortName: '幹細胞コルギ＋背中',
     desc: '幹細胞スキンケアでしっとり艶肌小顔へ。腕マッサージ、ヘッド、足ツボ付。',
     price: 12000, duration: 100 },
+  { id: 20, cat: 'head', catLabel: 'ヘッドオプション',
+    name: '【頭痛・眼精疲労がお辛い方】ヘッドマッサージ25分　リフトアップ効果倍増。※単体でのご利用不可', shortName: 'ヘッドマッサージ25分（OP）',
+    desc: 'リフトアップ効果倍増。頭痛・眼精疲労にお悩みの方に。他のメニューとのセットでのみご利用いただけます。',
+    price: 0, priceLabel: '要確認', duration: 25 },
+  { id: 21, cat: 'face', catLabel: 'フェイシャルオプション',
+    name: '【フェイシャルオプション】オイルリンパマッサージ30分　※単体でのご利用不可', shortName: 'フェイシャルOPオイルリンパ30分',
+    desc: 'フェイシャルメニューに追加できるオイルリンパマッサージ30分。他のメニューとのセットでのみご利用いただけます。',
+    price: 0, priceLabel: '要確認', duration: 30 },
 ];
 
 // ← メニューはサロン管理画面で変更可能。変更はlocalStorageに保存され自動反映されます。
@@ -1066,15 +1074,29 @@ function getTimeSlots(date, durationMin, bookedEvents) {
   const buf = sc.bufferMin;
   const slots = [];
   let h = sc.startHour, m = 0;
+
+  // 当日の場合、現在時刻以前のスロットをブロック
+  const now = new Date();
+  const isToday = date &&
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth()    === now.getMonth()    &&
+    date.getDate()     === now.getDate();
+  const nowMin = isToday ? now.getHours() * 60 + now.getMinutes() : -1;
+
   while (true) {
     const slotStartMin = h * 60 + m;
     const slotEndMin = slotStartMin + durationMin;
     if (slotEndMin > sc.endHour * 60) break;
 
     let unavailable = false;
-    if (bookedEvents && bookedEvents.length) {
+
+    // 当日・過去時間はブロック
+    if (isToday && slotStartMin <= nowMin) {
+      unavailable = true;
+    }
+
+    if (!unavailable && bookedEvents && bookedEvents.length) {
       for (const ev of bookedEvents) {
-        // 既存予約の終了時刻＋バッファー と 新規スロット が重なるか判定
         if (slotStartMin < ev.endMin + buf && slotEndMin > ev.startMin) {
           unavailable = true;
           break;
@@ -1118,9 +1140,16 @@ function filterCategory(cat) {
   renderMenus();
 }
 
+function priceText(m) {
+  return m.priceLabel || ('¥' + m.price.toLocaleString());
+}
+
 function renderMenus() {
   const grid = document.getElementById('menu-grid');
-  const filtered = currentCat === 'all' ? MENUS : MENUS.filter(m => m.cat === currentCat);
+  const CAT_ORDER = { face: 0, body: 1, slim: 2, head: 3, other: 4 };
+  let filtered = currentCat === 'all'
+    ? [...MENUS].sort((a, b) => (CAT_ORDER[a.cat] ?? 9) - (CAT_ORDER[b.cat] ?? 9))
+    : MENUS.filter(m => m.cat === currentCat);
   grid.innerHTML = filtered.map(m => `
     <div class="menu-card ${selectedMenu?.id === m.id ? 'selected' : ''}"
          onclick="selectMenu(${m.id})">
@@ -1130,7 +1159,7 @@ function renderMenus() {
         <div class="menu-desc">${m.desc}</div>
       </div>
       <div class="menu-card-right">
-        <div class="menu-price">¥${m.price.toLocaleString()}<small></small></div>
+        <div class="menu-price">${priceText(m)}<small></small></div>
         <div class="menu-duration">${m.duration}分</div>
         <div class="menu-check">${selectedMenu?.id === m.id ? '✓' : ''}</div>
       </div>
@@ -1274,7 +1303,7 @@ function goToDate() {
   if (!selectedMenu) return;
   // populate summary
   document.getElementById('summary-menu-name').textContent = selectedMenu.shortName;
-  document.getElementById('summary-menu-price').textContent = `¥${selectedMenu.price.toLocaleString()}`;
+  document.getElementById('summary-menu-price').textContent = priceText(selectedMenu);
   document.getElementById('summary-menu-dur').textContent = `${selectedMenu.duration}分`;
   // reset date/time
   selectedDate = null; selectedTime = null;
@@ -1308,7 +1337,7 @@ function goToConfirm() {
   const visitLabel = visitVal === 'first' ? '初めてのご来店' : visitVal === 'repeat' ? '2回目以降' : '未選択';
 
   document.getElementById('conf-menu').textContent = selectedMenu.name;
-  document.getElementById('conf-price').textContent = `¥${selectedMenu.price.toLocaleString()}`;
+  document.getElementById('conf-price').textContent = priceText(selectedMenu);
   document.getElementById('conf-dur').textContent = `${selectedMenu.duration}分`;
   document.getElementById('conf-datetime').textContent = dateStr;
   document.getElementById('conf-name').textContent = `${last} ${first}`;
@@ -1338,7 +1367,7 @@ async function submitBooking() {
   const payload = {
     bookingNumber: num,
     menu: selectedMenu.name,
-    price: `¥${selectedMenu.price.toLocaleString()}`,
+    price: priceText(selectedMenu),
     duration: `${selectedMenu.duration}分`,
     datetime: dateStr,
     lastName: document.getElementById('lastName').value.trim(),
