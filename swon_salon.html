@@ -710,6 +710,9 @@
       text-decoration: none;
       display: block;
     }
+    .booking-card.line-card { border-color: rgba(6,199,85,0.3); }
+    .booking-card.line-card:hover { border-color: #06C755; background: rgba(6,199,85,0.06); }
+    .booking-card.line-card .booking-card-label { color: #06C755; }
     .booking-card:hover {
       border-color: var(--rose);
       transform: translateY(-4px);
@@ -1522,7 +1525,7 @@
       <div class="flow-step reveal reveal-delay-1">
         <div class="flow-num-wrap"><span class="flow-num">01</span></div>
         <div class="flow-title">ご予約</div>
-        <div class="flow-desc">InstagramのDM、またはこちらのフォームよりご予約ください。お悩みもお気軽にお聞かせください。</div>
+        <div class="flow-desc">LINE・InstagramのDM、またはオンラインフォームよりご予約ください。お悩みもお気軽にお聞かせください。</div>
       </div>
       <div class="flow-step reveal reveal-delay-2">
         <div class="flow-num-wrap"><span class="flow-num">02</span></div>
@@ -1576,22 +1579,27 @@
         <em>変わっていく。</em>
       </h2>
       <p class="booking-sub">
-        ご予約はInstagramのDM・お電話、または下記フォームからお気軽にどうぞ。
+        ご予約はLINE・InstagramのDM・お電話、または下記オンラインフォームからお気軽にどうぞ。
         初めての方も安心してご来店ください。
       </p>
     </div>
     <div class="booking-options">
-      <a href="https://www.instagram.com/healthandbeautysalon.swon" target="_blank" class="booking-card reveal reveal-delay-1">
+      <a href="https://lin.ee/Sq8QZRn" target="_blank" class="booking-card line-card reveal reveal-delay-1">
+        <div class="booking-card-icon">💬</div>
+        <div class="booking-card-label">LINE</div>
+        <div class="booking-card-text">LINEでご予約・お問い合わせ</div>
+      </a>
+      <a href="https://www.instagram.com/healthandbeautysalon.swon" target="_blank" class="booking-card reveal reveal-delay-2">
         <div class="booking-card-icon">📷</div>
         <div class="booking-card-label">INSTAGRAM</div>
         <div class="booking-card-text">@healthandbeautysalon.swon</div>
       </a>
-      <a href="tel:080-9397-9918" class="booking-card reveal reveal-delay-2">
+      <a href="tel:080-9397-9918" class="booking-card reveal reveal-delay-3">
         <div class="booking-card-icon">📞</div>
         <div class="booking-card-label">TEL</div>
         <div class="booking-card-text">080-9397-9918</div>
       </a>
-      <a href="https://maps.google.com/maps?q=青森県八戸市諏訪1丁目13-7" target="_blank" class="booking-card reveal reveal-delay-3">
+      <a href="https://maps.google.com/maps?q=青森県八戸市諏訪1丁目13-7" target="_blank" class="booking-card reveal reveal-delay-4">
         <div class="booking-card-icon">📍</div>
         <div class="booking-card-label">ACCESS</div>
         <div class="booking-card-text">サロンへのアクセス</div>
@@ -1626,8 +1634,8 @@
         営業時間｜10:00〜20:00<br>
         定休日｜不定休<br>
         住所｜<a href="https://maps.google.com/maps?q=青森県八戸市諏訪1丁目13-7" target="_blank" style="color:rgba(255,255,255,0.5);text-decoration:underline;">青森県八戸市諏訪1丁目13−7</a><br><br>
-        ご予約はフォーム・Instagram DM・<br>
-        お電話にて承ります
+        ご予約はLINE・Instagram DM・<br>
+        お電話・オンラインフォームにて承ります
       </div>
     </div>
     <div>
@@ -1642,6 +1650,7 @@
   <div class="footer-bottom">
     <span class="footer-copy">© 2026 SWON Health & Beauty Salon. All rights reserved.</span>
     <div class="footer-sns">
+      <a href="https://lin.ee/Sq8QZRn" target="_blank">LINE</a>
       <a href="https://www.instagram.com/healthandbeautysalon.swon" target="_blank">INSTAGRAM</a>
     </div>
   </div>
