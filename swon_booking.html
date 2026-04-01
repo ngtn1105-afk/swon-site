@@ -744,7 +744,6 @@
       <button class="cat-tab active" onclick="filterCategory('all')">すべて</button>
       <button class="cat-tab" onclick="filterCategory('body')">ボディトリートメント</button>
       <button class="cat-tab" onclick="filterCategory('face')">小顔矯正・フェイシャル</button>
-      <button class="cat-tab" onclick="filterCategory('slim')">痩身</button>
       <button class="cat-tab" onclick="filterCategory('head')">ヘッド</button>
       <button class="cat-tab" onclick="filterCategory('other')">その他</button>
     </div>
@@ -967,31 +966,31 @@
 const DEFAULT_MENUS = [
   // Body Treatment
   { id: 1, cat: 'body', catLabel: 'ボディトリートメント',
-    name: 'オイルリンパマッサージ 60分', shortName: 'オイルリンパ60分',
+    name: 'オーダーメイドボディ 60分', shortName: 'オーダーメイドボディ60分',
     desc: '足後面＆背中など部分的なボディケア。脚のむくみ・背中の疲労に。',
     price: 6800, duration: 60 },
   { id: 2, cat: 'body', catLabel: 'ボディトリートメント',
-    name: 'オイルリンパマッサージ 90分', shortName: 'オイルリンパ90分',
+    name: 'オーダーメイドボディ 90分', shortName: 'オーダーメイドボディ90分',
     desc: '全身のボディコース。疲労回復に最適な全身リラクゼーション。',
     price: 9800, duration: 90 },
   { id: 3, cat: 'body', catLabel: 'ボディトリートメント',
-    name: 'オイルリンパマッサージ 120分', shortName: 'オイルリンパ120分',
-    desc: 'デトックス全身ロングコース。ヘッドからつま先までたっぷりリラックス。',
+    name: 'オーダーメイドボディ 120分', shortName: 'オーダーメイドボディ120分',
+    desc: 'お悩み別にカスタマイズ。筋膜リリース／肩甲骨はがし／痩身ケア／リラクゼーションから組み合わせてトータルケア。',
     price: 12500, duration: 120 },
   { id: 4, cat: 'body', catLabel: 'ボディトリートメント',
-    name: 'オイルリンパ 150分（ヘッドマッサージ15分含む）', shortName: 'オイルリンパ150分',
+    name: 'オーダーメイドボディ 150分（ヘッドマッサージ15分含む）', shortName: 'オーダーメイドボディ150分',
     desc: '辛い肩コリ、首、肩甲骨はがしで疲労をリセット。ホットアイマスク付。',
     price: 15500, duration: 150 },
   { id: 5, cat: 'body', catLabel: 'ボディトリートメント',
-    name: '美顔コルギ＆オイルリンパ 60分', shortName: '美顔コルギ＆オイルリンパ60分',
+    name: '美顔コルギ＆オーダーメイドボディ 60分', shortName: '美顔コルギ＆オーダーメイドボディ60分',
     desc: '美小顔矯正と気になるボディ部分ケアコース。炭酸パックオプションあり。',
     price: 14000, duration: 60 },
   { id: 6, cat: 'body', catLabel: 'ボディトリートメント',
-    name: '【リピート率No.1】美顔コルギ＆オイルリンパ 90分', shortName: '美顔コルギ＆オイルリンパ90分',
+    name: '【リピート率No.1】美顔コルギ＆オーダーメイドボディ 90分', shortName: '美顔コルギ＆オーダーメイドボディ90分',
     desc: '美小顔矯正と全身ボディの欲張りコース。炭酸パックオプション+500円。',
     price: 16500, duration: 90 },
   { id: 7, cat: 'body', catLabel: 'ボディトリートメント',
-    name: '美顔コルギ＆オイルリンパ 120分', shortName: '美顔コルギ＆オイルリンパ120分',
+    name: '美顔コルギ＆オーダーメイドボディ 120分', shortName: '美顔コルギ＆オーダーメイドボディ120分',
     desc: '美小顔矯正と全身ボディロングコースの贅沢リラクゼーション。',
     price: 18500, duration: 120 },
   { id: 8, cat: 'body', catLabel: 'ボディトリートメント',
@@ -1019,14 +1018,6 @@ const DEFAULT_MENUS = [
     name: '【ニキビ予防・肌鎮静】アクネケアフェイシャル 60分', shortName: 'アクネケアフェイシャル60分',
     desc: '肌洗浄＋ディープクレンジング＋保湿の肌鎮静パック。',
     price: 5800, duration: 60 },
-  { id: 14, cat: 'slim', catLabel: '痩身',
-    name: '【はみ肉ケア】痩身ボディ 100分', shortName: '痩身ボディ100分',
-    desc: '後面、横向き、前面のデトックス痩身マッサージ。',
-    price: 11500, duration: 100 },
-  { id: 15, cat: 'slim', catLabel: '痩身',
-    name: '【見た目−3キロ☆】痩身ボディ100分＋小顔コルギ80分', shortName: '痩身＋コルギセット',
-    desc: '筋膜リリースとデトックスボディマッサージ＋小顔コルギ。欲張りコース。',
-    price: 17500, duration: 180 },
   { id: 16, cat: 'head', catLabel: 'ヘッド',
     name: '【最強リフトアップ】ヘッドスパ25分＋背中30分＋幹細胞炭酸美肌コルギ', shortName: 'ヘッドスパ＋コルギセット',
     desc: 'オーガニックスカルプローションでリフレッシュ＆リフトアップ。上半身をくまなくデトックス。',
@@ -1048,8 +1039,8 @@ const DEFAULT_MENUS = [
     desc: 'リフトアップ効果倍増。頭痛・眼精疲労にお悩みの方に。他のメニューとのセットでのみご利用いただけます。',
     price: 2500, duration: 25 },
   { id: 21, cat: 'face', catLabel: 'フェイシャルオプション',
-    name: '【フェイシャルオプション】オイルリンパマッサージ30分　※単体でのご利用不可', shortName: 'フェイシャルOPオイルリンパ30分',
-    desc: 'フェイシャルメニューに追加できるオイルリンパマッサージ30分。他のメニューとのセットでのみご利用いただけます。',
+    name: '【フェイシャルオプション】オーダーメイドボディ30分　※単体でのご利用不可', shortName: 'フェイシャルOPオーダーメイドボディ30分',
+    desc: 'フェイシャルメニューに追加できるオーダーメイドボディ30分。他のメニューとのセットでのみご利用いただけます。',
     price: 3500, duration: 30 },
 ];
 
