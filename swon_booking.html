@@ -1130,8 +1130,10 @@ function getTimeSlots(date, durationMin, bookedEvents) {
 
 // 選択した日付のbooked eventsをキャッシュ
 let cachedBookedEvents = null;
-// 満員と判明した日付のキャッシュ（ドット非表示・クリック不可）
+// 満員と判明した日付（ドット非表示・クリック不可）
 const fullyBookedDays = new Set();
+// 空きありと確認できた日付（ドット表示）― 確認前はドット非表示
+const confirmedAvailableDays = new Set();
 
 // ============================================================
 // STATE
@@ -1245,9 +1247,15 @@ function updateBtnToDate() {
 function selectMenu(id) {
   selectedMenu = MENUS.find(m => m.id === id);
   selectedAddons = [];
+  // メニューが変わると所要時間が変わるため、空き状況をリセットして再確認
+  fullyBookedDays.clear();
+  confirmedAvailableDays.clear();
+  _prefetchMonthKey = null;
   renderMenus();
   renderAddons();
+  renderCalendar();
   updateBtnToDate();
+  prefetchMonthAvailability();
 }
 
 // ============================================================
@@ -1289,7 +1297,8 @@ function renderCalendar() {
     if (isBlocked) cls += ' past';
     else if (isSel) cls += ' selected';
     else if (isTod) cls += ' today';
-    if (!isBlocked) cls += ' has-slots';
+    // 空きが確認できた日のみドット表示（確認前・満員日はドットなし）
+    if (!isBlocked && confirmedAvailableDays.has(dateKey)) cls += ' has-slots';
 
     html += `<div class="${cls}" onclick="${isBlocked ? '' : `pickDate(${y},${mo},${d})`}">
       ${d}
@@ -1304,6 +1313,8 @@ function changeMonth(dir) {
   currentMonth.setMonth(currentMonth.getMonth() + dir);
   selectedDate = null;
   selectedTime = null;
+  fullyBookedDays.clear();
+  confirmedAvailableDays.clear();
   document.getElementById('time-picker').style.display = 'none';
   document.getElementById('btn-to-form').style.display = 'none';
   renderCalendar();
@@ -1348,8 +1359,10 @@ async function prefetchMonthAvailability() {
           const slots = getTimeSlots(date, dur, booked);
           if (slots.length > 0 && slots.every(s => s.unavailable)) {
             fullyBookedDays.add(dateKey);
-            renderCalendar();
+          } else if (slots.some(s => !s.unavailable)) {
+            confirmedAvailableDays.add(dateKey);
           }
+          renderCalendar();
         })
         .catch(() => {})
     ));
