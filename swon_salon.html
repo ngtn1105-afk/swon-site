@@ -1930,7 +1930,6 @@
           <div class="rc-actions">
             ${r.status !== '確認済み' ? `<button class="rc-btn" onclick="chgStatus('${r.bookingNumber}','確認済み')">確認済みに</button>` : ''}
             ${r.status !== 'キャンセル' ? `<button class="rc-btn d" onclick="openCancelModal('${r.bookingNumber}')">キャンセル</button>` : ''}
-            <button class="rc-btn d" onclick="delRes('${r.bookingNumber}')">削除</button>
           </div>
         </div>`;
       }).join('');
@@ -1976,16 +1975,6 @@
       } catch(e) { console.warn('キャンセル処理失敗', e); }
     }
 
-    async function delRes(bookingNumber) {
-      if (!confirm('この予約を削除しますか？')) return;
-      // UIから即座に除去
-      rsvs = rsvs.filter(r => r.bookingNumber !== bookingNumber);
-      renderResList();
-      // GASのスプレッドシートにも「削除済み」として記録
-      try {
-        await fetch(`${ADMIN_GAS_URL}?action=updateStatus&bookingNumber=${encodeURIComponent(bookingNumber)}&status=${encodeURIComponent('削除済み')}`);
-      } catch(e) { console.warn('削除失敗', e); }
-    }
 
     // ── Default menu data (mirrors swon_booking.html) ──
     const DEFAULT_MENUS = [
