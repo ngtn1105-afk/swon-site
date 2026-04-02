@@ -1060,6 +1060,18 @@ const DEFAULT_MENUS = [
     name: '【フェイシャルオプション】オーダーメイドボディ30分　※単体でのご利用不可', shortName: 'フェイシャルOPオーダーメイドボディ30分',
     desc: 'フェイシャルメニューに追加できるオーダーメイドボディ30分。他のメニューとのセットでのみご利用いただけます。',
     price: 3500, duration: 30 },
+  { id: 22, cat: 'face', catLabel: '小顔矯正', isAddon: true, addonFor: ['body','other','head'],
+    name: '美顔コルギ 80分（新規）　※単体でのご利用不可', shortName: '美顔コルギ80分（新規）',
+    desc: 'お顔の歪みを整えながらリフトアップ。肩甲骨周り、肩、首ヘッドまで丁寧に流します。他のメニューとのセットでのみご利用いただけます。',
+    price: 5800, duration: 80 },
+  { id: 23, cat: 'face', catLabel: '小顔矯正', isAddon: true, addonFor: ['body','other','head'],
+    name: '美顔コルギ 80分（再来）　※単体でのご利用不可', shortName: '美顔コルギ80分（再来）',
+    desc: 'お顔の歪みを整えながらリフトアップ。肩甲骨周り、肩、首ヘッドまで。他のメニューとのセットでのみご利用いただけます。',
+    price: 7500, duration: 80 },
+  { id: 24, cat: 'face', catLabel: '小顔矯正', isAddon: true, addonFor: ['body','other','head'],
+    name: '幹細胞炭酸美肌コルギ 100分　※単体でのご利用不可', shortName: '幹細胞炭酸美肌コルギ100分',
+    desc: '美顔コルギ＋炭酸パック＋リフトアップ美容液で美しい小顔艶肌へ。腕マッサージ・ヘッド・足ツボ付。他のメニューとのセットでのみご利用いただけます。',
+    price: 8500, duration: 100 },
 ];
 
 // ← メニューはサロン管理画面で変更可能。変更はlocalStorageに保存され自動反映されます。
@@ -1200,9 +1212,12 @@ function renderMenus() {
 function renderAddons() {
   const section = document.getElementById('addon-section');
   const list = document.getElementById('addon-list');
-  if (!selectedMenu || selectedMenu.isAddon) { section.style.display = 'none'; return; }
-  const compatible = MENUS.filter(m => m.isAddon && m.addonFor && m.addonFor.includes(selectedMenu.cat));
-  if (compatible.length === 0) { section.style.display = 'none'; return; }
+  // メインメニューが選択されている場合は相性の合うもの、未選択時は全アドオンを表示
+  const allAddons = MENUS.filter(m => m.isAddon);
+  if (allAddons.length === 0) { section.style.display = 'none'; return; }
+  const compatible = (selectedMenu && !selectedMenu.isAddon)
+    ? allAddons.filter(m => m.addonFor && m.addonFor.includes(selectedMenu.cat))
+    : allAddons;
   section.style.display = 'block';
   list.innerHTML = compatible.map(a => {
     const isSelected = selectedAddons.some(s => s.id === a.id);
@@ -1561,6 +1576,7 @@ function resetAll() {
 // INIT
 // ============================================================
 renderMenus();
+renderAddons();
 renderCalendar();
 prefetchMonthAvailability();
 </script>
