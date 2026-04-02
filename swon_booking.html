@@ -415,6 +415,17 @@
 
   .cal-day.has-slots .cal-dot { display: block; }
 
+  /* ── ADDON ── */
+  .addon-section { margin-top: 20px; }
+  .addon-section-title { font-size: 0.8rem; color: #b89a6a; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; font-weight: 600; }
+  .addon-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid #e8e0d4; border-radius: 10px; margin-bottom: 10px; cursor: pointer; background: #faf9f7; transition: border-color 0.2s, background 0.2s; }
+  .addon-card.selected { border-color: #b89a6a; background: #fdf8f0; }
+  .addon-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; transition: all 0.2s; color: #fff; }
+  .addon-card.selected .addon-check { background: #b89a6a; border-color: #b89a6a; }
+  .addon-name { font-size: 0.88rem; font-weight: 600; color: #333; }
+  .addon-detail { font-size: 0.78rem; color: #888; margin-top: 3px; }
+  .addon-desc { font-size: 0.76rem; color: #aaa; margin-top: 2px; }
+
   /* ── TIME SLOTS ── */
   .time-section-label {
     font-size: 0.72rem;
@@ -750,6 +761,13 @@
 
     <div class="menu-grid" id="menu-grid"></div>
 
+    <!-- ADDON SECTION -->
+    <div class="addon-section" id="addon-section" style="display:none;">
+      <div class="divider" style="margin-bottom:14px;"></div>
+      <div class="addon-section-title">＋ オプションを追加する（任意）</div>
+      <div id="addon-list"></div>
+    </div>
+
     <div style="margin-top:28px;">
       <button class="btn-primary" onclick="goToDate()" id="btn-to-date" style="display:none;">
         日時を選択する →
@@ -1034,11 +1052,11 @@ const DEFAULT_MENUS = [
     name: '【高保湿&コリ改善】幹細胞炭酸コルギ＋背中マッサージ30分', shortName: '幹細胞コルギ＋背中',
     desc: '幹細胞スキンケアでしっとり艶肌小顔へ。腕マッサージ、ヘッド、足ツボ付。',
     price: 12000, duration: 130 },
-  { id: 20, cat: 'head', catLabel: 'ヘッドオプション',
+  { id: 20, cat: 'head', catLabel: 'ヘッドオプション', isAddon: true, addonFor: ['body','face','other'],
     name: '【頭痛・眼精疲労がお辛い方】ヘッドマッサージ25分　リフトアップ効果倍増。※単体でのご利用不可', shortName: 'ヘッドマッサージ25分（OP）',
     desc: 'リフトアップ効果倍増。頭痛・眼精疲労にお悩みの方に。他のメニューとのセットでのみご利用いただけます。',
     price: 2500, duration: 25 },
-  { id: 21, cat: 'face', catLabel: 'フェイシャルオプション',
+  { id: 21, cat: 'face', catLabel: 'フェイシャルオプション', isAddon: true, addonFor: ['face'],
     name: '【フェイシャルオプション】オーダーメイドボディ30分　※単体でのご利用不可', shortName: 'フェイシャルOPオーダーメイドボディ30分',
     desc: 'フェイシャルメニューに追加できるオーダーメイドボディ30分。他のメニューとのセットでのみご利用いただけます。',
     price: 3500, duration: 30 },
@@ -1120,6 +1138,25 @@ let selectedTime = null;
 let currentMonth = new Date();
 currentMonth.setDate(1);
 
+let selectedAddons = []; // 選択中のオプションメニュー
+
+function totalDuration() {
+  return (selectedMenu?.duration || 60) + selectedAddons.reduce((s, a) => s + a.duration, 0);
+}
+function totalPrice() {
+  return (selectedMenu?.price || 0) + selectedAddons.reduce((s, a) => s + a.price, 0);
+}
+function totalMenuName() {
+  if (!selectedMenu) return '';
+  if (selectedAddons.length === 0) return selectedMenu.name;
+  return selectedMenu.name + '　＋　' + selectedAddons.map(a => a.shortName).join('・');
+}
+function totalShortName() {
+  if (!selectedMenu) return '';
+  if (selectedAddons.length === 0) return selectedMenu.shortName;
+  return selectedMenu.shortName + '＋' + selectedAddons.map(a => a.shortName).join('・');
+}
+
 // ============================================================
 // MENU RENDERING
 // ============================================================
@@ -1141,8 +1178,8 @@ function renderMenus() {
   const grid = document.getElementById('menu-grid');
   const CAT_ORDER = { face: 0, body: 1, slim: 2, head: 3, other: 4 };
   let filtered = currentCat === 'all'
-    ? [...MENUS].sort((a, b) => (CAT_ORDER[a.cat] ?? 9) - (CAT_ORDER[b.cat] ?? 9))
-    : MENUS.filter(m => m.cat === currentCat);
+    ? [...MENUS].filter(m => !m.isAddon).sort((a, b) => (CAT_ORDER[a.cat] ?? 9) - (CAT_ORDER[b.cat] ?? 9))
+    : MENUS.filter(m => m.cat === currentCat && !m.isAddon);
   grid.innerHTML = filtered.map(m => `
     <div class="menu-card ${selectedMenu?.id === m.id ? 'selected' : ''}"
          onclick="selectMenu(${m.id})">
@@ -1160,14 +1197,50 @@ function renderMenus() {
   `).join('');
 }
 
+function renderAddons() {
+  const section = document.getElementById('addon-section');
+  const list = document.getElementById('addon-list');
+  if (!selectedMenu || selectedMenu.isAddon) { section.style.display = 'none'; return; }
+  const compatible = MENUS.filter(m => m.isAddon && m.addonFor && m.addonFor.includes(selectedMenu.cat));
+  if (compatible.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = compatible.map(a => {
+    const isSelected = selectedAddons.some(s => s.id === a.id);
+    return `<div class="addon-card ${isSelected ? 'selected' : ''}" onclick="toggleAddon(${a.id})">
+      <div class="addon-check">${isSelected ? '✓' : ''}</div>
+      <div>
+        <div class="addon-name">${a.shortName}</div>
+        <div class="addon-detail">+¥${a.price.toLocaleString()} ／ +${a.duration}分</div>
+        <div class="addon-desc">${a.desc}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleAddon(id) {
+  const addon = MENUS.find(m => m.id === id);
+  if (!addon) return;
+  const idx = selectedAddons.findIndex(a => a.id === id);
+  if (idx >= 0) selectedAddons.splice(idx, 1);
+  else selectedAddons.push(addon);
+  renderAddons();
+  updateBtnToDate();
+}
+
+function updateBtnToDate() {
+  const btn = document.getElementById('btn-to-date');
+  if (!selectedMenu) { btn.style.display = 'none'; return; }
+  btn.style.display = 'block';
+  const addonsText = selectedAddons.length > 0 ? `＋${selectedAddons.map(a=>a.shortName).join('・')}` : '';
+  btn.textContent = `「${selectedMenu.shortName}${addonsText}」で日時を選択する →`;
+}
+
 function selectMenu(id) {
   selectedMenu = MENUS.find(m => m.id === id);
+  selectedAddons = [];
   renderMenus();
-  const btn = document.getElementById('btn-to-date');
-  btn.style.display = selectedMenu ? 'block' : 'none';
-  btn.textContent = selectedMenu
-    ? `「${selectedMenu.shortName}」で日時を選択する →`
-    : '日時を選択する →';
+  renderAddons();
+  updateBtnToDate();
 }
 
 // ============================================================
@@ -1227,6 +1300,53 @@ function changeMonth(dir) {
   document.getElementById('time-picker').style.display = 'none';
   document.getElementById('btn-to-form').style.display = 'none';
   renderCalendar();
+  prefetchMonthAvailability();
+}
+
+// ── バックグラウンドで当月の満員日を先読みしてドットを消す ──
+let _prefetchMonthKey = null;
+async function prefetchMonthAvailability() {
+  const y = currentMonth.getFullYear();
+  const mo = currentMonth.getMonth();
+  const monthKey = `${y}-${mo}`;
+  if (_prefetchMonthKey === monthKey) return;
+  _prefetchMonthKey = monthKey;
+
+  const sc = getSchedule();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dur = totalDuration();
+  const daysInMonth = new Date(y, mo + 1, 0).getDate();
+
+  const days = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(y, mo, d);
+    if (date < today) continue;
+    const dateKey = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isClosed = sc.closedDays.includes(date.getDay()) || sc.closedDates.includes(dateKey);
+    if (isClosed || fullyBookedDays.has(dateKey)) continue;
+    days.push({ date, dateKey });
+  }
+
+  // 3件ずつ並列処理（GASへの負荷を抑える）
+  const concurrency = 3;
+  for (let i = 0; i < days.length; i += concurrency) {
+    if (_prefetchMonthKey !== monthKey) break; // 月が変わったら中断
+    const batch = days.slice(i, i + concurrency);
+    await Promise.allSettled(batch.map(({ date, dateKey }) =>
+      fetch(`${GAS_URL}?action=slots&date=${dateKey}`)
+        .then(r => r.json())
+        .then(json => {
+          if (_prefetchMonthKey !== monthKey) return;
+          const booked = json.status === 'success' ? json.booked : [];
+          const slots = getTimeSlots(date, dur, booked);
+          if (slots.length > 0 && slots.every(s => s.unavailable)) {
+            fullyBookedDays.add(dateKey);
+            renderCalendar();
+          }
+        })
+        .catch(() => {})
+    ));
+  }
 }
 
 async function pickDate(y, mo, d) {
@@ -1254,7 +1374,7 @@ async function pickDate(y, mo, d) {
   renderTimeSlots();
 
   // 全スロットが予約不可なら満員日としてキャッシュ → カレンダー更新
-  const allSlots = getTimeSlots(selectedDate, selectedMenu?.duration || 60, cachedBookedEvents);
+  const allSlots = getTimeSlots(selectedDate, totalDuration(), cachedBookedEvents);
   if (allSlots.length > 0 && allSlots.every(s => s.unavailable)) {
     const dk = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     fullyBookedDays.add(dk);
@@ -1263,7 +1383,7 @@ async function pickDate(y, mo, d) {
 }
 
 function renderTimeSlots() {
-  const slots = getTimeSlots(selectedDate, selectedMenu?.duration || 60, cachedBookedEvents);
+  const slots = getTimeSlots(selectedDate, totalDuration(), cachedBookedEvents);
   const grid = document.getElementById('time-grid');
   grid.innerHTML = slots.map(s => `
     <div class="time-slot ${s.unavailable ? 'unavailable' : ''} ${selectedTime === s.label && !s.unavailable ? 'selected' : ''}"
@@ -1303,9 +1423,9 @@ function showScreen(id) {
 function goToDate() {
   if (!selectedMenu) return;
   // populate summary
-  document.getElementById('summary-menu-name').textContent = selectedMenu.shortName;
-  document.getElementById('summary-menu-price').textContent = priceText(selectedMenu);
-  document.getElementById('summary-menu-dur').textContent = `${selectedMenu.duration}分`;
+  document.getElementById('summary-menu-name').textContent = totalShortName();
+  document.getElementById('summary-menu-price').textContent = `¥${totalPrice().toLocaleString()}`;
+  document.getElementById('summary-menu-dur').textContent = `${totalDuration()}分`;
   // reset date/time
   selectedDate = null; selectedTime = null;
   renderCalendar();
@@ -1338,9 +1458,9 @@ function goToConfirm() {
   const visitVal = document.getElementById('visitType').value;
   const visitLabel = visitVal === 'first' ? '初めてのご来店' : visitVal === 'repeat' ? '2回目以降' : '未選択';
 
-  document.getElementById('conf-menu').textContent = selectedMenu.name;
-  document.getElementById('conf-price').textContent = priceText(selectedMenu);
-  document.getElementById('conf-dur').textContent = `${selectedMenu.duration}分`;
+  document.getElementById('conf-menu').textContent = totalMenuName();
+  document.getElementById('conf-price').textContent = `¥${totalPrice().toLocaleString()}`;
+  document.getElementById('conf-dur').textContent = `${totalDuration()}分`;
   document.getElementById('conf-datetime').textContent = dateStr;
   document.getElementById('conf-name').textContent = `${last} ${first}`;
   document.getElementById('conf-phone').textContent = phone;
@@ -1368,9 +1488,9 @@ async function submitBooking() {
   const sc = getSchedule();
   const payload = {
     bookingNumber: num,
-    menu: selectedMenu.name,
-    price: priceText(selectedMenu),
-    duration: `${selectedMenu.duration}分`,
+    menu: totalMenuName(),
+    price: `¥${totalPrice().toLocaleString()}`,
+    duration: `${totalDuration()}分`,
     datetime: dateStr,
     lastName: document.getElementById('lastName').value.trim(),
     firstName: document.getElementById('firstName').value.trim(),
@@ -1431,6 +1551,8 @@ function resetAll() {
   document.getElementById('visitType').value = '';
   document.getElementById('notes').value = '';
   document.getElementById('btn-to-date').style.display = 'none';
+  document.getElementById('addon-section').style.display = 'none';
+  selectedAddons = [];
   renderMenus();
   switchScreen('screen-success', 'screen-menu', 1);
 }
@@ -1440,6 +1562,7 @@ function resetAll() {
 // ============================================================
 renderMenus();
 renderCalendar();
+prefetchMonthAvailability();
 </script>
 </body>
 </html>
