@@ -1108,6 +1108,8 @@ function getTimeSlots(date, durationMin, bookedEvents) {
 
 // 選択した日付のbooked eventsをキャッシュ
 let cachedBookedEvents = null;
+// 満員と判明した日付のキャッシュ（ドット非表示・クリック不可）
+const fullyBookedDays = new Set();
 
 // ============================================================
 // STATE
@@ -1198,10 +1200,10 @@ function renderCalendar() {
       selectedDate.getDate() === d;
     const isTod = date.getTime() === today.getTime();
 
-    // 定休日・臨時休業日チェック
+    // 定休日・臨時休業日・満員チェック
     const dateKey = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isClosed = sc.closedDays.includes(date.getDay()) || sc.closedDates.includes(dateKey);
-    const isBlocked = isPast || isClosed;
+    const isBlocked = isPast || isClosed || fullyBookedDays.has(dateKey);
 
     let cls = 'cal-day';
     if (isBlocked) cls += ' past';
@@ -1250,6 +1252,14 @@ async function pickDate(y, mo, d) {
     cachedBookedEvents = [];
   }
   renderTimeSlots();
+
+  // 全スロットが予約不可なら満員日としてキャッシュ → カレンダー更新
+  const allSlots = getTimeSlots(selectedDate, selectedMenu?.duration || 60, cachedBookedEvents);
+  if (allSlots.length > 0 && allSlots.every(s => s.unavailable)) {
+    const dk = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    fullyBookedDays.add(dk);
+    renderCalendar();
+  }
 }
 
 function renderTimeSlots() {

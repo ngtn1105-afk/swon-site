@@ -1155,6 +1155,17 @@
     .rc-btn:hover { background: var(--deep-rose); color: #fff; border-color: var(--deep-rose); }
     .rc-btn.d { border-color: #E0C0C0; color: #C0392B; }
     .rc-btn.d:hover { background: #C0392B; color: #fff; border-color: #C0392B; }
+    /* キャンセルモーダル */
+    .cm-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px; }
+    .cm-box { background:#fff;border-radius:14px;padding:28px 24px;width:100%;max-width:400px;box-shadow:0 8px 40px rgba(0,0,0,0.25); }
+    .cm-box h3 { font-size:1rem;color:#333;margin:0 0 6px; }
+    .cm-info { font-size:0.82rem;color:#666;margin-bottom:16px;line-height:1.7;background:#f9f7f5;border-radius:8px;padding:10px 12px; }
+    .cm-label { font-size:0.8rem;color:#888;display:block;margin-bottom:6px; }
+    .cm-box textarea { width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:0.88rem;font-family:inherit;resize:vertical;height:90px;outline:none;color:#333; }
+    .cm-box textarea:focus { border-color:#b89a6a; }
+    .cm-btns { display:flex;gap:10px;margin-top:14px; }
+    .cm-back { flex:1;background:#fff;color:#888;border:1px solid #ccc;border-radius:8px;padding:12px;font-size:0.88rem;cursor:pointer; }
+    .cm-do { flex:1;background:#C0392B;color:#fff;border:none;border-radius:8px;padding:12px;font-size:0.88rem;font-weight:600;cursor:pointer; }
     .admin-empty {
       text-align: center;
       padding: 56px 20px;
@@ -1918,7 +1929,7 @@
           <span class="rc-status ${statusClass}">${r.status}</span>
           <div class="rc-actions">
             ${r.status !== '確認済み' ? `<button class="rc-btn" onclick="chgStatus('${r.bookingNumber}','確認済み')">確認済みに</button>` : ''}
-            ${r.status !== 'キャンセル' ? `<button class="rc-btn d" onclick="chgStatus('${r.bookingNumber}','キャンセル')">キャンセル</button>` : ''}
+            ${r.status !== 'キャンセル' ? `<button class="rc-btn d" onclick="openCancelModal('${r.bookingNumber}')">キャンセル</button>` : ''}
             <button class="rc-btn d" onclick="delRes('${r.bookingNumber}')">削除</button>
           </div>
         </div>`;
@@ -1926,14 +1937,43 @@
     }
 
     async function chgStatus(bookingNumber, newStatus) {
-      // UIを即座に更新
       const r = rsvs.find(r => r.bookingNumber === bookingNumber);
       if (r) r.status = newStatus;
       renderResList();
-      // GASのスプレッドシートも更新
       try {
         await fetch(`${ADMIN_GAS_URL}?action=updateStatus&bookingNumber=${encodeURIComponent(bookingNumber)}&status=${encodeURIComponent(newStatus)}`);
       } catch(e) { console.warn('ステータス更新失敗', e); }
+    }
+
+    let _pendingCancelNum = null;
+
+    function openCancelModal(bookingNumber) {
+      const r = rsvs.find(r => r.bookingNumber === bookingNumber);
+      if (!r) return;
+      _pendingCancelNum = bookingNumber;
+      document.getElementById('cmInfo').innerHTML =
+        `<strong>${r.name}</strong> 様<br>${r.datetime}<br>${r.menu}` +
+        (r.email ? `<br><span style="color:#b89a6a">${r.email}</span>` : '<br><span style="color:#ccc">メールアドレス未登録</span>');
+      document.getElementById('cmMessage').value = '';
+      document.getElementById('cancelModal').style.display = 'flex';
+    }
+
+    function closeCancelModal() {
+      _pendingCancelNum = null;
+      document.getElementById('cancelModal').style.display = 'none';
+    }
+
+    async function doCancel() {
+      if (!_pendingCancelNum) return;
+      const bookingNumber = _pendingCancelNum;
+      const message = document.getElementById('cmMessage').value.trim();
+      const r = rsvs.find(r => r.bookingNumber === bookingNumber);
+      if (r) r.status = 'キャンセル';
+      renderResList();
+      closeCancelModal();
+      try {
+        await fetch(`${ADMIN_GAS_URL}?action=cancelWithMessage&bookingNumber=${encodeURIComponent(bookingNumber)}&message=${encodeURIComponent(message)}`);
+      } catch(e) { console.warn('キャンセル処理失敗', e); }
     }
 
     async function delRes(bookingNumber) {
@@ -1971,5 +2011,19 @@
     ];
 
   </script>
+
+  <!-- キャンセルモーダル -->
+  <div class="cm-overlay" id="cancelModal" style="display:none;" onclick="if(event.target===this)closeCancelModal()">
+    <div class="cm-box">
+      <h3>予約キャンセル</h3>
+      <div class="cm-info" id="cmInfo"></div>
+      <label class="cm-label">お客様へのメッセージ（任意）</label>
+      <textarea id="cmMessage" placeholder="例：誠に恐れ入りますが、ご予約をキャンセルさせていただきます。ご不便をおかけし大変申し訳ございません。またのご来店を心よりお待ちしております。"></textarea>
+      <div class="cm-btns">
+        <button class="cm-back" onclick="closeCancelModal()">戻る</button>
+        <button class="cm-do" onclick="doCancel()">キャンセルを確定</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
