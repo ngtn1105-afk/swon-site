@@ -843,6 +843,20 @@
           <input class="form-input" type="text" id="firstName" placeholder="花子">
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ふりがな（せい）<span>*</span></label>
+          <input class="form-input" type="text" id="lastNameKana" placeholder="やまだ">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ふりがな（めい）<span>*</span></label>
+          <input class="form-input" type="text" id="firstNameKana" placeholder="はなこ">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">お誕生日</label>
+        <input class="form-input" type="date" id="birthday">
+      </div>
       <div class="form-group">
         <label class="form-label">電話番号<span>*</span></label>
         <input class="form-input" type="tel" id="phone" placeholder="080-0000-0000">
@@ -902,6 +916,14 @@
       <div class="confirm-row">
         <span class="confirm-key">お名前</span>
         <span class="confirm-val" id="conf-name">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">ふりがな</span>
+        <span class="confirm-val" id="conf-kana">-</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-key">お誕生日</span>
+        <span class="confirm-val" id="conf-birthday">-</span>
       </div>
       <div class="confirm-row">
         <span class="confirm-key">電話番号</span>
@@ -1470,10 +1492,12 @@ function goToForm() {
 function goToConfirm() {
   const last = document.getElementById('lastName').value.trim();
   const first = document.getElementById('firstName').value.trim();
+  const lastKana = document.getElementById('lastNameKana').value.trim();
+  const firstKana = document.getElementById('firstNameKana').value.trim();
   const phone = document.getElementById('phone').value.trim();
   const email = document.getElementById('email').value.trim();
-  if (!last || !first || !phone || !email) {
-    alert('お名前・電話番号・メールアドレスは必須項目です。');
+  if (!last || !first || !lastKana || !firstKana || !phone || !email) {
+    alert('お名前・ふりがな・電話番号・メールアドレスは必須項目です。');
     return;
   }
 
@@ -1487,6 +1511,11 @@ function goToConfirm() {
   document.getElementById('conf-dur').textContent = `${totalDuration()}分`;
   document.getElementById('conf-datetime').textContent = dateStr;
   document.getElementById('conf-name').textContent = `${last} ${first}`;
+  document.getElementById('conf-kana').textContent = `${lastKana} ${firstKana}`;
+  const birthdayVal = document.getElementById('birthday').value;
+  document.getElementById('conf-birthday').textContent = birthdayVal
+    ? birthdayVal.replace(/(\d{4})-(\d{2})-(\d{2})/, '$1年$2月$3日')
+    : '未入力';
   document.getElementById('conf-phone').textContent = phone;
   document.getElementById('conf-email').textContent = document.getElementById('email').value || '未入力';
   document.getElementById('conf-visit').textContent = visitLabel;
@@ -1518,6 +1547,9 @@ async function submitBooking() {
     datetime: dateStr,
     lastName: document.getElementById('lastName').value.trim(),
     firstName: document.getElementById('firstName').value.trim(),
+    lastNameKana: document.getElementById('lastNameKana').value.trim(),
+    firstNameKana: document.getElementById('firstNameKana').value.trim(),
+    birthday: document.getElementById('birthday').value || '未入力',
     phone: document.getElementById('phone').value.trim(),
     email: document.getElementById('email').value.trim(),
     visitType: visitLabel,
@@ -1570,6 +1602,9 @@ function resetAll() {
   selectedMenu = null; selectedDate = null; selectedTime = null;
   document.getElementById('lastName').value = '';
   document.getElementById('firstName').value = '';
+  document.getElementById('lastNameKana').value = '';
+  document.getElementById('firstNameKana').value = '';
+  document.getElementById('birthday').value = '';
   document.getElementById('phone').value = '';
   document.getElementById('email').value = '';
   document.getElementById('visitType').value = '';
