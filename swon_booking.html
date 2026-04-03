@@ -1333,14 +1333,29 @@ function renderCalendar() {
 }
 
 function changeMonth(dir) {
-  currentMonth.setMonth(currentMonth.getMonth() + dir);
+  const today = new Date();
+  const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const maxMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const next = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + dir, 1);
+  if (next < minMonth || next > maxMonth) return;
+  currentMonth = next;
   selectedDate = null;
   selectedTime = null;
   fullyBookedDays.clear();
   document.getElementById('time-picker').style.display = 'none';
   document.getElementById('btn-to-form').style.display = 'none';
   renderCalendar();
+  updateMonthNavButtons();
   prefetchMonthAvailability();
+}
+
+function updateMonthNavButtons() {
+  const today = new Date();
+  const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const maxMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const cur = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+  document.querySelectorAll('.cal-btn')[0].style.visibility = cur <= minMonth ? 'hidden' : 'visible';
+  document.querySelectorAll('.cal-btn')[1].style.visibility = cur >= maxMonth ? 'hidden' : 'visible';
 }
 
 // ── バックグラウンドで当月の満員日を先読みしてドットを消す ──
@@ -1616,6 +1631,7 @@ function resetAll() {
 renderMenus();
 renderAddons();
 renderCalendar();
+updateMonthNavButtons();
 prefetchMonthAvailability();
 </script>
 </body>
