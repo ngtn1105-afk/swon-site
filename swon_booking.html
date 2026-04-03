@@ -1158,8 +1158,6 @@ function getTimeSlots(date, durationMin, bookedEvents) {
 let cachedBookedEvents = null;
 // 満員と判明した日付（ドット非表示・クリック不可）
 const fullyBookedDays = new Set();
-// 空きありと確認できた日付（ドット表示）― 確認前はドット非表示
-const confirmedAvailableDays = new Set();
 
 // ============================================================
 // STATE
@@ -1275,7 +1273,6 @@ function selectMenu(id) {
   selectedAddons = [];
   // メニューが変わると所要時間が変わるため、空き状況をリセットして再確認
   fullyBookedDays.clear();
-  confirmedAvailableDays.clear();
   _prefetchMonthKey = null;
   renderMenus();
   renderAddons();
@@ -1323,8 +1320,8 @@ function renderCalendar() {
     if (isBlocked) cls += ' past';
     else if (isSel) cls += ' selected';
     else if (isTod) cls += ' today';
-    // 空きが確認できた日のみドット表示（確認前・満員日はドットなし）
-    if (!isBlocked && confirmedAvailableDays.has(dateKey)) cls += ' has-slots';
+    // 予約不可（過去・休業・満員）以外はドット表示
+    if (!isBlocked) cls += ' has-slots';
 
     html += `<div class="${cls}" onclick="${isBlocked ? '' : `pickDate(${y},${mo},${d})`}">
       ${d}
@@ -1340,7 +1337,6 @@ function changeMonth(dir) {
   selectedDate = null;
   selectedTime = null;
   fullyBookedDays.clear();
-  confirmedAvailableDays.clear();
   document.getElementById('time-picker').style.display = 'none';
   document.getElementById('btn-to-form').style.display = 'none';
   renderCalendar();
@@ -1385,10 +1381,8 @@ async function prefetchMonthAvailability() {
           const slots = getTimeSlots(date, dur, booked);
           if (slots.length > 0 && slots.every(s => s.unavailable)) {
             fullyBookedDays.add(dateKey);
-          } else if (slots.some(s => !s.unavailable)) {
-            confirmedAvailableDays.add(dateKey);
+            renderCalendar();
           }
-          renderCalendar();
         })
         .catch(() => {})
     ));
