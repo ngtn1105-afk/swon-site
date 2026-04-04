@@ -435,6 +435,8 @@
   .wg-cell-avail {
     cursor: pointer;
     background: #fff;
+    color: var(--gold);
+    font-size: 0.9rem;
     transition: background 0.15s;
   }
   .wg-cell-avail:hover { background: #fdf8f0; }
@@ -1360,7 +1362,7 @@ function renderWeekGrid() {
       if (unavail) {
         html += `<div class="wg-cell wg-cell-unavail">×</div>`;
       } else {
-        html += `<div class="wg-cell wg-cell-avail${isSel ? ' wg-cell-selected' : ''}" onclick="pickSlot('${dk}','${label}')"></div>`;
+        html += `<div class="wg-cell wg-cell-avail${isSel ? ' wg-cell-selected' : ''}" onclick="pickSlot('${dk}','${label}')">◯</div>`;
       }
     }
 
