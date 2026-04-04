@@ -333,87 +333,133 @@
     color: white;
   }
 
-  /* ── CALENDAR ── */
-  .calendar-nav {
+  /* ── WEEK GRID ── */
+  .week-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
-  .cal-month {
+  .week-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    cursor: pointer;
+    color: var(--mid);
+    font-size: 0.78rem;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .week-nav-btn:hover { border-color: var(--gold); color: var(--accent); }
+
+  .week-month-label {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     letter-spacing: 0.1em;
     color: var(--charcoal);
   }
 
-  .cal-btn {
-    background: none;
-    border: 1px solid var(--border);
-    width: 32px; height: 32px;
-    cursor: pointer;
-    color: var(--mid);
-    font-size: 0.8rem;
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center;
+  .week-grid-wrap {
+    overflow-x: auto;
+    margin-bottom: 24px;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .cal-btn:hover { border-color: var(--gold); color: var(--accent); }
-
-  .calendar-grid {
+  .week-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    margin-bottom: 32px;
+    grid-template-columns: 48px repeat(7, 1fr);
+    min-width: 360px;
+    border-left: 1px solid #e0d8d0;
+    border-top: 1px solid #e0d8d0;
   }
 
-  .cal-header {
+  .wg-corner {
+    border-right: 1px solid #e0d8d0;
+    border-bottom: 1px solid #e0d8d0;
+    background: #faf9f7;
+  }
+
+  .wg-day-header {
     text-align: center;
+    padding: 8px 2px;
+    border-right: 1px solid #e0d8d0;
+    border-bottom: 1px solid #e0d8d0;
+    background: #faf9f7;
+  }
+
+  .wg-day-num {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--charcoal);
+  }
+
+  .wg-day-name {
     font-size: 0.65rem;
     color: var(--mid);
-    letter-spacing: 0.15em;
-    padding: 6px 0;
+    margin-top: 2px;
   }
 
-  .cal-day {
+  .wg-day-header.wg-sat .wg-day-num,
+  .wg-day-header.wg-sat .wg-day-name { color: #4a7fc1; }
+
+  .wg-day-header.wg-sun .wg-day-num,
+  .wg-day-header.wg-sun .wg-day-name { color: #c14a4a; }
+
+  .wg-day-header.wg-today { background: #fdf8f0; }
+  .wg-day-header.wg-today .wg-day-num { color: var(--accent); }
+
+  .wg-day-header.wg-blocked { opacity: 0.4; }
+
+  .wg-time-label {
+    font-size: 0.7rem;
+    color: #999;
+    text-align: right;
+    padding: 6px 4px;
+    border-right: 1px solid #e0d8d0;
+    border-bottom: 1px solid #e0d8d0;
+    background: #faf9f7;
+    white-space: nowrap;
+  }
+
+  .wg-cell {
+    border-right: 1px solid #e0d8d0;
+    border-bottom: 1px solid #e0d8d0;
     text-align: center;
-    padding: 10px 4px;
-    font-size: 0.82rem;
+    padding: 6px 2px;
+    font-size: 0.78rem;
+    min-height: 32px;
+  }
+
+  .wg-cell-avail {
     cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.2s;
-    color: var(--charcoal);
-    aspect-ratio: 1;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    gap: 3px;
+    background: #fff;
+    transition: background 0.15s;
   }
+  .wg-cell-avail:hover { background: #fdf8f0; }
 
-  .cal-day:hover:not(.disabled):not(.past) {
-    border-color: var(--gold);
-    background: #fdf8f2;
-  }
-
-  .cal-day.selected {
-    background: var(--charcoal);
+  .wg-cell-selected {
+    background: var(--charcoal) !important;
     color: var(--gold-light);
-    border-color: var(--charcoal);
+    font-weight: 600;
   }
 
-  .cal-day.today { color: var(--accent); font-weight: 700; }
-  .cal-day.past { color: #ccc; cursor: default; }
-  .cal-day.disabled { color: #ddd; cursor: default; background: #f8f8f8; }
-  .cal-day.empty { cursor: default; }
-
-  .cal-dot {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--gold);
-    display: none;
+  .wg-cell-unavail {
+    color: #bbb;
+    background: #fafafa;
+    cursor: default;
   }
 
-  .cal-day.has-slots .cal-dot { display: block; }
+  .wg-cell-closed {
+    background: #f5f4f2;
+    cursor: default;
+  }
+
+  .wg-cell-loading {
+    background: #fafafa;
+    cursor: default;
+  }
 
   /* ── ADDON ── */
   .addon-section { margin-top: 20px; }
@@ -425,53 +471,6 @@
   .addon-name { font-size: 0.88rem; font-weight: 600; color: #333; }
   .addon-detail { font-size: 0.78rem; color: #888; margin-top: 3px; }
   .addon-desc { font-size: 0.76rem; color: #aaa; margin-top: 2px; }
-
-  /* ── TIME SLOTS ── */
-  .time-section-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    color: var(--mid);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-  }
-
-  .time-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 28px;
-  }
-
-  .time-slot {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    font-size: 0.82rem;
-    transition: all 0.2s;
-    background: white;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
-    letter-spacing: 0.05em;
-  }
-
-  .time-slot:hover:not(.unavailable) {
-    border-color: var(--gold);
-    background: #fdf8f2;
-  }
-
-  .time-slot.selected {
-    background: var(--charcoal);
-    color: var(--gold-light);
-    border-color: var(--charcoal);
-  }
-
-  .time-slot.unavailable {
-    color: #ccc;
-    background: #f8f8f8;
-    cursor: default;
-    text-decoration: line-through;
-  }
 
   /* ── FORM ── */
   .form-grid {
@@ -789,21 +788,13 @@
     </div>
     <div class="divider"></div>
 
-    <div class="calendar-nav">
-      <button class="cal-btn" onclick="changeMonth(-1)">‹</button>
-      <div class="cal-month" id="cal-month-label">2026年 3月</div>
-      <button class="cal-btn" onclick="changeMonth(1)">›</button>
+    <div class="week-nav">
+      <button class="week-nav-btn" id="btn-prev-week" onclick="changeWeek(-1)">‹ 前の週へ</button>
+      <span class="week-month-label" id="week-month-label"></span>
+      <button class="week-nav-btn" id="btn-next-week" onclick="changeWeek(1)">次の週へ ›</button>
     </div>
-
-    <div class="calendar-grid" id="calendar-grid"></div>
-
-    <div id="time-picker" style="display:none;">
-      <div class="section-title" style="margin-top:0; font-size:1rem;">
-        <span>Time</span>
-        ご希望のお時間
-      </div>
-      <div class="divider" style="margin-bottom:16px;"></div>
-      <div class="time-grid" id="time-grid"></div>
+    <div class="week-grid-wrap">
+      <div class="week-grid" id="week-grid"></div>
     </div>
 
     <div class="btn-group">
@@ -1154,19 +1145,17 @@ function getTimeSlots(date, durationMin, bookedEvents) {
   return slots;
 }
 
-// 選択した日付のbooked eventsをキャッシュ
-let cachedBookedEvents = null;
-// 満員と判明した日付（ドット非表示・クリック不可）
-const fullyBookedDays = new Set();
-
 // ============================================================
 // STATE
 // ============================================================
 let selectedMenu = null;
 let selectedDate = null;
 let selectedTime = null;
-let currentMonth = new Date();
-currentMonth.setDate(1);
+
+// 週グリッド用
+let currentWeekStart = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
+let weekBookedData = {}; // dateKey → bookedEvents[]
+let _fetchingWeekKey = null;
 
 let selectedAddons = []; // 選択中のオプションメニュー
 
@@ -1272,189 +1261,183 @@ function selectMenu(id) {
   selectedMenu = MENUS.find(m => m.id === id);
   selectedAddons = [];
   // メニューが変わると所要時間が変わるため、空き状況をリセットして再確認
-  fullyBookedDays.clear();
-  _prefetchMonthKey = null;
+  weekBookedData = {};
+  _fetchingWeekKey = null;
   renderMenus();
   renderAddons();
-  renderCalendar();
   updateBtnToDate();
-  prefetchMonthAvailability();
 }
 
 // ============================================================
-// CALENDAR
+// WEEK GRID
 // ============================================================
 const WEEKDAYS = ['日','月','火','水','木','金','土'];
 const MONTHS = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 
-function renderCalendar() {
-  const y = currentMonth.getFullYear();
-  const mo = currentMonth.getMonth();
-  document.getElementById('cal-month-label').textContent = `${y}年 ${MONTHS[mo]}`;
+function dateKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
 
-  const firstDay = new Date(y, mo, 1).getDay();
-  const daysInMonth = new Date(y, mo + 1, 0).getDate();
-  const today = new Date();
-  today.setHours(0,0,0,0);
+function getWeekDays() {
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(currentWeekStart);
+    d.setDate(currentWeekStart.getDate() + i);
+    days.push(d);
+  }
+  return days;
+}
 
-  let html = WEEKDAYS.map(d => `<div class="cal-header">${d}</div>`).join('');
-
-  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
-
+function renderWeekGrid() {
+  const days = getWeekDays();
   const sc = getSchedule();
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = new Date(y, mo, d);
-    const isPast = date < today;
-    const isSel = selectedDate &&
-      selectedDate.getFullYear() === y &&
-      selectedDate.getMonth() === mo &&
-      selectedDate.getDate() === d;
-    const isTod = date.getTime() === today.getTime();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const now = new Date();
+  const dur = totalDuration();
 
-    // 定休日・臨時休業日・満員チェック
-    const dateKey = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isClosed = sc.closedDays.includes(date.getDay()) || sc.closedDates.includes(dateKey);
-    const isBlocked = isPast || isClosed || fullyBookedDays.has(dateKey);
+  // 月ラベル
+  const labels = [...new Set(days.map(d => `${d.getFullYear()}年${MONTHS[d.getMonth()]}`))];
+  document.getElementById('week-month-label').textContent = labels.join(' / ');
 
-    let cls = 'cal-day';
-    if (isBlocked) cls += ' past';
-    else if (isSel) cls += ' selected';
-    else if (isTod) cls += ' today';
-    // 予約不可（過去・休業・満員）以外はドット表示
-    if (!isBlocked) cls += ' has-slots';
-
-    html += `<div class="${cls}" onclick="${isBlocked ? '' : `pickDate(${y},${mo},${d})`}">
-      ${d}
-      <div class="cal-dot"></div>
+  // ヘッダー行
+  let html = '<div class="wg-corner"></div>';
+  for (const day of days) {
+    const dk = dateKey(day);
+    const isPast = day < today;
+    const isClosed = sc.closedDays.includes(day.getDay()) || sc.closedDates.includes(dk);
+    const isToday = day.getTime() === today.getTime();
+    const dow = day.getDay();
+    const satCls = dow === 6 ? ' wg-sat' : '';
+    const sunCls = dow === 0 ? ' wg-sun' : '';
+    const todayCls = isToday ? ' wg-today' : '';
+    const blockedCls = (isPast || isClosed) ? ' wg-blocked' : '';
+    html += `<div class="wg-day-header${satCls}${sunCls}${todayCls}${blockedCls}">
+      <div class="wg-day-num">${day.getDate()}</div>
+      <div class="wg-day-name">${WEEKDAYS[dow]}</div>
     </div>`;
   }
 
-  document.getElementById('calendar-grid').innerHTML = html;
+  // タイムスロット行
+  let h = sc.startHour, m = 0;
+  while (true) {
+    const slotStartMin = h * 60 + m;
+    const slotEndMin = slotStartMin + dur;
+    if (slotEndMin > sc.endHour * 60) break;
+
+    const label = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    html += `<div class="wg-time-label">${label}</div>`;
+
+    for (const day of days) {
+      const dk = dateKey(day);
+      const isPast = day < today;
+      const isClosed = sc.closedDays.includes(day.getDay()) || sc.closedDates.includes(dk);
+
+      if (isPast || isClosed) {
+        html += `<div class="wg-cell wg-cell-closed"></div>`;
+        continue;
+      }
+
+      if (!(dk in weekBookedData)) {
+        html += `<div class="wg-cell wg-cell-loading"></div>`;
+        continue;
+      }
+
+      // 当日の過去時間チェック
+      const isToday2 = day.getTime() === today.getTime();
+      const nowMin = isToday2 ? now.getHours() * 60 + now.getMinutes() : -1;
+      let unavail = isToday2 && slotStartMin <= nowMin;
+
+      // 予約済みとの重複チェック
+      if (!unavail) {
+        for (const ev of (weekBookedData[dk] || [])) {
+          if (slotStartMin < ev.endMin + sc.bufferMin && slotEndMin > ev.startMin) {
+            unavail = true; break;
+          }
+        }
+      }
+
+      const isSel = selectedDate && dateKey(selectedDate) === dk && selectedTime === label;
+      if (unavail) {
+        html += `<div class="wg-cell wg-cell-unavail">×</div>`;
+      } else {
+        html += `<div class="wg-cell wg-cell-avail${isSel ? ' wg-cell-selected' : ''}" onclick="pickSlot('${dk}','${label}')"></div>`;
+      }
+    }
+
+    m += 30;
+    if (m >= 60) { m -= 60; h++; }
+    if (h >= sc.endHour) break;
+  }
+
+  document.getElementById('week-grid').innerHTML = html;
+  updateWeekNavButtons();
 }
 
-function changeMonth(dir) {
-  const today = new Date();
-  const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const maxMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-  const next = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + dir, 1);
-  if (next < minMonth || next > maxMonth) return;
-  currentMonth = next;
+function changeWeek(dir) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const maxDate = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+  const next = new Date(currentWeekStart);
+  next.setDate(currentWeekStart.getDate() + dir * 7);
+  if (next > maxDate) return;
+  if (next < today) {
+    currentWeekStart = new Date(today);
+  } else {
+    currentWeekStart = next;
+  }
   selectedDate = null;
   selectedTime = null;
-  fullyBookedDays.clear();
-  document.getElementById('time-picker').style.display = 'none';
   document.getElementById('btn-to-form').style.display = 'none';
-  renderCalendar();
-  updateMonthNavButtons();
-  prefetchMonthAvailability();
+  renderWeekGrid();
+  fetchWeekData();
 }
 
-function updateMonthNavButtons() {
-  const today = new Date();
-  const minMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const maxMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-  const cur = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-  document.querySelectorAll('.cal-btn')[0].style.visibility = cur <= minMonth ? 'hidden' : 'visible';
-  document.querySelectorAll('.cal-btn')[1].style.visibility = cur >= maxMonth ? 'hidden' : 'visible';
+function updateWeekNavButtons() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const maxDate = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+  const nextWeekStart = new Date(currentWeekStart);
+  nextWeekStart.setDate(currentWeekStart.getDate() + 7);
+  document.getElementById('btn-prev-week').style.visibility = currentWeekStart <= today ? 'hidden' : 'visible';
+  document.getElementById('btn-next-week').style.visibility = nextWeekStart > maxDate ? 'hidden' : 'visible';
 }
 
-// ── バックグラウンドで当月の満員日を先読みしてドットを消す ──
-let _prefetchMonthKey = null;
-async function prefetchMonthAvailability() {
-  const y = currentMonth.getFullYear();
-  const mo = currentMonth.getMonth();
-  const monthKey = `${y}-${mo}`;
-  if (_prefetchMonthKey === monthKey) return;
-  _prefetchMonthKey = monthKey;
-
+async function fetchWeekData() {
+  const days = getWeekDays();
   const sc = getSchedule();
   const today = new Date(); today.setHours(0,0,0,0);
-  const dur = totalDuration();
-  const daysInMonth = new Date(y, mo + 1, 0).getDate();
+  const weekKey = dateKey(currentWeekStart);
+  _fetchingWeekKey = weekKey;
 
-  const days = [];
-  for (let d = 1; d <= daysInMonth; d++) {
-    const date = new Date(y, mo, d);
-    if (date < today) continue;
-    const dateKey = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isClosed = sc.closedDays.includes(date.getDay()) || sc.closedDates.includes(dateKey);
-    if (isClosed || fullyBookedDays.has(dateKey)) continue;
-    days.push({ date, dateKey });
-  }
+  const toFetch = days.filter(day => {
+    if (day < today) return false;
+    const dk = dateKey(day);
+    if (sc.closedDays.includes(day.getDay()) || sc.closedDates.includes(dk)) return false;
+    return !(dk in weekBookedData);
+  });
 
-  // 3件ずつ並列処理（GASへの負荷を抑える）
-  const concurrency = 3;
-  for (let i = 0; i < days.length; i += concurrency) {
-    if (_prefetchMonthKey !== monthKey) break; // 月が変わったら中断
-    const batch = days.slice(i, i + concurrency);
-    await Promise.allSettled(batch.map(({ date, dateKey }) =>
-      fetch(`${GAS_URL}?action=slots&date=${dateKey}`)
-        .then(r => r.json())
-        .then(json => {
-          if (_prefetchMonthKey !== monthKey) return;
-          const booked = json.status === 'success' ? json.booked : [];
-          const slots = getTimeSlots(date, dur, booked);
-          if (slots.length > 0 && slots.every(s => s.unavailable)) {
-            fullyBookedDays.add(dateKey);
-            renderCalendar();
-          }
-        })
-        .catch(() => {})
-    ));
-  }
+  await Promise.allSettled(toFetch.map(day => {
+    const dk = dateKey(day);
+    return fetch(`${GAS_URL}?action=slots&date=${dk}`)
+      .then(r => r.json())
+      .then(json => {
+        if (_fetchingWeekKey !== weekKey) return;
+        weekBookedData[dk] = json.status === 'success' ? json.booked : [];
+        renderWeekGrid();
+      })
+      .catch(() => {
+        if (_fetchingWeekKey !== weekKey) return;
+        weekBookedData[dk] = [];
+        renderWeekGrid();
+      });
+  }));
 }
 
-async function pickDate(y, mo, d) {
-  selectedDate = new Date(y, mo, d);
-  selectedTime = null;
-  cachedBookedEvents = null;
-  renderCalendar();
-  document.getElementById('time-picker').style.display = 'block';
-  document.getElementById('btn-to-form').style.display = 'none';
-  document.getElementById('time-picker').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-  // ローディング表示
-  document.getElementById('time-grid').innerHTML =
-    '<div style="padding:16px;color:rgba(201,169,110,0.6);font-size:0.9rem;">空き状況を確認中…</div>';
-
-  // GASから予約済みスロットを取得
-  try {
-    const dateStr = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const res = await fetch(`${GAS_URL}?action=slots&date=${dateStr}`);
-    const json = await res.json();
-    cachedBookedEvents = (json.status === 'success') ? json.booked : [];
-  } catch(e) {
-    cachedBookedEvents = [];
-  }
-  renderTimeSlots();
-
-  // 全スロットが予約不可なら満員日としてキャッシュ → カレンダー更新
-  const allSlots = getTimeSlots(selectedDate, totalDuration(), cachedBookedEvents);
-  if (allSlots.length > 0 && allSlots.every(s => s.unavailable)) {
-    const dk = `${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    fullyBookedDays.add(dk);
-    renderCalendar();
-  }
-}
-
-function renderTimeSlots() {
-  const slots = getTimeSlots(selectedDate, totalDuration(), cachedBookedEvents);
-  const grid = document.getElementById('time-grid');
-  grid.innerHTML = slots.map(s => `
-    <div class="time-slot ${s.unavailable ? 'unavailable' : ''} ${selectedTime === s.label && !s.unavailable ? 'selected' : ''}"
-         onclick="${s.unavailable ? '' : `pickTime('${s.label}')`}">
-      ${s.label}
-    </div>
-  `).join('');
-  if (!slots.length) {
-    grid.innerHTML = '<div style="padding:16px;color:rgba(201,169,110,0.6);font-size:0.9rem;">この日は予約受付時間外です。別の日をお選びください。</div>';
-  }
-}
-
-function pickTime(label) {
+function pickSlot(dk, label) {
+  const [y, mo, d] = dk.split('-').map(Number);
+  selectedDate = new Date(y, mo - 1, d);
   selectedTime = label;
-  renderTimeSlots();
+  renderWeekGrid();
   document.getElementById('btn-to-form').style.display = 'block';
+  document.getElementById('btn-to-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // ============================================================
@@ -1483,9 +1466,12 @@ function goToDate() {
   document.getElementById('summary-menu-dur').textContent = `${totalDuration()}分`;
   // reset date/time
   selectedDate = null; selectedTime = null;
-  renderCalendar();
-  document.getElementById('time-picker').style.display = 'none';
+  weekBookedData = {};
+  _fetchingWeekKey = null;
+  currentWeekStart = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
   document.getElementById('btn-to-form').style.display = 'none';
+  renderWeekGrid();
+  fetchWeekData();
   switchScreen('screen-menu', 'screen-date', 2);
 }
 
@@ -1609,6 +1595,8 @@ function switchScreen(from, to, stepNum) {
 
 function resetAll() {
   selectedMenu = null; selectedDate = null; selectedTime = null;
+  weekBookedData = {}; _fetchingWeekKey = null;
+  currentWeekStart = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
   document.getElementById('lastName').value = '';
   document.getElementById('firstName').value = '';
   document.getElementById('lastNameKana').value = '';
@@ -1630,9 +1618,6 @@ function resetAll() {
 // ============================================================
 renderMenus();
 renderAddons();
-renderCalendar();
-updateMonthNavButtons();
-prefetchMonthAvailability();
 </script>
 </body>
 </html>
