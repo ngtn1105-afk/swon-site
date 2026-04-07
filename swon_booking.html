@@ -1152,7 +1152,8 @@ function getTimeSlots(date, durationMin, bookedEvents) {
 
     if (!unavailable && bookedEvents && bookedEvents.length) {
       for (const ev of bookedEvents) {
-        if (slotStartMin < ev.endMin + buf && slotEndMin + buf > ev.startMin) {
+        const evBuf = ev.noBuffer ? 0 : buf;
+        if (slotStartMin < ev.endMin + evBuf && slotEndMin + evBuf > ev.startMin) {
           unavailable = true;
           break;
         }
@@ -1375,7 +1376,8 @@ function renderWeekGrid() {
       // 予約済みとの重複チェック
       if (!unavail) {
         for (const ev of (weekBookedData[dk] || [])) {
-          if (slotStartMin < ev.endMin + sc.bufferMin && slotEndMin + sc.bufferMin > ev.startMin) {
+          const evBuf2 = ev.noBuffer ? 0 : sc.bufferMin;
+          if (slotStartMin < ev.endMin + evBuf2 && slotEndMin + evBuf2 > ev.startMin) {
             unavail = true; break;
           }
         }
