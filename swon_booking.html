@@ -798,6 +798,7 @@
     <div class="week-grid-wrap">
       <div class="week-grid" id="week-grid"></div>
     </div>
+    <div id="week-loading" style="display:none; text-align:center; padding:10px 0; font-size:0.78rem; color:#b89a6a; letter-spacing:0.15em;">LOADING…</div>
 
     <div class="btn-group">
       <button class="btn-primary" onclick="goToForm()" id="btn-to-form" style="display:none;">
@@ -1416,6 +1417,10 @@ async function fetchWeekData() {
     return !(dk in weekBookedData);
   });
 
+  if (toFetch.length > 0) {
+    document.getElementById('week-loading').style.display = 'block';
+  }
+
   await Promise.allSettled(toFetch.map(day => {
     const dk = dateKey(day);
     return fetch(`${GAS_URL}?action=slots&date=${dk}`)
@@ -1431,6 +1436,10 @@ async function fetchWeekData() {
         renderWeekGrid();
       });
   }));
+
+  if (_fetchingWeekKey === weekKey) {
+    document.getElementById('week-loading').style.display = 'none';
+  }
 }
 
 function pickSlot(dk, label) {
