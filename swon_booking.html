@@ -474,6 +474,27 @@
   .addon-detail { font-size: 0.78rem; color: #888; margin-top: 3px; }
   .addon-desc { font-size: 0.76rem; color: #aaa; margin-top: 2px; }
 
+  /* ── LOADING ── */
+  @keyframes wg-pop {
+    0%   { transform: scale(1);    opacity: 1; }
+    30%  { transform: scale(1.18); opacity: 1; }
+    55%  { transform: scale(0.92); opacity: 0.8; }
+    75%  { transform: scale(1.08); opacity: 1; }
+    90%  { transform: scale(0.97); }
+    100% { transform: scale(1);    opacity: 1; }
+  }
+
+  #week-loading {
+    text-align: center;
+    padding: 18px 0 8px;
+    font-size: 1.1rem;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.25em;
+    color: #b89a6a;
+    animation: wg-pop 1.2s ease-in-out infinite;
+    transform-origin: center;
+  }
+
   /* ── FORM ── */
   .form-grid {
     display: grid;
@@ -790,7 +811,7 @@
     </div>
     <div class="divider"></div>
 
-    <div id="week-loading" style="display:none; text-align:center; padding:18px 0 8px; font-size:1.1rem; font-family:'Cormorant Garamond',serif; letter-spacing:0.25em; color:#b89a6a;">LOADING…</div>
+    <div id="week-loading" style="display:none;">LOADING…</div>
 
     <div class="week-nav">
       <button class="week-nav-btn" id="btn-prev-week" onclick="changeWeek(-1)">‹ 前の週へ</button>
