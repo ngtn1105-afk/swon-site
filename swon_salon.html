@@ -1155,6 +1155,8 @@
     .rc-btn:hover { background: var(--deep-rose); color: #fff; border-color: var(--deep-rose); }
     .rc-btn.d { border-color: #E0C0C0; color: #C0392B; }
     .rc-btn.d:hover { background: #C0392B; color: #fff; border-color: #C0392B; }
+    .rc-btn.em { border-color: #b89a6a; color: #7a5c2e; }
+    .rc-btn.em:hover { background: #b89a6a; color: #fff; border-color: #b89a6a; }
     /* キャンセルモーダル */
     .cm-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px; }
     .cm-box { background:#fff;border-radius:14px;padding:28px 24px;width:100%;max-width:400px;box-shadow:0 8px 40px rgba(0,0,0,0.25); }
@@ -1929,6 +1931,7 @@
           <span class="rc-status ${statusClass}">${r.status}</span>
           <div class="rc-actions">
             ${r.status !== '確認済み' ? `<button class="rc-btn" onclick="chgStatus('${r.bookingNumber}','確認済み')">確認済みに</button>` : ''}
+            ${r.email ? `<button class="rc-btn em" onclick="openEmergencyModal('${r.bookingNumber}')">📧 緊急連絡</button>` : ''}
             ${r.status !== 'キャンセル' ? `<button class="rc-btn d" onclick="openCancelModal('${r.bookingNumber}')">キャンセル</button>` : ''}
           </div>
         </div>`;
@@ -1975,6 +1978,57 @@
       } catch(e) { console.warn('キャンセル処理失敗', e); }
     }
 
+    // ── 緊急連絡モーダル ──
+    let _pendingEmergencyNum = null;
+
+    function openEmergencyModal(bookingNumber) {
+      const r = rsvs.find(r => r.bookingNumber === bookingNumber);
+      if (!r) return;
+      _pendingEmergencyNum = bookingNumber;
+      document.getElementById('emInfo').innerHTML =
+        `<strong>${r.name}</strong> 様<br>${r.datetime}<br>` +
+        `<span style="color:#b89a6a">${r.email}</span>`;
+      document.getElementById('emMessage').value = '';
+      document.getElementById('emResult').textContent = '';
+      document.getElementById('emergencyModal').style.display = 'flex';
+    }
+
+    function closeEmergencyModal() {
+      _pendingEmergencyNum = null;
+      document.getElementById('emergencyModal').style.display = 'none';
+    }
+
+    async function sendEmergency() {
+      if (!_pendingEmergencyNum) return;
+      const bookingNumber = _pendingEmergencyNum;
+      const message = document.getElementById('emMessage').value.trim();
+      if (!message) {
+        document.getElementById('emResult').textContent = 'メッセージを入力してください。';
+        document.getElementById('emResult').style.color = '#C0392B';
+        return;
+      }
+      const btn = document.getElementById('emSendBtn');
+      btn.disabled = true;
+      btn.textContent = '送信中…';
+      document.getElementById('emResult').textContent = '';
+      try {
+        const res = await fetch(`${ADMIN_GAS_URL}?action=sendEmergencyEmail&bookingNumber=${encodeURIComponent(bookingNumber)}&message=${encodeURIComponent(message)}`);
+        const json = await res.json();
+        if (json.status === 'success') {
+          document.getElementById('emResult').textContent = '✓ メールを送信しました。';
+          document.getElementById('emResult').style.color = '#4a7a4a';
+          setTimeout(() => closeEmergencyModal(), 1800);
+        } else {
+          throw new Error(json.message || '送信失敗');
+        }
+      } catch(e) {
+        document.getElementById('emResult').textContent = '送信に失敗しました。' + e.message;
+        document.getElementById('emResult').style.color = '#C0392B';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '送信する';
+      }
+    }
 
     // ── Default menu data (mirrors swon_booking.html) ──
     const DEFAULT_MENUS = [
@@ -2013,6 +2067,21 @@
       <div class="cm-btns">
         <button class="cm-back" onclick="closeCancelModal()">戻る</button>
         <button class="cm-do" onclick="doCancel()">キャンセルを確定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 緊急連絡モーダル -->
+  <div class="cm-overlay" id="emergencyModal" style="display:none;" onclick="if(event.target===this)closeEmergencyModal()">
+    <div class="cm-box">
+      <h3 style="color:#7a5c2e;">📧 お客様への緊急連絡</h3>
+      <div class="cm-info" id="emInfo"></div>
+      <label class="cm-label">メッセージ内容（必須）</label>
+      <textarea id="emMessage" placeholder="例：誠に恐れ入りますが、当日の施術時間に変更が生じました。ご確認いただけますでしょうか。" style="height:110px;"></textarea>
+      <div id="emResult" style="font-size:0.82rem;min-height:1.2em;margin-top:6px;"></div>
+      <div class="cm-btns">
+        <button class="cm-back" onclick="closeEmergencyModal()">戻る</button>
+        <button class="cm-do" id="emSendBtn" onclick="sendEmergency()" style="background:#b89a6a;border-color:#b89a6a;">送信する</button>
       </div>
     </div>
   </div>
