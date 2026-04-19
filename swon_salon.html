@@ -1778,23 +1778,34 @@
     let rsvs = [];
     let curFilter = 'all';
 
-    // ── パスワード認証 ──
-    const ADMIN_PASS = 'swon1105'; // ← パスワードはここで変更できます
+    // ── パスワード認証（サーバー側で検証） ──
     let adminUnlocked = false;
+    let adminToken = sessionStorage.getItem('swon_admin_token') || null;
 
-    function adminLogin() {
+    async function adminLogin() {
       const input = document.getElementById('adminPinInput').value;
-      if (input === ADMIN_PASS) {
-        adminUnlocked = true;
-        document.getElementById('adminLockScreen').style.display = 'none';
-        document.getElementById('adminContent').style.display = 'block';
-        document.getElementById('adminPinInput').value = '';
-        document.getElementById('adminPinErr').textContent = '';
-        renderList();
-      } else {
-        document.getElementById('adminPinErr').textContent = 'パスワードが違います';
-        document.getElementById('adminPinInput').value = '';
-        document.getElementById('adminPinInput').focus();
+      if (!input) return;
+      const errEl = document.getElementById('adminPinErr');
+      errEl.textContent = '認証中…';
+      try {
+        const res = await fetch(`${ADMIN_GAS_URL}?action=adminLogin&password=${encodeURIComponent(input)}`);
+        const json = await res.json();
+        if (json.status === 'success' && json.token) {
+          adminToken = json.token;
+          sessionStorage.setItem('swon_admin_token', adminToken);
+          adminUnlocked = true;
+          document.getElementById('adminLockScreen').style.display = 'none';
+          document.getElementById('adminContent').style.display = 'block';
+          document.getElementById('adminPinInput').value = '';
+          errEl.textContent = '';
+          renderList();
+        } else {
+          errEl.textContent = 'パスワードが違います';
+          document.getElementById('adminPinInput').value = '';
+          document.getElementById('adminPinInput').focus();
+        }
+      } catch(e) {
+        errEl.textContent = '接続エラーが発生しました';
       }
     }
 
@@ -1802,13 +1813,20 @@
       const panel = document.getElementById('adminPanel');
       const isOpen = panel.classList.toggle('open');
       if (isOpen) {
-        // パネルを開くたびにロック画面を表示
-        adminUnlocked = false;
-        document.getElementById('adminLockScreen').style.display = 'block';
-        document.getElementById('adminContent').style.display = 'none';
-        document.getElementById('adminPinInput').value = '';
-        document.getElementById('adminPinErr').textContent = '';
-        setTimeout(() => document.getElementById('adminPinInput').focus(), 300);
+        // セッション内に有効なトークンがあれば直接表示、なければロック画面
+        if (adminToken) {
+          adminUnlocked = true;
+          document.getElementById('adminLockScreen').style.display = 'none';
+          document.getElementById('adminContent').style.display = 'block';
+          renderList();
+        } else {
+          adminUnlocked = false;
+          document.getElementById('adminLockScreen').style.display = 'block';
+          document.getElementById('adminContent').style.display = 'none';
+          document.getElementById('adminPinInput').value = '';
+          document.getElementById('adminPinErr').textContent = '';
+          setTimeout(() => document.getElementById('adminPinInput').focus(), 300);
+        }
       }
     }
 
@@ -1901,7 +1919,7 @@
       const list = document.getElementById('resList');
       list.innerHTML = '<div class="admin-empty" style="opacity:0.5;">読み込み中…</div>';
       try {
-        const res = await fetch(`${ADMIN_GAS_URL}?action=reservations`);
+        const res = await fetch(`${ADMIN_GAS_URL}?action=reservations&token=${encodeURIComponent(adminToken || '')}`);
         const json = await res.json();
         rsvs = (json.status === 'success') ? json.reservations : [];
       } catch(e) {
@@ -1943,7 +1961,7 @@
       if (r) r.status = newStatus;
       renderResList();
       try {
-        await fetch(`${ADMIN_GAS_URL}?action=updateStatus&bookingNumber=${encodeURIComponent(bookingNumber)}&status=${encodeURIComponent(newStatus)}`);
+        await fetch(`${ADMIN_GAS_URL}?action=updateStatus&bookingNumber=${encodeURIComponent(bookingNumber)}&status=${encodeURIComponent(newStatus)}&token=${encodeURIComponent(adminToken || '')}`);
       } catch(e) { console.warn('ステータス更新失敗', e); }
     }
 
@@ -1974,7 +1992,7 @@
       renderResList();
       closeCancelModal();
       try {
-        await fetch(`${ADMIN_GAS_URL}?action=cancelWithMessage&bookingNumber=${encodeURIComponent(bookingNumber)}&message=${encodeURIComponent(message)}`);
+        await fetch(`${ADMIN_GAS_URL}?action=cancelWithMessage&bookingNumber=${encodeURIComponent(bookingNumber)}&message=${encodeURIComponent(message)}&token=${encodeURIComponent(adminToken || '')}`);
       } catch(e) { console.warn('キャンセル処理失敗', e); }
     }
 
@@ -2012,7 +2030,7 @@
       btn.textContent = '送信中…';
       document.getElementById('emResult').textContent = '';
       try {
-        const res = await fetch(`${ADMIN_GAS_URL}?action=sendEmergencyEmail&bookingNumber=${encodeURIComponent(bookingNumber)}&message=${encodeURIComponent(message)}`);
+        const res = await fetch(`${ADMIN_GAS_URL}?action=sendEmergencyEmail&bookingNumber=${encodeURIComponent(bookingNumber)}&message=${encodeURIComponent(message)}&token=${encodeURIComponent(adminToken || '')}`);
         const json = await res.json();
         if (json.status === 'success') {
           document.getElementById('emResult').textContent = '✓ メールを送信しました。';

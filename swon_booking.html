@@ -1573,7 +1573,7 @@ async function submitBooking() {
 
   const d = selectedDate;
   const dateStr = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${WEEKDAYS[d.getDay()]}）${selectedTime}`;
-  const num = 'SWN-' + Date.now().toString().slice(-6);
+  const num = 'SWN-' + Math.random().toString(36).substr(2, 8).toUpperCase();
   const visitVal = document.getElementById('visitType').value;
   const visitLabel = visitVal === 'first' ? '初めてのご来店' : visitVal === 'repeat' ? '2回目以降' : '未選択';
 
